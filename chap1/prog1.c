@@ -164,10 +164,4 @@ int maxargs(A_stm s)
 	return max;
 }
 
-/*
-** you'd better add () after sizeof, fuck...
-** not try to recorgnize data-type, the only-way: extra-record
-** 
-** how to test ??
-** why so low use c !! 
- */
+
