@@ -9,8 +9,8 @@ int main()
 	num = maxargs(prog2());
 	printf("%d\n", num);
 	*/
-	A_stm s = prog();
-    interp(s);
+	A_stm s = prog2();
+	interp(s);
 	return 0;
 }
 

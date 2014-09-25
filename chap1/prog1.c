@@ -164,4 +164,108 @@ int maxargs(A_stm s)
 	return max;
 }
 
+Table AssignTable(string id, int value, Table tail)
+{
+	Table t = checked_malloc(sizeof(*t));
+	t->id = id;
+	t->value = value;
+	t->tail = tail;
+	return t;
+}
+
+int lookup(Table t, string key)
+{
+	Table temp = t;
+	while (temp) {
+		if (key == temp->id) {
+			return temp->value;
+		}
+		temp = temp->tail;
+	}
+	assert("fuck undef iditify");
+}
+
+Table update(Table t, string id,int value)
+{
+	Table temp = checked_malloc(sizeof(*temp));
+	temp->id = id;
+	temp->value = value;
+	temp->tail = t;
+	return temp;
+}
+
+
+Table interpStm(A_stm s, Table t)
+{   
+	Table t1,t2;
+	struct ExpResl er1; 
+	A_expList e1;
+	
+	switch (s->kind) {
+	case A_compoundStm:
+		t1 = interpStm(s->u.compound.stm1, t);
+		t2 = interpStm(s->u.compound.stm2, t1);
+		return t2;
+	case A_assignStm:
+		er1 = interpExp(s->u.assign.exp, t);
+		t1 = update(er1.t, s->u.assign.id, er1.i);
+		return t1;
+	case A_printStm:
+		e1 = s->u.print.exps;
+		t1 = t;
+		while (e1->kind == A_pairExpList) {
+			er1 = interpExp(e1->u.pair.head, t1);
+			printf("%d ", er1.i);
+			t1 = er1.t;
+			e1 = e1->u.pair.tail;
+		}
+		if (e1->kind == A_lastExpList) {
+			er1 = interpExp(e1->u.last, t1);
+			printf("%d ", er1.i);
+		}
+		return er1.t;
+	}
+	return 0;
+}
+
+struct ExpResl interpExp(A_exp e, Table t)
+{
+	Table t1;
+	struct ExpResl er1, er2;
+	switch (e->kind) {
+	case A_numExp:
+		er1.i = e->u.num;
+		er1.t = t;
+		return er1;
+	case A_idExp:
+		er1.i = lookup(t, e->u.id);
+		er1.t = t;
+		return er1;
+	case A_opExp:
+		er1 = interpExp(e->u.op.left, t);
+		er2 = interpExp(e->u.op.right, er1.t);
+        switch (e->u.op.oper) {
+		case A_plus:
+			return (er2.i = er1.i + er2.i, er2);
+		case A_minus:
+			return (er2.i = er1.i - er2.i, er2);
+		case A_times:
+			return (er2.i = er1.i * er2.i, er2);
+		case A_div:
+			return (er2.i = er1.i / er2.i, er2);
+		}		
+	case A_eseqExp:
+		t1 = interpStm(e->u.eseq.stm, t);
+		er1 = interpExp(e->u.eseq.exp, t1);
+		return er1;
+	}
+}
+
+void interp(A_stm s) {
+	Table t = 0;
+	Table resl;
+	resl = interpStm(s, t);
+	printf("\n");
+}
+
 
