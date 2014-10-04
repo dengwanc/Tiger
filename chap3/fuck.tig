@@ -1,0 +1,46 @@
+let
+
+var N := 8
+
+var T := "this"
+
+var S: int := 666
+
+type intArr = array of int
+
+var a1 := intArr [N] of (4+5)
+
+type intlist = {a: int, b: intlist}
+
+type null = {}
+
+function print() = foo()
+
+function 
+isargs(a: int, b: string) =(
+    foo(a,b);
+    while (1) do print(4);
+	for r := 1 to 8 do print(5);
+	if (sum > 5) then break else nothing
+	)
+in
+while 1 do print();
+b();
+f(a,b);
+c(1,4,a,"string",foo());
+a := "";
+t := nil;
+s + 4;
+s & 4;
+s | 3;
+9 * 4;
+-5 * 6;
+foo() - 4;
+3 / 4 - 4;
+--6;
+let in end;
+
+i := (5; 6; 7)
+
+end
+

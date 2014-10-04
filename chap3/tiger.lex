@@ -2,7 +2,8 @@
 %{
 #include <string.h>
 #include "util.h"
-#include "tokens.h"
+/*#include "tokens.h"*/
+#include "y.tab.h"
 #include "errormsg.h"
 
 #define MAX_LENGTH 512
