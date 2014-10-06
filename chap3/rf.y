@@ -72,19 +72,19 @@ exp: lvalue
    | array
    | IF exp THEN exp ELSE exp {F("if-then-else sentence");}
    | WHILE exp DO exp {F("while-do sentence");}
-   | FOR ID ASSIGN exp TO exp DO exp {F("for sentence");}
+   | FOR id ASSIGN exp TO exp DO exp {F("for sentence");}
    | BREAK {F("break");}
    /*| LPAREN exp RPAREN*/
 
 seq: LPAREN explist RPAREN {F("seq-exp");}
 
-record: ID LBRACE refields RBRACE
+record: id LBRACE refields RBRACE
 
-refields: ID EQ exp COMMA refields
-        | ID EQ exp
+refields: id EQ exp COMMA refields
+        | id EQ exp
         |
 
-array: ID LBRACK exp RBRACK OF exp {F("array create");}
+array: id LBRACK exp RBRACK OF exp {F("array create");}
 
 
 decs: dec decs
@@ -95,32 +95,34 @@ dec: tydec
    | fundec
 
    
-tydec: TYPE ID EQ ty
+tydec: TYPE id EQ ty
 
-ty:	ID
+ty:	id
   | LBRACE typefields RBRACE {F("ty->{tyfs}");}
-  | ARRAY OF ID {F("ty->array of ty-id");}
+  | ARRAY OF id {F("ty->array of ty-id");}
 
-typefields: ID COLON ID COMMA typefields
-          | ID COLON ID
+typefields: id COLON id COMMA typefields
+          | id COLON id
 		  | 
 
-vardec: VAR ID ASSIGN exp {F("vardec->var id := exp");}
-      | VAR ID COLON ID ASSIGN exp {F("vardec->var id: ty := exp");}
+vardec: VAR id ASSIGN exp {F("vardec->var id := exp");}
+      | VAR id COLON id ASSIGN exp {F("vardec->var id: ty := exp");}
 
-fundec: FUNCTION ID LPAREN typefields RPAREN EQ exp
-      | FUNCTION ID LPAREN typefields RPAREN COLON ID EQ exp
+fundec: FUNCTION id LPAREN typefields RPAREN EQ exp
+      | FUNCTION id LPAREN typefields RPAREN COLON id EQ exp
 
 explist: exp SEMICOLON explist
 	   | exp
 	   |
 
-lvalue: ID /*{F("");}*/
-      | lvalue DOT ID {F("lval->lval.id");}
+lvalue: id /*{F("");}*/
+      | lvalue DOT id {F("lval->lval.id");}
 	  | lvalue LBRACK exp RBRACK {F("lval->[exp]");}
 
-funcall: ID LPAREN args RPAREN {F("funcall->foo([a,b,c...])");}
+funcall: id LPAREN args RPAREN {F("funcall->foo([a,b,c...])");}
+
 args: exp COMMA args
     | exp
 	|
 
+id: ID {printf("\n$%s$\n", $1);}

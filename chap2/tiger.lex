@@ -131,7 +131,7 @@ while    {adjust(); return WHILE;}
 \\[0-9]{3}		{adjust(); append_char_to_string(atoi(yytext));}
 \"				{adjust(); end_string(); /*printf("%s fuck off", str);*/ yylval.sval = strdup(str); BEGIN (0); return STRING;}
 \n				{adjust(); /*printf("fuck");*/}
-{ws}	        {adjust();}	
+{ws}	        {adjust(); append_str_to_string(yytext);}
 [^\\" \t\n]+    {adjust(); /*printf("fuck (.)* %s \n", yytext);*/ append_str_to_string(yytext);}
 }
 

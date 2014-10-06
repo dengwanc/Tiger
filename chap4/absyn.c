@@ -2,44 +2,51 @@
  * absyn.c - Abstract Syntax Functions. Most functions create an instance of an
  *           abstract syntax rule.
  */
-
+#include <stdio.h>
 #include "util.h"
 #include "symbol.h" /* symbol table data structures */
 #include "absyn.h"  /* abstract syntax data structures */
 
+/*
+ S_symbol => a pointer to struct {string name; S_symbol}; IN A WORD one node of a list
+ */
 A_var A_SimpleVar(A_pos pos, S_symbol sym)
-{A_var p = checked_malloc(sizeof(*p));
- p->kind=A_simpleVar;
- p->pos=pos;
- p->u.simple=sym;
- return p;
+{
+	A_var p = checked_malloc(sizeof(*p));
+	p->kind = A_simpleVar;
+    p->pos = pos;
+    p->u.simple = sym;
+    return p;
 }
 
 A_var A_FieldVar(A_pos pos, A_var var, S_symbol sym)
-{A_var p = checked_malloc(sizeof(*p));
- p->kind=A_fieldVar;
- p->pos=pos;
- p->u.field.var=var;
- p->u.field.sym=sym;
- return p;
+{
+	A_var p = checked_malloc(sizeof(*p));
+	p->kind=A_fieldVar;
+	p->pos=pos;
+	p->u.field.var=var;
+	p->u.field.sym=sym;
+	return p;
 }
 
 A_var A_SubscriptVar(A_pos pos, A_var var, A_exp exp)
-{A_var p = checked_malloc(sizeof(*p));
- p->kind=A_subscriptVar;
- p->pos=pos;
- p->u.subscript.var=var;
- p->u.subscript.exp=exp;
- return p;
+{
+	A_var p = checked_malloc(sizeof(*p));
+	p->kind=A_subscriptVar;
+	p->pos=pos;
+	p->u.subscript.var=var;
+	p->u.subscript.exp=exp;
+	return p;
 }
 
 
 A_exp A_VarExp(A_pos pos, A_var var)
-{A_exp p = checked_malloc(sizeof(*p));
- p->kind=A_varExp;
- p->pos=pos;
- p->u.var=var;
- return p;
+{
+	A_exp p = checked_malloc(sizeof(*p));
+	p->kind=A_varExp;
+	p->pos=pos;
+	p->u.var=var;
+	return p;
 }
 
 A_exp A_NilExp(A_pos pos)
@@ -241,9 +248,8 @@ A_expList A_ExpList(A_exp head, A_expList tail)
  return p;
 }
 
-A_fundec A_Fundec(A_pos pos, S_symbol name, A_fieldList params, S_symbol result,
-		  A_exp body)
-{A_fundec p = checked_malloc(sizeof(*p));
+A_fundec A_Fundec(A_pos pos, S_symbol name, A_fieldList params, S_symbol result, A_exp body){
+ A_fundec p = checked_malloc(sizeof(*p));
  p->pos=pos;
  p->name=name;
  p->params=params;

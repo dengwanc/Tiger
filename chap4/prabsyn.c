@@ -9,7 +9,10 @@
 #include "absyn.h"  /* abstract syntax data structures */
 #include "prabsyn.h" /* function prototype */
 
+char res[MAX_LENGTH];
+
 /* local function prototypes */
+void chstr(string org);
 static void pr_var(FILE *out, A_var v, int d);
 static void pr_dec(FILE *out, A_dec v, int d);
 static void pr_ty(FILE *out, A_ty v, int d);
@@ -74,7 +77,8 @@ void pr_exp(FILE *out, A_exp v, int d) {
    fprintf(out, "intExp(%d)", v->u.intt);
    break;
  case A_stringExp:
-   fprintf(out, "stringExp(%s)", v->u.stringg);
+   chstr(v->u.stringg);
+   fprintf(out, "stringExp(%s)", res);
    break;
  case A_callExp:
    fprintf(out, "callExp(%s,\n", S_name(v->u.call.func));
@@ -112,7 +116,7 @@ void pr_exp(FILE *out, A_exp v, int d) {
  case A_whileExp:
    fprintf(out, "whileExp(\n");
    pr_exp(out, v->u.whilee.test, d+1); fprintf(out, ",\n");
-   pr_exp(out, v->u.whilee.body, d+1); fprintf(out, ")\n");
+   pr_exp(out, v->u.whilee.body, d+1); fprintf(out, ")");
    break;
  case A_forExp:
    fprintf(out, "forExp(%s,\n", S_name(v->u.forr.var)); 
@@ -137,6 +141,20 @@ void pr_exp(FILE *out, A_exp v, int d) {
  default:
    assert(0); 
  } 
+}
+
+void chstr(string org){
+	int i = 0;
+	while(*org){
+		if (*org == '\n') {
+			res[i++] = '\\';
+			res[i++] = 'n';
+			org++;
+		} else {
+			res[i++] = *org++;
+		}
+	}
+	res[i++] = '\0';
 }
 
 static void pr_dec(FILE *out, A_dec v, int d) {
@@ -276,7 +294,3 @@ static void pr_efieldList(FILE *out, A_efieldList v, int d) {
  }
  else fprintf(out, "efieldList()");
 }
-
-
-
-
