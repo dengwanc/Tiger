@@ -19,6 +19,10 @@ string Temp_labelstring(Temp_label s)
 {return S_name(s);
 }
 
+int Temp_tempint(Temp_temp t) {
+	return t->num;
+}
+
 static int labels = 0;
 
 Temp_label Temp_newlabel(void)
