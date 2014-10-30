@@ -64,6 +64,7 @@ T_exp T_Temp(Temp_temp);
 T_exp T_Eseq(T_stm, T_exp);
 T_exp T_Name(Temp_label);
 T_exp T_Const(int);
+T_exp T_Double(float);
 T_exp T_Call(T_exp, T_expList);
 
 T_relOp T_notRel(T_relOp);  /* a op b    ==     not(a notRel(op) b)  */

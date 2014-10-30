@@ -198,6 +198,57 @@ Tr_exp Tr_noExp() {
 	return Tr_Ex(T_Const(0));
 }
 
+Tr_exp Tr_recordExp(int n, Tr_expList l) {
+	/**/
+	Temp_temp r = Temp_newtemp();
+	/*alloc n * WORD-SIZE mem*/
+	T_stm alloc = T_Move(T_Temp(r),
+			             F_externalCall(String("initRecord"), T_ExpList(T_Const(n * F_WORD_SIZE), NULL)));
+
+	int i = n - 1;
+	T_stm seq = NULL;
+	/*put value to the alloc-addr*/
+	for (; l; l = l->tail, i--) {
+		seq = T_Seq(T_Move(T_Mem(T_Binop(T_plus, T_Temp(r), T_Const(i * F_WORD_SIZE))), 
+						   unEx(l->head)),
+				    seq);
+	}
+	/* final-val is a pointer point addr */
+	return Tr_Ex(T_Eseq(T_Seq(alloc, seq), T_Temp(r)));
+}
+
+Tr_exp Tr_arrayExp(Tr_exp size, Tr_exp init) {
+	return Tr_Ex(F_externalCall(String("initArray"), 
+				                T_ExpList(unEx(size), T_ExpList(unEx(init), NULL))));
+}
+
+Tr_exp Tr_seqExp(Tr_expList l) {
+	T_exp resl = NULL;
+	//if (l) {
+	//	resl = T_Const(0);	
+	//} else {
+		for (; l; l = l->tail) {
+			resl = T_Eseq(T_Exp(unEx(l->head)), resl);
+		}
+	//}
+	return Tr_Ex(resl);
+}
+
+Tr_exp Tr_doneExp() { return Tr_Ex(T_Name(Temp_newlabel())); }
+
+Tr_exp Tr_whileExp(Tr_exp test, Tr_exp body, Tr_exp done) {
+	Temp_label testl = Temp_newlabel(), bodyl = Temp_newlabel();
+	return Tr_Ex(T_Eseq(T_Jump(T_Name(testl), Temp_LabelList(testl, NULL)), 
+				        T_Eseq(T_Label(bodyl),
+							   T_Eseq(unNx(body),
+								      T_Eseq(T_Cjump(T_eq, unEx(test), T_Const(0), unEx(done)->u.NAME, bodyl),
+										     T_Eseq(T_Label(unEx(done)->u.NAME), T_Const(0)))))));
+}
+
+Tr_exp Tr_assignExp(Tr_exp lval, Tr_exp exp) { return Tr_Nx(T_Move(unEx(lval), unEx(exp))); }
+
+Tr_exp Tr_breakExp(Tr_exp b) { return Tr_Nx(T_Jump(T_Name(unEx(b)->u.NAME), Temp_LabelList(unEx(b)->u.NAME, NULL))); }
+
 static Tr_exp Tr_StaticLink(Tr_level now, Tr_level def) {
 	/*get call-function's static*/
 	T_exp addr = T_Temp(F_FP());/*???*/

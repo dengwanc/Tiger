@@ -130,6 +130,7 @@ T_exp T_Double(float f) {
 	T_exp p = checked_malloc(sizeof(*p));
 	p->kind = T_DOUBLE;
 	p->u.DOUBLE = f;
+	return p;
 }
 
 T_exp T_Call(T_exp fun, T_expList args)

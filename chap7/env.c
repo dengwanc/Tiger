@@ -4,6 +4,8 @@
 #include "symbol.h"
 #include "types.h"
 #include "temp.h"
+#include "tree.h"
+#include "frame.h"
 #include "translate.h"
 #include "env.h"
 

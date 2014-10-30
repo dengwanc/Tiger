@@ -33,6 +33,13 @@ struct F_fragList_ {
 };
 
 extern const int F_WORD_SIZE;
+F_frag F_StringFrag(Temp_label, string);
+F_frag F_ProcFrag(T_stm, F_frame);
+F_fragList F_FragList(F_frag, F_fragList);
+Temp_temp F_FP();
+T_exp F_Exp(F_access, T_exp);
+T_exp F_externalCall(string, T_expList);
+T_stm F_procEntryExit1(F_frame, T_stm);
 /****IR****/
 
 /**********/

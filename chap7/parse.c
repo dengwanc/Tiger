@@ -11,6 +11,10 @@
 #include "parse.h"
 #include "prabsyn.h"
 #include "types.h"
+#include "temp.h"
+#include "tree.h"
+#include "frame.h"
+#include "translate.h"
 #include "semant.h"
 
 extern int yyparse(void);
