@@ -1,12 +1,16 @@
 a.out: parse.o prabsyn.o \
+	   printtree.o \
        y.tab.o lex.yy.o  \
 	   errormsg.o util.o \
 	   table.o absyn.o symbol.o semant.o types.o env.o \
 	   translate.o frame.o temp.o tree.o
 	cc -g parse.o prabsyn.o \
+		  printtree.o \
 		  y.tab.o lex.yy.o errormsg.o util.o \
 		  table.o absyn.o symbol.o semant.o types.o env.o \
 		  translate.o frame.o temp.o tree.o
+printtree.o: printtree.c
+	cc -g -c printtree.c
 
 tree.o: tree.c tree.h
 	cc -g -c tree.c

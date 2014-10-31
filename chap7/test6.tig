@@ -1,0 +1,15 @@
+/* define valid mutually recursive procedures but cant run */
+let
+/*
+function do_nothing1(a: int, b: string)=
+		do_nothing2(a+1)
+
+function do_nothing2(d: int) =
+		do_nothing1(d, "str")
+		*/
+function a(): int = 3
+in
+	/*do_nothing1(0, "str2")*/
+    a()
+end
+

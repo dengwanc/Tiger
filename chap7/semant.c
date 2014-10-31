@@ -10,6 +10,7 @@
 #include "translate.h"
 #include "env.h"
 #include "semant.h"
+#include "printtree.h"
 
 struct expty expTy(Tr_exp e, Ty_ty t) {
 	struct expty et;
@@ -34,16 +35,19 @@ F_fragList SEM_transProg(A_exp exp){
 	struct expty et;
 	S_table t = E_base_tenv();
 	S_table v = E_base_venv();
-	puts("1");
+	puts("@before trans:");
 	et = transExp(Tr_outermost(), NULL, v, t, exp);
-	puts("2");
+	puts("@end trans, begin pr:");
+	print(et.exp);
+	puts("\n@end pr, begin ref:");
 	printf("this exp return: %d\n", et.ty->kind); /* check the return result (use Ty_ty->kind stand) */
-	puts("3");
+	puts("@end ref");
 	return Tr_getResult(); 
 }
 
 static struct expty transVar(Tr_level level, Tr_exp breakk, S_table venv, S_table tenv, A_var v) {
 	/**/
+	if (!v) {return expTy(Tr_noExp(), Ty_Void());}
 	E_enventry x;
 	struct expty et,et2;
 	Ty_fieldList fl;
@@ -108,7 +112,7 @@ static struct expty transExp(Tr_level level, Tr_exp breakk, S_table v, S_table t
 	//E_enventry callinfo;
 	//Ty_ty recty, arrayty;
 	/*unexpected var def*/
-
+    if (!e) { return expTy(Tr_noExp(), Ty_Void()); }
 	switch (e->kind) {
 	case A_varExp:
 		return transVar(level, breakk, v, t, e->u.var);
@@ -153,6 +157,10 @@ static struct expty transExp(Tr_level level, Tr_exp breakk, S_table v, S_table t
 					struct expty val = transExp(level, breakk, v, t, el->head->exp);	
 					Tr_expList_prepend(val.exp, &l);
 				}
+				/***/
+				//test_Tr_expList_prepend(l);
+				/***/
+				//printf("%d\n", n);
 				return expTy(Tr_recordExp(n, l), recty);
 			}
 		}
@@ -256,15 +264,21 @@ static struct expty transExp(Tr_level level, Tr_exp breakk, S_table v, S_table t
 	}
 	case A_letExp: {
 		A_decList decs;
+		Tr_expList l = NULL;
 		S_beginScope(v);
 		S_beginScope(t);
 		for (decs = e->u.let.decs; decs; decs = decs->tail) {
-			transDec(level, breakk, v, t, decs->head);
+			Tr_expList_prepend(transDec(level, breakk, v, t, decs->head), &l);
 		}
 		struct expty final = transExp(level, breakk, v, t, e->u.let.body);
+		Tr_expList_prepend(final.exp, &l);
+		/**test Tr_expList_prepend**/
+		//test_Tr_expList_prepend(l);
+		/**test Tr_expList_prepend**/
 		S_endScope(v);
 		S_endScope(t);
-		return final;
+		//return expTy(Tr_noExp(), final.ty);
+		return expTy(Tr_seqExp(l), final.ty);
 	}
 	case A_opExp: {
 		A_oper oper = e->u.op.oper;
@@ -273,35 +287,53 @@ static struct expty transExp(Tr_level level, Tr_exp breakk, S_table v, S_table t
 		if (0 <= oper && oper < 4) {/* check +,-,*,/ */
 			if (left.ty->kind != Ty_int && left.ty->kind != Ty_double){
 				EM_error(e->u.op.left->pos, "int or double required(op)");	
-			}
-			if (right.ty->kind != Ty_int && right.ty->kind != Ty_double) {
+			} else if (right.ty->kind != Ty_int && right.ty->kind != Ty_double) {
 				EM_error(e->u.op.right->pos, "int or double required(op)");	
-			}
-			if (left.ty->kind == Ty_int && right.ty->kind == Ty_int) {
-				return expTy(NULL, Ty_Int());
+			} else if (left.ty->kind == Ty_int && right.ty->kind == Ty_int) {
+				return expTy(Tr_arithExp(oper, left.exp, right.exp), Ty_Int());
 			} else {
 				/*TODO  divide when return double when return int*/
 				/*
 				return expTy(NULL, Ty_Int());
 				*/
-				return expTy(NULL, Ty_Double());
+				return expTy(Tr_arithExp(oper, left.exp, right.exp), Ty_Double());
 			}
+			return expTy(Tr_noExp(), Ty_Int());
 		} else if (3 < oper && oper < 10) {
-			if (oper == 4 || oper == 5) {/*check record type can be nil*/
-				if (left.ty->kind == Ty_record && right.ty->kind == Ty_nil) {
-					return expTy(NULL, Ty_Int());
+			Tr_exp translation = Tr_noExp();
+			if (oper == 4 || oper == 5) {/*check record type can be nil(=, <>)*/
+				switch(left.ty->kind) {
+				case Ty_int:
+				case Ty_double://see is double query like int TODO
+					if (right.ty->kind == Ty_int || right.ty->kind == Ty_double) translation = Tr_eqExp(oper, left.exp, right.exp);
+					break;
+				case Ty_string:
+					if (ty_match(right.ty, left.ty)) translation = Tr_eqStringExp(oper, left.exp, right.exp);
+					break;
+				case Ty_array:
+					if (ty_match(right.ty, left.ty)) translation = Tr_eqRef(oper, left.exp, right.exp);
+				    break;
+				case Ty_record:
+					if (ty_match(right.ty, left.ty) || right.ty->kind == Ty_nil) translation = Tr_eqRef(oper, left.exp, right.exp);
+					break;
+				default:
+					EM_error(e->u.op.right->pos, "unexpected expression in comparsion");
 				}
-				if (left.ty->kind == Ty_nil && right.ty->kind == Ty_record) {
-					return expTy(NULL, Ty_Int());
+				return expTy(translation, Ty_Int());
+			} else {
+				switch(left.ty->kind) {
+				case Ty_double:
+				case Ty_int:
+					if (right.ty->kind == Ty_double || right.ty->kind == Ty_int) translation = Tr_relExp(oper, left.exp, right.exp); 
+					break;
+				case Ty_string:
+					if (right.ty->kind == Ty_string) translation = Tr_eqStringExp(oper, left.exp, right.exp);
+					break;
+				default:
+					EM_error(e->u.op.right->pos, "unexpected type in comparsion");
 				}
+				return expTy(translation, Ty_Int());
 			}
-			if(left.ty->kind != Ty_int && left.ty->kind != Ty_double && left.ty->kind != Ty_string){
-				EM_error(e->u.op.left->pos, "int or double or record-nil required");	
-			}
-			if (right.ty->kind != Ty_int && right.ty->kind != Ty_double && right.ty->kind !=Ty_string) {
-				EM_error(e->u.op.right->pos, "int or double or record-nil required");	
-			}
-			return expTy(NULL, Ty_Int());
 		} else {
 			assert(0);	
 		}
@@ -309,15 +341,16 @@ static struct expty transExp(Tr_level level, Tr_exp breakk, S_table v, S_table t
 	case A_ifExp: {
 		struct expty final =  transExp(level, breakk, v, t, e->u.iff.test);
 		struct expty final2 = transExp(level, breakk, v, t, e->u.iff.then);
+		struct expty final3 = {NULL, NULL};
 		if (e->u.iff.elsee) { /*no else-part*/
-			struct expty final3 = transExp(level, breakk, v, t, e->u.iff.elsee);
+			final3 = transExp(level, breakk, v, t, e->u.iff.elsee);
 			if (final.ty->kind != Ty_int){
 				EM_error(e->u.iff.test->pos, "int required");
 			} else if(!ty_match(final2.ty, final3.ty)) {
 				EM_error(e->pos, "if-else sentence must return same type");
 			} else { }
 		}
-		return expTy(NULL, final2.ty);
+		return expTy(Tr_ifExp(final.exp, final2.exp, final3.exp), final2.ty);
 	}
 	case A_stringExp:
 		return expTy(Tr_stringExp(e->u.stringg), Ty_String());
