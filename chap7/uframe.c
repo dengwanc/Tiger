@@ -12,7 +12,7 @@ struct F_frame_ {
 	Temp_label name;
 	F_accessList formals;
 	int local_count;/*local-var numb*/
-	/*TODO "view shift"*/
+	/*??? "view shift"*/
 };
 
 struct F_access_ {
@@ -27,9 +27,7 @@ static F_access InFrame(int offs);
 static F_access InReg(Temp_temp reg);
 static F_accessList makeFormalAccessList(F_frame, U_boolList);
 static F_accessList F_AccessList(F_access, F_accessList);
-/* 1. what params look like
- * 2. what orders view shift
- */
+
 F_frame F_newFrame(Temp_label name, U_boolList formals) {
 	F_frame f = checked_malloc(sizeof(*f));
 	f->name = name;
@@ -39,9 +37,9 @@ F_frame F_newFrame(Temp_label name, U_boolList formals) {
 }
 
 F_access F_allocLocal(F_frame f, bool escape) {
+	/* give a not-paras-var alloc space just is in let-in-end-exp decl a var */
 	f->local_count++;
 	if (escape) {
-		//printf("@we alloc %d SIZE\n", -1 * F_WORD_SIZE * f->local_count);
 		return InFrame(-1 * F_WORD_SIZE * f->local_count);
 	}
 	return InReg(Temp_newtemp());
@@ -61,7 +59,6 @@ static F_accessList makeFormalAccessList(F_frame f, U_boolList formals) {
 			ac = InReg(Temp_newtemp());
 		} else {
 			/*keep a space for return*/
-			//printf("$ %d $\n", (i + 1) * F_WORD_SIZE);
 			ac = InFrame((i + 1) * F_WORD_SIZE);
 		}
 		if (head) {
@@ -124,14 +121,13 @@ static Temp_temp fp = NULL;
 Temp_temp F_FP(void) { /* frame-pointer */
 	if (!fp) {
 		fp = Temp_newtemp();
-		//F_add_to_map("ebp", fp);
+		//???F_add_to_map("ebp", fp);
 	}
 	return fp;
 }
 
-T_exp F_Exp(F_access access, T_exp framePtr){ /* trans access to tree */
+T_exp F_Exp(F_access access, T_exp framePtr){ /* visit frame-offs addr & get content */
 	if (access->kind == inFrame) {
-		//printf("@we get : %d SIZE\n",access->u.offs);
 		return T_Mem(T_Binop(T_plus, framePtr, T_Const(access->u.offs)));
 	} else {
 		return T_Temp(access->u.reg);
@@ -146,8 +142,7 @@ T_stm F_procEntryExit1(F_frame frame, T_stm stm) {
 	return stm;
 }
 
-/*******IR*******/
-
+/*******DEBUG_INFO********/
 void display_f(F_frame f) {
 	printf("label: %s\n", Temp_labelstring(f->name));	
 	printf("local: %d\n", f->local_count);
