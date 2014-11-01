@@ -10,7 +10,6 @@
 #include "util.h"
 #include "errormsg.h"
 
-
 bool anyErrors= FALSE;
 
 static string fileName = "";

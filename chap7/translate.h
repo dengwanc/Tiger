@@ -44,6 +44,7 @@ Tr_exp Tr_relExp(A_oper, Tr_exp, Tr_exp);
 
 Tr_exp Tr_ifExp(Tr_exp, Tr_exp, Tr_exp);
 void Tr_expList_prepend(Tr_exp, Tr_expList *);
+void Tr_procEntryExit(Tr_level, Tr_exp, Tr_accessList);
 F_fragList Tr_getResult();
 T_exp public_unEx(Tr_exp);
 T_stm public_unNx(Tr_exp);

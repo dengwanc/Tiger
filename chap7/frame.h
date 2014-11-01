@@ -40,6 +40,7 @@ Temp_temp F_FP();
 T_exp F_Exp(F_access, T_exp);
 T_exp F_externalCall(string, T_expList);
 T_stm F_procEntryExit1(F_frame, T_stm);
+Temp_temp F_RV();
 /****IR****/
 
 /**********/

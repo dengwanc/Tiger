@@ -40,7 +40,10 @@ F_frame F_newFrame(Temp_label name, U_boolList formals) {
 
 F_access F_allocLocal(F_frame f, bool escape) {
 	f->local_count++;
-	if (escape) return InFrame(-1 * F_WORD_SIZE * f->local_count);
+	if (escape) {
+		//printf("@we alloc %d SIZE\n", -1 * F_WORD_SIZE * f->local_count);
+		return InFrame(-1 * F_WORD_SIZE * f->local_count);
+	}
 	return InReg(Temp_newtemp());
 }
 
@@ -128,6 +131,7 @@ Temp_temp F_FP(void) { /* frame-pointer */
 
 T_exp F_Exp(F_access access, T_exp framePtr){ /* trans access to tree */
 	if (access->kind == inFrame) {
+		//printf("@we get : %d SIZE\n",access->u.offs);
 		return T_Mem(T_Binop(T_plus, framePtr, T_Const(access->u.offs)));
 	} else {
 		return T_Temp(access->u.reg);
