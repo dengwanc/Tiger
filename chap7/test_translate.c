@@ -35,8 +35,30 @@ T_exp public_unEx(Tr_exp e) {
 T_stm public_unNx(Tr_exp e) {
 	return unNx(e);
 }
+//@@@ print Tr_exp
 void print(Tr_exp et) {
     if (et->kind == Tr_ex) printExp(unEx(et));
 	if (et->kind == Tr_nx) printStm(unNx(et));
 	if (et->kind == Tr_cx) printStm(unCx(et).stm);
 } 
+
+void print_frag(F_fragList fl) {
+	if (!fl) {
+		puts("fragList is NULL");
+		return;
+	}
+	while (fl) {
+		F_frag f = fl->head;
+		switch(f->kind) {
+		case F_stringFrag:
+			print(Tr_Ex(T_Name(f->u.stringg.label)));
+			puts("");
+			break;
+		case F_procFrag:
+			print(Tr_Nx(f->u.proc.body));
+			break;
+		default: assert(0 && "frag-kind is error");
+		}
+	fl = fl->tail;
+	}
+}

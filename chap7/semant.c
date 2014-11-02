@@ -39,12 +39,16 @@ F_fragList SEM_transProg(A_exp exp){
 	S_table v = E_base_venv();
 	puts("@before trans:");
 	et = transExp(Tr_outermost(), NULL, v, t, exp);
-	puts("@end trans, begin pr:");
+	puts("@end trans, begin pr-main:");
 	if(!anyErrors) print(et.exp); else printf("@error cant pr");
-	puts("\n@end pr, begin ref:");
+	puts("\n@end pr-main, begin ref:");
 	printf("this exp return: %d\n", et.ty->kind); /* check the return result (use Ty_ty->kind stand for) */
-	puts("@end ref");
-	return Tr_getResult(); 
+	puts("@end ref, begin pr-frag");
+	puts("@@@@@@@@@@@@@@@@@@@@@@@");
+	F_fragList resl = Tr_getResult();
+	print_frag(resl);
+	puts("\n@end pr-falg");
+	return resl;
 }
 
 static struct expty transVar(Tr_level level, Tr_exp breakk, S_table venv, S_table tenv, A_var v) {
@@ -386,6 +390,7 @@ static Tr_exp transDec(Tr_level level, Tr_exp breakk, S_table v, S_table t, A_de
 			if (!ty_match(fun->u.fun.result, final.ty)) {/*check return type is match body type*/
 				EM_error(f->pos, "incorrect return type in function '%s'", S_name(f->name));
 			}
+			Tr_procEntryExit(funEntry->u.fun.level, final.exp, acls);
 			S_endScope(v);
 		}
 		return Tr_noExp();
