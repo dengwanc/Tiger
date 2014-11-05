@@ -1,0 +1,12 @@
+1 extremly mistake 'rm * .o' replace 'mv * ~/trash' 14.10.30.15:00
+2 always forget write return type in function-def
+3 var-named is bad quitely 
+4 if branch logic-judge is confused
+5 design and understand is bad quitely
+6 alter the original-code is a bad bad thing 
+7 list-struct logical is difficult ? point is point
+8 good undertstand is fine
+9 almost 99% bug is dereference NULL
+
+1 assist function should use #define
+2 write code-note is a excelent habit

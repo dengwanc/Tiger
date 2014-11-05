@@ -55,7 +55,7 @@ struct stmExp {T_stm s; T_exp e;};
 
 static T_stm reorder(expRefList rlist) 
 {
-	/* from expRefList remove ESEQ and combine a big stm */
+	/* return stm that in sub-exp */
 
     if (!rlist) return T_Exp(T_Const(0)); /* nop */
     else if ((*rlist->head)->kind==T_CALL) {
@@ -97,7 +97,7 @@ static struct stmExp StmExp(T_stm stm, T_exp exp) {
 
 static struct stmExp do_exp(T_exp exp)
 {
-  /* remove ESEQ from exp */
+  /* change exp-stm order stm-order */
 	
   switch(exp->kind) {
   case T_BINOP: 
@@ -119,7 +119,7 @@ static struct stmExp do_exp(T_exp exp)
 
 static T_stm do_stm(T_stm stm)
 {
-  /* remove ESEQ from stm */
+  /* change stm1-stm2 to stm2-stm1 */
 
   switch (stm->kind) {
   case T_SEQ: 
@@ -135,14 +135,14 @@ static T_stm do_stm(T_stm stm)
     else if (stm->u.MOVE.dst->kind == T_TEMP)
       return seq(reorder(ExpRefList(&stm->u.MOVE.src, NULL)), stm);
     else if (stm->u.MOVE.dst->kind == T_MEM)
-      return seq(reorder(ExpRefList(&stm->u.MOVE.dst->u.MEM, 
-			 ExpRefList(&stm->u.MOVE.src, NULL))), stm);
+      return seq(reorder(ExpRefList(&stm->u.MOVE.dst->u.MEM, ExpRefList(&stm->u.MOVE.src, NULL))), stm);
     else if (stm->u.MOVE.dst->kind == T_ESEQ) {
       T_stm s = stm->u.MOVE.dst->u.ESEQ.stm;
       stm->u.MOVE.dst = stm->u.MOVE.dst->u.ESEQ.exp;
       return do_stm(T_Seq(s, stm));
-    }
-    assert(0); /* dst should be temp or mem only */
+    } else {
+      assert(0); /* dst should be temp or mem only */
+	}
   case T_EXP:
     if (stm->u.EXP->kind == T_CALL) return seq(reorder(get_call_rlist(stm->u.EXP)), stm);
     else return seq(reorder(ExpRefList(&stm->u.EXP, NULL)), stm);
@@ -177,7 +177,7 @@ static C_stmListList StmListList(T_stmList head, C_stmListList tail)
 /* Go down a list looking for end of basic block */
 static C_stmListList next(T_stmList prevstms, T_stmList stms, Temp_label done)
 {
-  if (!stms) 
+  if (!stms) /* the end of the stmlist add the JUMP */ 
     return next(prevstms, 
 		        T_StmList(T_Jump(T_Name(done), Temp_LabelList(done, NULL)), NULL), 
 				done);
@@ -187,13 +187,13 @@ static C_stmListList next(T_stmList prevstms, T_stmList stms, Temp_label done)
     stmLists = mkBlocks(stms->tail, done);
     stms->tail = NULL;
     return stmLists;
-  } 
-  else if (stms->head->kind == T_LABEL) {
+
+  } else if (stms->head->kind == T_LABEL) {
     Temp_label lab = stms->head->u.LABEL;
-    return next(prevstms, T_StmList(T_Jump(T_Name(lab), Temp_LabelList(lab, NULL)), 
-			     stms), done);
-  }
-  else {
+    return next(prevstms, 
+			    T_StmList(T_Jump(T_Name(lab), Temp_LabelList(lab, NULL)), stms), 
+				done);
+  } else {
     prevstms->tail = stms;
     return next(stms, stms->tail, done);
   }
@@ -226,7 +226,7 @@ static C_stmListList mkBlocks(T_stmList stms, Temp_label done)
 struct C_block C_basicBlocks(T_stmList stmList)
 {
   struct C_block b;
-  b.label = Temp_newlabel(); 
+  b.label = Temp_newlabel(); /*done label*/
   b.stmLists = mkBlocks(stmList, b.label); 
 
   return b;
