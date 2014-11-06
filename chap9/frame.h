@@ -45,6 +45,7 @@ Temp_temp F_RV();
 
 /******CODEGEN*******/
 bool F_isEscape(F_access);
+Temp_tempList F_calldefs();
 /*****DEBUG INFO*****/
 void display_f(F_frame);
 void dis_ac(F_access);

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "util.h"
+#include "symbol.h"
 #include "temp.h"
 #include "tree.h"
 #include "frame.h"
@@ -15,20 +16,19 @@ static Temp_tempList munchArgs(int, T_expList, F_accessList);
 
 #define MATCH_OP(I, Op, Sign) \
 	switch (I) { \
-		case T_plus: Op = "add"; Sign = "+"; break; \ 
+		case T_plus: Op = "add"; Sign = "+"; break; \
 		case T_minus: Op = "sub"; Sign = "-"; break; \
 		case T_mul: Op = "mul"; Sign = "*"; break; \
 		case T_div: Op = "div"; Sign = "/"; break; \
 		default : assert( 0 && "invalid Oper"); \
-	} \
-	"for short ';'"
+	} "for short ';'" 
 	
 #define WRITE_ASM_STR(Str, Arg) \
-	fprintf(assem_string, Str, Arg); \
+	sprintf(assem_string, Str, Arg); \
 	p2asm_str = String(assem_string)
 	
 #define WRITE_ASM_STR2(Str, A1, A2) \
-	fprintf(assem_string, Str, A1, A2); \
+	sprintf(assem_string, Str, A1, A2); \
 	p2asm_str = String(assem_string)
 
 static Temp_temp munchExp(T_exp e)
@@ -37,7 +37,7 @@ static Temp_temp munchExp(T_exp e)
 	string p2asm_str;
 	Temp_temp r = Temp_newtemp(); /* return value */
 
-	switch (s->kind) {
+	switch (e->kind) {
 		case T_BINOP: {
 			char * op = NULL, * sign = NULL;
 			T_exp left = e->u.BINOP.left, right = e->u.BINOP.right;
@@ -57,7 +57,7 @@ static Temp_temp munchExp(T_exp e)
 		}
 		case T_MEM: {
 			T_exp mem = e->u.MEM;
-			if (mem->kind == T_BINOP && mem->u.BINOP->kind == T_plus) {
+			if (mem->kind == T_BINOP && mem->u.BINOP.op == T_plus) {
 				T_exp left = mem->u.BINOP.left, right = mem->u.BINOP.right;
 				if (left->kind == T_CONST) { /* MEM(BINOP(+, CONST, e)) */
 					WRITE_ASM_STR("mov %x(s0), d0", left->u.CONST);
@@ -75,7 +75,7 @@ static Temp_temp munchExp(T_exp e)
 			return r;
 		}
 		case T_TEMP: return e->u.TEMP;
-		case T_ESRQ: munchStm(e->u.ESEQ.stm); return munchExp(e->u.ESEQ.exp);
+		case T_ESEQ: munchStm(e->u.ESEQ.stm); return munchExp(e->u.ESEQ.exp);
 		case T_NAME: Temp_enter(F_TEMPMAP, r, Temp_labelstring(e->u.NAME)); return r;
 		case T_CONST: {
 			WRITE_ASM_STR("mov $%x, d0", e->u.CONST);
@@ -84,8 +84,7 @@ static Temp_temp munchExp(T_exp e)
 		}
 		case T_CALL: {
 			r = munchExp(e->u.CALL.fun);
-			WRITE_ASM_STR("call s0%s", "");
-			emit(AS_Oper(p2asm_str, F_calldefs(), TL(r, munchArgs(0, e->u.CALL.args, F_formals(Co_frame))), NULL));
+			emit(AS_Oper(String("call s0"), F_calldefs(), TL(r, munchArgs(0, e->u.CALL.args, F_formals(Co_frame))), NULL));
 			return r;
 		}
 		default: assert(0 && "invalid T_exp");
@@ -93,12 +92,12 @@ static Temp_temp munchExp(T_exp e)
 }
 
 
-#define ASSEM_MOVE_MEM_PLUS(Dst, Drc, Constt) \
-	T_exp e1 = dst, e2 = src; \
+#define ASSEM_MOVE_MEM_PLUS(Dst, Src, Constt) \
+	T_exp e1 = Dst, e2 = Src; \
 	int constt = Constt; \
-	fprintf(assem_string, "mov %x(s0), d0", constt); \
+	sprintf(assem_string, "mov %x(s0), d0", constt); \
 	p2asm_str = String(assem_string); \
-	emit(AS_MOVE(p2asm_str, NULL, TL(munchExp(e1), TL(munchExp(e2), NULL))))
+	emit(AS_Move(p2asm_str, NULL, TL(munchExp(e1), TL(munchExp(e2), NULL))))
 
 #define MATCH_CMP(I, Op) \
 	switch (I) { \
@@ -118,26 +117,26 @@ static void munchStm(T_stm s)
 	string p2asm_str;
 
 	switch (s->kind) {
-		case MOVE:{
+		case T_MOVE:{
 			T_exp dst = s->u.MOVE.dst, src = s->u.MOVE.src;
 			if (dst->kind == T_MEM) {
-				if (dst->u.MEM->kind == T_BINOP && dst->u.MEM.u.BINOP.op == T_plus) {
-					if (dst->u.MEM.BINOP.right->kind == T_CONST) { /* MOVE (MEM(BINOP(+, e, CONST)), e) */
+				if (dst->u.MEM->kind == T_BINOP && dst->u.MEM->u.BINOP.op == T_plus) {
+					if (dst->u.MEM->u.BINOP.right->kind == T_CONST) { /* MOVE (MEM(BINOP(+, e, CONST)), e) */
 						ASSEM_MOVE_MEM_PLUS(dst->u.MEM->u.BINOP.left, src, dst->u.MEM->u.BINOP.right->u.CONST);	
 					} 
-					if (dst->u.MEM.BINOP.left->kind == T_CONST) { /* MOVE (MEM(BINOP(+, CONST, e)), e) */
+					if (dst->u.MEM->u.BINOP.left->kind == T_CONST) { /* MOVE (MEM(BINOP(+, CONST, e)), e) */
 						ASSEM_MOVE_MEM_PLUS(dst->u.MEM->u.BINOP.right, src, dst->u.MEM->u.BINOP.left->u.CONST);			
 					}
 				} else if (dst->u.MEM->kind == T_CONST) { /* MOVE(MEM(CONST), e) */
 					WRITE_ASM_STR("mov %x(s0), d0", dst->u.MEM->u.CONST);
-					emit(AS_MOVE(p2asm_str, NULL, TL(munchExp(src), NULL)));
-				} else if (src->kind == MEM) { /* MOVE(MEM(e), MEM(e)) */
-					emit(AS_MOVE("mov s0, d0", NULL, TL(munchExp(dst->u.MEM), TL(munchExp(src->u.MEM), NULL)));
+					emit(AS_Move(p2asm_str, NULL, TL(munchExp(src), NULL)));
+				} else if (src->kind == T_MEM) { /* MOVE(MEM(e), MEM(e)) */
+					emit(AS_Move("mov (s0), d0", NULL, TL(munchExp(dst->u.MEM), TL(munchExp(src->u.MEM), NULL))));
 				} else { /* MOVE(MEM(e), e) */
-					emit(String("mov s0, d0"), NULL, TL(munchExp(dst->u.MEM, TL(munchExp(src), NULL))));
+					emit(AS_Move(String("mov (s0), d0"), NULL, TL(munchExp(dst->u.MEM), TL(munchExp(src), NULL))));
 				}	
 			} else if(dst->kind == T_TEMP) { /* MOVE(TEMP(e), e) */
-				emit(AS_Move(String("mov s0, d0"), TL(dst, NULL), TL(src, NULL)));	
+				emit(AS_Move(String("mov s0, d0"), TL(munchExp(dst), NULL), TL(munchExp(src), NULL)));	
 			} else assert(0 && "MOVE dst error");
 			break;
 		}
@@ -148,20 +147,20 @@ static void munchStm(T_stm s)
 			break;
 		}
 		case T_JUMP: {
-			r = munchExp(s->u.JUMP.exp);
-			emit(AS_Oper(String("jmp d0"), TL(r, NULL), NULL, AS_targets(s->u.JUMP.jumps)));
+			Temp_temp r = munchExp(s->u.JUMP.exp);
+			emit(AS_Oper(String("jmp d0"), TL(r, NULL), NULL, AS_Targets(s->u.JUMP.jumps)));
 			break;
 		}
 		case T_CJUMP: {
 			char * cmp;
-			Temp_temp left = munchExp(s->u.JUMP.left), right = munchExp(s->u.JUMP.right);
+			Temp_temp left = munchExp(s->u.CJUMP.left), right = munchExp(s->u.CJUMP.right);
 			emit(AS_Oper(String("cmpl s0, s1"), NULL, TL(left, TL(right, NULL)), NULL));
 			MATCH_CMP(s->u.CJUMP.op, cmp);	
 			WRITE_ASM_STR("%s j0", cmp);
-			emit(AS_Oper(p2asm_str, NULL, NULL, AS_targets(Temp_LabelList(stm->u.CJUMP.true, NULL))));
+			emit(AS_Oper(p2asm_str, NULL, NULL, AS_Targets(Temp_LabelList(s->u.CJUMP.true, NULL))));
 			break;	
 		}
-		case T_EXP munchExp(s->u.EXP); break;
+		case T_EXP: munchExp(s->u.EXP); break;
 		default: assert("Invalid T_stm" && 0);
 	}
 }

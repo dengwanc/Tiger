@@ -7,6 +7,7 @@
 
 const int F_WORD_SIZE = 4; /* 4 byte */
 static const int F_MAX_REG = 6;  /* paras in regs number */ 
+Temp_map F_tempMap = NULL;
 
 struct F_frame_ {
 	Temp_label name;
@@ -133,15 +134,14 @@ static Temp_tempList registers()
 	Temp_enter(F_TEMPMAP, edx, "edx");
 	Temp_enter(F_TEMPMAP, edi, "edi");
 	Temp_enter(F_TEMPMAP, esi, "esi");
-	return TL(F_RV(), TL(ebx, TL(ecx, TL(edx), TL(edi, TL(esi, NULL)))));
+	return TL(F_RV(), TL(ebx, TL(ecx, TL(edx, TL(edi, TL(esi, NULL))))));
 }
 
-Temp_map F_tempMap = NULL;
 Temp_tempList F_calldefs() 
 {
 	/* some registers that may raise side-effect (caller procted, return-val-reg, return-addr-reg) */
 	static Temp_tempList protected_regs = NULL;
-	return protected_regs ? protected_regs : protected_regs = registers();
+	return protected_regs ? protected_regs : (protected_regs = registers());
 }
 
 #define INIT_REG(Reg, Name) (Reg ? Reg : (Reg = Temp_newtemp(), Temp_enter(F_TEMPMAP, Reg, Name), Reg))

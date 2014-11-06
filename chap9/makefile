@@ -4,13 +4,20 @@ a.out: parse.o prabsyn.o \
 	   errormsg.o util.o \
 	   table.o absyn.o symbol.o semant.o types.o env.o \
 	   translate.o frame.o temp.o tree.o \
-	   canon.o
+	   canon.o codegen.o assem.o
 	cc -g parse.o prabsyn.o \
 		  printtree.o \
 		  y.tab.o lex.yy.o errormsg.o util.o \
 		  table.o absyn.o symbol.o semant.o types.o env.o \
 		  translate.o frame.o temp.o tree.o \
-		  canon.o
+		  canon.o codegen.o assem.o
+
+assem.o: assem.c
+	cc -g -c assem.c
+
+codegen.o: ucodegen.c
+	cc -g -c ucodegen.c -o codegen.o
+
 canon.o: canon.c
 	cc -g -c canon.c
 
