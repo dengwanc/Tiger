@@ -3,17 +3,18 @@
  *             using Maximal Munch.
  */
 
-typedef struct {Temp_labelList labels;} *AS_targets;
+typedef struct {Temp_labelList labels;} * AS_targets;
 AS_targets AS_Targets(Temp_labelList labels);
 
-typedef struct AS_instr_ *AS_instr;
-struct AS_instr_ { enum {I_OPER, I_LABEL, I_MOVE} kind;
-	       union {struct {string assem; Temp_tempList dst, src; 
-			      AS_targets jumps;} OPER;
-		      struct {string assem; Temp_label label;} LABEL;
-		      struct {string assem; Temp_tempList dst, src;} MOVE;
-		    } u;
-	      };
+typedef struct AS_instr_ * AS_instr;
+struct AS_instr_ { /* express assem instructor without register */ 
+	enum {I_OPER, I_LABEL, I_MOVE} kind;
+	union {
+		struct {string assem; Temp_tempList dst, src; AS_targets jumps;} OPER;
+		struct {string assem; Temp_label label;} LABEL;
+        struct {string assem; Temp_tempList dst, src;} MOVE;
+	} u;
+};
 
 AS_instr AS_Oper(string a, Temp_tempList d, Temp_tempList s, AS_targets j);
 AS_instr AS_Label(string a, Temp_label label);
