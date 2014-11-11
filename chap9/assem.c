@@ -80,59 +80,70 @@ static Temp_label nthLabel(Temp_labelList list, int i) {
  * and replacing `d `s and `j stuff.
  * Last param is function to use to determine what to do with each temp.
  */
-static void format(char *result, string assem, 
-		   Temp_tempList dst, Temp_tempList src,
-		   AS_targets jumps, Temp_map m)
-{
+static void format(char *result, 
+                   string assem, 
+		           Temp_tempList dst, 
+                   Temp_tempList src,
+                   AS_targets jumps, 
+                   Temp_map m)
+{ 
   char *p;
   int i = 0; /* offset to result string */
-  for(p = assem; p && *p != '\0'; p++)
-    if (*p == '`')
+  for(p = assem; p && *p != '\0'; p++) {
+    if (*p == '`') {
       switch(*(++p)) {
-      case 's': {int n = atoi(++p);
+      case 's': 
+      {
+         int n = atoi(++p);
+         //puts(p);
+         //printf("$%s: %d\n", p, n);
 		 string s = Temp_look(m, nthTemp(src,n));
 		 strcpy(result+i, s);
 		 i += strlen(s);
-	       }
-	break;
-      case 'd': {int n = atoi(++p);
+	  }
+      break;
+      case 'd': 
+      {
+         int n = atoi(++p);
 		 string s = Temp_look(m, nthTemp(dst,n));
 		 strcpy(result+i, s);
 		 i += strlen(s);
-	       }
-	break;
+	  }
+	  break;
       case 'j': assert(jumps); 
-	       {int n = atoi(++p);
+      {
+         int n = atoi(++p);
 		 string s = Temp_labelstring(nthLabel(jumps->labels,n));
 		 strcpy(result+i, s);
 		 i += strlen(s);
-	       }
-	break;
+	  }
+      break;
       case '`': result[i] = '`'; i++; 
-	break;
+	  break;
       default: assert(0);
       }
-    else {result[i] = *p; i++; }
-  result[i] = '\0';
+    } else {result[i] = *p; i++; }
+  }
+    result[i] = '\0';
 }
 
 
 void AS_print(FILE *out, AS_instr i, Temp_map m)
 {
-  char r[200]; /* result */
+  char r[50]; /* result */
   switch (i->kind) {
   case I_OPER:
     format(r, i->u.OPER.assem, i->u.OPER.dst, i->u.OPER.src, i->u.OPER.jumps, m);
-    fprintf(out, "%s", r);
+    fprintf(out, "%s\n", r);
     break;
   case I_LABEL:
     format(r, i->u.LABEL.assem, NULL, NULL, NULL, m); 
-    fprintf(out, "%s", r); 
+    fprintf(out, "%s\n", r); 
     /* i->u.LABEL->label); */
     break;
   case I_MOVE:
     format(r, i->u.MOVE.assem, i->u.MOVE.dst, i->u.MOVE.src, NULL, m);
-    fprintf(out, "%s", r);
+    fprintf(out, "%s\n", r);
     break;
   }
 }
@@ -143,11 +154,11 @@ void AS_printInstrList (FILE *out, AS_instrList iList, Temp_map m)
   for (; iList; iList=iList->tail) {
     AS_print(out, iList->head, m);
   }
-  fprintf(out, "\n");
 }
 
 AS_proc AS_Proc(string p, AS_instrList b, string e)
-{AS_proc proc = checked_malloc(sizeof(*proc));
- proc->prolog=p; proc->body=b; proc->epilog=e;
- return proc;
+{
+    AS_proc proc = checked_malloc(sizeof(*proc));
+    proc->prolog=p; proc->body=b; proc->epilog=e;
+    return proc;
 }

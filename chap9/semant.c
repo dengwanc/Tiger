@@ -27,9 +27,9 @@ static Tr_exp transDec(Tr_level, Tr_exp, S_table, S_table, A_dec);
 static Ty_ty transTy (S_table, A_ty);
 static Ty_tyList makeFormalTyList(S_table, A_fieldList); /*may use #define*/
 static Ty_ty actual_ty(Ty_ty);
-static bool args_match(Tr_level, Tr_exp, S_table, S_table, A_expList, Ty_tyList, A_exp); /*may use #define*/
+//static bool args_match(Tr_level, Tr_exp, S_table, S_table, A_expList, Ty_tyList, A_exp); /*may use #define*/
 static bool ty_match(Ty_ty, Ty_ty);
-static bool efields_match(Tr_level, Tr_exp, S_table, S_table, Ty_ty, A_exp); /*may use #define*/
+//static bool efields_match(Tr_level, Tr_exp, S_table, S_table, Ty_ty, A_exp); /*may use #define*/
 static Ty_fieldList makeFieldTys(S_table, A_fieldList); /*may use #define*/
 static U_boolList makeFormals(A_fieldList); /*may use #define*/
 
@@ -119,22 +119,30 @@ static struct expty transExp(Tr_level level, Tr_exp breakk, S_table v, S_table t
 		E_enventry callinfo = S_look(v, e->u.call.func); /*get params and return from tenv*/
 		A_expList args = NULL;
 		Tr_expList argList = NULL;
-		for (args = e->u.call.args; args; args = args->tail) { /*memory args-info by order*/
-			struct expty arg = transExp(level, breakk, v, t, args->head);
-            Tr_expList_prepend(arg.exp, &argList);			
-		}
+        Ty_tyList formals;
+		
 		Tr_exp trans = Tr_noExp();
 		if (callinfo && callinfo->kind == E_funEntry){
-			trans = Tr_callExp(callinfo->u.fun.label, callinfo->u.fun.level, level, &argList);
-			if (args_match(level, breakk, v, t, e->u.call.args, callinfo->u.fun.formals, e)) {/*check params is matched*/
+            formals = callinfo->u.fun.formals;
+            /*
+			if (args_match(level, breakk, v, t, e->u.call.args, callinfo->u.fun.formals, e)) {//check params is matched
 				if (callinfo->u.fun.result) {
 					return expTy(trans, actual_ty(callinfo->u.fun.result));
 				} 
-			} 
+			}*/
+            for (args = e->u.call.args; args && formals; args = args->tail, formals = formals->tail) { /*memory args-info by order*/
+                struct expty arg = transExp(level, breakk, v, t, args->head);
+                if (!ty_match(arg.ty, formals->head)) EM_error(args->head->pos, "unmatched type in function %s", S_name(e->u.call.func));
+                Tr_expList_prepend(arg.exp, &argList);			
+		    }
+            if (!args && formals) EM_error(e->pos, "short few paras");
+            if (args && !formals) EM_error(e->pos, "too many paras");
+			trans = Tr_callExp(callinfo->u.fun.label, callinfo->u.fun.level, level, &argList);
+            return expTy(trans, actual_ty(callinfo->u.fun.result));
 		} else {
 			EM_error(e->pos, "undefined function %s\n", S_name(e->u.call.func));
+            return expTy(trans, Ty_Int());
 		}
-		return expTy(trans, Ty_Void());
 	}
 	case A_recordExp: {/*record create*/
 		Ty_ty recty = actual_ty(S_look(t, e->u.record.typ));
@@ -145,7 +153,8 @@ static struct expty transExp(Tr_level level, Tr_exp breakk, S_table v, S_table t
 				EM_error(e->pos, "%s is not a record type", S_name(e->u.record.typ));	
 				return expTy(Tr_noExp(), Ty_Record(NULL));
 			}
-			if (efields_match(level, breakk, v, t, recty, e)) {/*check record field is matched*/
+            /*
+			if (efields_match(level, breakk, v, t, recty, e)) {//check record field is matched
 				Tr_expList l = NULL;
 				int n = 0;
 				A_efieldList el;
@@ -154,7 +163,19 @@ static struct expty transExp(Tr_level level, Tr_exp breakk, S_table v, S_table t
 					Tr_expList_prepend(val.exp, &l);
 				}
 				return expTy(Tr_recordExp(n, l), recty);
+			}*/
+            Ty_fieldList fieldTys = recty->u.record;
+			A_efieldList recList;
+			Tr_expList list = NULL;
+			int n = 0;
+			for (recList = e->u.record.fields; recList; recList = recList->tail, fieldTys = fieldTys->tail, n++) {
+				struct expty et = transExp(level, breakk, v, t, recList->head->exp);
+				if (recList->head->name != fieldTys->head->name) EM_error(e->pos, "%s not a valid field name", recList->head->name);
+				if (!ty_match(fieldTys->head->ty, et.ty)) EM_error(recList->head->exp->pos, "type error: given %s but expected %s");
+				Tr_expList_prepend(et.exp, &list);
 			}
+			return expTy(Tr_recordExp(n, list), recty);
+
 		}
 		return expTy(Tr_noExp(), Ty_Record(NULL));
 		}
@@ -512,7 +533,7 @@ static Ty_ty actual_ty(Ty_ty ty){
 	if (ty->kind == Ty_name) actual_ty(ty->u.name.ty);
 	else return ty;
 }
-
+/* actually fact prove it's unuse
 static bool args_match(Tr_level level, Tr_exp breakk, S_table v, S_table tt, A_expList ell, Ty_tyList fll, A_exp fun) {
 	struct expty t;
 	A_expList el = ell;
@@ -537,7 +558,7 @@ static bool args_match(Tr_level level, Tr_exp breakk, S_table v, S_table tt, A_e
 		return TRUE;
 	}
 }
-
+*/
 static bool ty_match(Ty_ty tt, Ty_ty ee) {
 	Ty_ty t = actual_ty(tt);
 	Ty_ty e = actual_ty(ee);
@@ -549,7 +570,7 @@ static bool ty_match(Ty_ty tt, Ty_ty ee) {
 			 (ek == Ty_record && tk == Ty_nil) ||
 			 (tk != Ty_record && tk != Ty_array && tk == ek));
 }
-
+/*
 static bool efields_match(Tr_level level, Tr_exp breakk, S_table v, S_table t, Ty_ty tyy, A_exp e) {
 	struct expty et;
 	Ty_fieldList ty = tyy->u.record;
@@ -572,3 +593,4 @@ static bool efields_match(Tr_level level, Tr_exp breakk, S_table v, S_table t, T
 	}
 	return TRUE;
 }
+*/

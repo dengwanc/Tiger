@@ -228,7 +228,6 @@ struct C_block C_basicBlocks(T_stmList stmList)
   struct C_block b;
   b.label = Temp_newlabel(); /*done label*/
   b.stmLists = mkBlocks(stmList, b.label); 
-
   return b;
 }
 

@@ -18,9 +18,13 @@
 #include "semant.h"
 #include "printtree.h"
 #include "canon.h"
+#include "assem.h"
+#include "codegen.h"
+
 extern anyErrors;
 extern int yyparse(void);
 extern A_exp absyn_root;
+extern Temp_map F_tempMap;
 
 /* parse source file fname; 
    return abstract syntax data structure */
@@ -34,37 +38,21 @@ A_exp parse(string fname)
 		printf("fuck! not pass syntax!\n");
 		return NULL;
 }
-/*
-int main(int argc, char **argv) {
-    if (argc != 2){
-		fprintf(stderr, "usage: a.out filename\n");
-		exit(1);
-	}
-	A_exp temp = parse(argv[1]);
-	if (temp) {
-		//pr_exp(stdout, temp, 4);
-		//display();
-		//printf("-----------------------\n");
-		SEM_transProg(temp);
-	}
-	return 0;
-}
-*/
+
 static void doProc(FILE *out, F_frame frame, T_stm body)
 {
- //AS_proc proc;
+ AS_proc proc;
  //struct RA_result allocation;
  T_stmList stmList;
- //AS_instrList iList;
+ AS_instrList iList;
 
  stmList = C_linearize(body);
  stmList = C_traceSchedule(C_basicBlocks(stmList));
- /* printStmList(stdout, stmList);*/
- //iList  = F_codegen(frame, stmList); /* 9 */
-
+ /* printStmList(stdout, stmList); */
+ iList  = codegen(frame, stmList); /* 9 */
+ //printStmList(stdout, stmList);
  fprintf(out, "BEGIN %s\n", Temp_labelstring(F_name(frame)));
- //AS_printInstrList (out, iList, Temp_layerMap(F_tempMap,Temp_name()));
- printStmList(out, stmList);
+ AS_printInstrList (out, iList, Temp_layerMap(F_tempMap,Temp_name()));
  fprintf(out, "END %s\n\n", Temp_labelstring(F_name(frame)));
 }
 
@@ -79,12 +67,10 @@ int main(int argc, string *argv)
  if (argc==2) {
    absyn_root = parse(argv[1]);
    if (!absyn_root) return 1;
-   #if 0
+   #if 0 
    pr_exp(out, absyn_root, 0); /* print absyn data structure */
    fprintf(out, "\n");
    #endif
-
-   //Esc_findEscape(absyn_root); /* set varDec's escape field */
 
    frags = SEM_transProg(absyn_root);
    if (anyErrors) return 1; /* don't continue */
@@ -92,13 +78,16 @@ int main(int argc, string *argv)
    /* convert the filename */
    sprintf(outfile, "%s.s", argv[1]);
    out = fopen(outfile, "w");
-   /* Chapter 8, 9, 10, 11 & 12 */
+
    for (;frags;frags=frags->tail) {
-     if (frags->head->kind == F_procFrag) 
-       doProc(out, frags->head->u.proc.frame, frags->head->u.proc.body);
-     else if (frags->head->kind == F_stringFrag) 0; 
-       //fprintf(out, "%s\n", frags->head->u.stringg.str);
-	 else assert(0);
+        if (frags->head->kind == F_procFrag) {
+            //printStm(frags->head->u.proc.body);
+            doProc(out, frags->head->u.proc.frame, frags->head->u.proc.body);
+        }
+        else if (frags->head->kind == F_stringFrag) {
+            fprintf(out, "%s: %s\n",Temp_labelstring(frags->head->u.stringg.label), frags->head->u.stringg.str);
+        }
+        else assert(0);
    }
    fclose(out);
    return 0;

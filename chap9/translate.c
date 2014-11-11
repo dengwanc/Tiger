@@ -201,6 +201,8 @@ static F_fragList stringFragList = NULL;
 Tr_exp Tr_stringExp(string s) { 
 	/*const-string is a label point a addr*/
 	Temp_label slabel = Temp_newlabel();
+    //pr_format_str(s);
+    //puts("");
 	F_frag fragment = F_StringFrag(slabel, s);
 	stringFragList = F_FragList(fragment, stringFragList);
 	return Tr_Ex(T_Name(slabel));

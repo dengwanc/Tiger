@@ -10,7 +10,8 @@ a.out: parse.o prabsyn.o \
 		  y.tab.o lex.yy.o errormsg.o util.o \
 		  table.o absyn.o symbol.o semant.o types.o env.o \
 		  translate.o frame.o temp.o tree.o \
-		  canon.o codegen.o assem.o
+		  canon.o codegen.o assem.o; \
+    ctags -R *
 
 assem.o: assem.c
 	cc -g -c assem.c

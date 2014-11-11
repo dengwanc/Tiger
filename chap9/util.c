@@ -30,3 +30,13 @@ U_boolList U_BoolList(bool head, U_boolList tail)
 	list->tail = tail;
 	return list;
 }
+
+void pr_format_str(string s) 
+{
+    if (strcmp(s, "") == 0) printf("$nul");
+    for (; *s; s++) {
+        if (*s == '\n') printf("$backpace");
+        else if (*s == ' ') printf("$space");
+        else printf("%c",*s);
+    }
+}
