@@ -50,7 +50,12 @@ Temp_temp Temp_newtemp(void)
  return p;
 }
 
-
+Temp_temp Temp_namedtemp(int i) 
+{
+	Temp_temp p = (Temp_temp) checked_malloc(sizeof (*p));
+	p->num = i;
+	return p;
+}
 
 struct Temp_map_ {TAB_table tab; Temp_map under;};
 
@@ -116,4 +121,86 @@ void Temp_dumpMap(FILE *out, Temp_map m) {
      fprintf(out,"---------\n");
      Temp_dumpMap(out,m->under);
   }
+}
+
+bool isequalTempList(Temp_tempList t1, Temp_tempList t2)
+{
+	Temp_tempList tmpl, t22 = t2;
+
+	while( t1 && t2) {
+		tmpl = t22;
+		for (; tmpl; tmpl = tmpl->tail) {
+			if (t1->head == tmpl->head) goto lp;
+		}
+
+		return FALSE;
+
+lp:		t1 = t1->tail;
+		t2 = t2->tail;
+	}
+	
+	if (t1 || t2) return FALSE;
+	return TRUE;
+}
+
+Temp_tempList Temp_copyList(Temp_tempList tl)
+{
+	Temp_tempList r = NULL, last;
+	for (; tl; tl = tl->tail) {
+		Temp_appendTail(tl->head, &r);
+	}
+	return r;
+}
+
+void Temp_appendTail(Temp_temp a, Temp_tempList * tl)
+{
+	Temp_tempList append = Temp_TempList(a, NULL);
+	append->tail = *tl;
+	*tl = append;
+}
+
+Temp_tempList unionn(Temp_tempList t1, Temp_tempList t2)
+{
+	Temp_tempList r = Temp_copyList(t1), rr;
+	for (; t2; t2 = t2->tail) Temp_appendTail(t2->head, &r);
+	rr = r;
+     	
+	for (; r; r = r->tail) {
+		Temp_tempList tmpl = r->tail;
+		Temp_temp tmp = r->head;
+		Temp_tempList parent = r;
+		for (; tmpl; tmpl = tmpl->tail) {
+			if (tmp == tmpl->head) {
+				parent->tail = tmpl->tail; 
+			} else {
+				parent = tmpl;
+			}
+		}
+	}
+	
+	return rr;
+}
+
+Temp_tempList except(Temp_tempList t1, Temp_tempList t2)
+{
+	Temp_tempList r = NULL, tmpl;
+
+	while (t1){
+		tmpl = t2;
+		for (; tmpl; tmpl = tmpl->tail) {
+			if (tmpl->head == t1->head) {
+				goto l;
+			}
+		}
+		Temp_appendTail(t1->head, &r);
+l:      t1 = t1->tail;
+	}
+	return r;
+}
+
+void printTempList(void * tll) {
+	Temp_tempList tl = (Temp_tempList) tll;
+	for (; tl; tl = tl->tail) {
+		printf("%d ", tl->head->num);
+	}
 }

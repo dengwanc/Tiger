@@ -4,16 +4,20 @@ a.out: parse.o prabsyn.o \
 	   errormsg.o util.o \
 	   table.o absyn.o symbol.o semant.o types.o env.o \
 	   translate.o frame.o temp.o tree.o \
-	   canon.o codegen.o assem.o flowgraph.o graph.o
+	   canon.o codegen.o assem.o \
+	   flowgraph.o graph.o liveness.o
 	cc -g parse.o prabsyn.o \
 		  printtree.o \
 		  y.tab.o lex.yy.o errormsg.o util.o \
 		  table.o absyn.o symbol.o semant.o types.o env.o \
 		  translate.o frame.o temp.o tree.o \
 		  canon.o codegen.o assem.o \
-          flowgraph.o graph.o \
+          flowgraph.o graph.o  liveness.o\
           ; \
-    ctags -R *; mv *.o ~/trash/
+    ctags -R *; 
+
+liveness.o: liveness.c
+	cc -g -c liveness.c
 
 graph.o: graph.c 
 	cc -g -c graph.c

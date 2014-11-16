@@ -5,7 +5,7 @@ struct L_moveList_ {
 	L_moveList tail;
 };
 
-L_moveList L_MoveList(G_node, L_moveList);
+L_moveList L_MoveList(G_node, G_node, L_moveList);
 
 struct L_graph{
 	G_graph graph;

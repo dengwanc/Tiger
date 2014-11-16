@@ -30,3 +30,11 @@ void Temp_dumpMap(FILE *out, Temp_map m);
 
 Temp_map Temp_name(void);
 
+Temp_temp Temp_namedtemp(int);
+
+bool isequalTempList(Temp_tempList, Temp_tempList);
+void Temp_appendTail(Temp_temp, Temp_tempList *);
+Temp_tempList except(Temp_tempList, Temp_tempList);
+Temp_tempList unionn(Temp_tempList, Temp_tempList);
+Temp_tempList Temp_copyList(Temp_tempList);
+void printTempList(void *);

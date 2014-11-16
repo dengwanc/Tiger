@@ -194,7 +194,7 @@ static Temp_tempList munchArgs(int i, T_expList args, F_accessList formals)
 	if (F_isEscape(formals->head) || reg_count > 5) {
 		emit(AS_Oper(String("push `s0"), NULL, TL(rarg, NULL), NULL));	
 	} else {
-		WRITE_ASM_STR("move `s0 %s", reg_names[reg_count++]);
+		WRITE_ASM_STR("mov `s0 %s", reg_names[reg_count++]);
 		emit(AS_Move(p2asm_str, NULL, TL(rarg, NULL)));
 	}
 	return (rarg, tlist);

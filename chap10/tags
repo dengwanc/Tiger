@@ -133,6 +133,10 @@ A_varDec	absyn.h	/^	enum {A_functionDec, A_varDec, A_typeDec} kind;$/;"	e	enum:A
 A_varExp	absyn.h	/^		A_varExp, A_nilExp, A_intExp,A_doubleExp, A_stringExp, A_callExp,$/;"	e	enum:A_exp_::__anon6
 A_var_	absyn.h	/^struct A_var_ {$/;"	s
 A_whileExp	absyn.h	/^	    A_whileExp, A_forExp, A_breakExp, A_letExp, A_arrayExp$/;"	e	enum:A_exp_::__anon6
+BEGIN	fuck.tig.s	/^BEGIN L12$/;"	l
+BEGIN	fuck.tig.s	/^BEGIN L14$/;"	l
+BEGIN	fuck.tig.s	/^BEGIN L15$/;"	l
+BEGIN	fuck.tig.s	/^BEGIN L16$/;"	l
 BEGIN	lex.yy.c	125;"	d	file:
 BINOP	tree.h	/^		struct {T_binOp op; T_exp left, right;} BINOP;$/;"	m	union:T_exp_::__anon47	typeref:struct:T_exp_::__anon47::__anon48
 BREAK	y.tab.c	/^     BREAK = 298,$/;"	e	enum:yytokentype	file:
@@ -200,7 +204,6 @@ ESEQ	tree.h	/^		struct {T_stm stm; T_exp exp;} ESEQ;$/;"	m	union:T_exp_::__anon4
 EXIT_SUCCESS	y.tab.c	360;"	d	file:
 EXIT_SUCCESS	y.tab.c	388;"	d	file:
 EXP	tree.h	/^		T_exp EXP;$/;"	m	union:T_stm_::__anon41
-EXPORTLIVE	liveness.c	24;"	d	file:
 E_FunEntry	env.c	/^E_enventry E_FunEntry(Tr_level level, Temp_label label, Ty_tyList fms, Ty_ty resl) {$/;"	f
 E_VarEntry	env.c	/^E_enventry E_VarEntry(Tr_access a, Ty_ty ty) {$/;"	f
 E_base_tenv	env.c	/^S_table E_base_tenv(void) {$/;"	f
@@ -323,6 +326,29 @@ InFrame	uframe.c	/^static F_access InFrame(int offs) {$/;"	f	file:
 InReg	uframe.c	/^static F_access InReg(Temp_temp t) {$/;"	f	file:
 IntList	errormsg.c	/^typedef struct intList {int i; struct intList *rest;} *IntList;$/;"	t	typeref:struct:intList	file:
 JUMP	tree.h	/^		struct {T_exp exp; Temp_labelList jumps;} JUMP;$/;"	m	union:T_stm_::__anon41	typeref:struct:T_stm_::__anon41::__anon43
+L11	fuck.tig.s	/^L11: string$/;"	l
+L13	fuck.tig.s	/^L13: $/;"	l
+L17	fuck.tig.s	/^L17$/;"	l
+L18	fuck.tig.s	/^L18:  $/;"	l
+L19	fuck.tig.s	/^L19$/;"	l
+L20	fuck.tig.s	/^L20$/;"	l
+L21	fuck.tig.s	/^L21$/;"	l
+L22	fuck.tig.s	/^L22$/;"	l
+L23	fuck.tig.s	/^L23$/;"	l
+L24	fuck.tig.s	/^L24$/;"	l
+L25	fuck.tig.s	/^L25: $/;"	l
+L26	fuck.tig.s	/^L26: .$/;"	l
+L27	fuck.tig.s	/^L27$/;"	l
+L28	fuck.tig.s	/^L28$/;"	l
+L29	fuck.tig.s	/^L29$/;"	l
+L30	fuck.tig.s	/^L30$/;"	l
+L31	fuck.tig.s	/^L31$/;"	l
+L32	fuck.tig.s	/^L32$/;"	l
+L33	fuck.tig.s	/^L33$/;"	l
+L34	fuck.tig.s	/^L34$/;"	l
+L35	fuck.tig.s	/^L35$/;"	l
+L36	fuck.tig.s	/^L36$/;"	l
+L37	fuck.tig.s	/^L37$/;"	l
 LABEL	assem.h	/^		struct {string assem; Temp_label label;} LABEL;$/;"	m	union:AS_instr_::__anon24	typeref:struct:AS_instr_::__anon24::__anon26
 LABEL	tree.h	/^		Temp_label LABEL;$/;"	m	union:T_stm_::__anon41
 LBRACE	y.tab.c	/^     LBRACE = 283,$/;"	e	enum:yytokentype	file:
@@ -523,6 +549,8 @@ T_ult	tree.h	/^		T_ult, T_ule, T_ugt, T_uge} T_relOp;$/;"	e	enum:__anon39
 T_xor	tree.h	/^	      T_and, T_or, T_lshift, T_rshift, T_arshift, T_xor} T_binOp ;$/;"	e	enum:__anon38
 Temp_LabelList	temp.c	/^Temp_labelList Temp_LabelList(Temp_label h, Temp_labelList t)$/;"	f
 Temp_TempList	temp.c	/^Temp_tempList Temp_TempList(Temp_temp h, Temp_tempList t) $/;"	f
+Temp_appendTail	temp.c	/^void Temp_appendTail(Temp_temp a, Temp_tempList * tl)$/;"	f
+Temp_copyList	temp.c	/^Temp_tempList Temp_copyList(Temp_tempList tl)$/;"	f
 Temp_dumpMap	temp.c	/^void Temp_dumpMap(FILE *out, Temp_map m) {$/;"	f
 Temp_empty	temp.c	/^Temp_map Temp_empty(void) {$/;"	f
 Temp_enter	temp.c	/^void Temp_enter(Temp_map m, Temp_temp t, string s) {$/;"	f
@@ -536,6 +564,7 @@ Temp_map	temp.h	/^typedef struct Temp_map_ *Temp_map;$/;"	t	typeref:struct:Temp_
 Temp_map_	temp.c	/^struct Temp_map_ {TAB_table tab; Temp_map under;};$/;"	s	file:
 Temp_name	temp.c	/^Temp_map Temp_name(void) {$/;"	f
 Temp_namedlabel	temp.c	/^Temp_label Temp_namedlabel(string s)$/;"	f
+Temp_namedtemp	temp.c	/^Temp_temp Temp_namedtemp(int i) $/;"	f
 Temp_newlabel	temp.c	/^Temp_label Temp_newlabel(void)$/;"	f
 Temp_newtemp	temp.c	/^Temp_temp Temp_newtemp(void)$/;"	f
 Temp_temp	temp.h	/^typedef struct Temp_temp_ *Temp_temp;$/;"	t	typeref:struct:Temp_temp_
@@ -557,7 +586,7 @@ Tr_access_	translate.c	/^struct Tr_access_ {$/;"	s	file:
 Tr_allocLocal	translate.c	/^Tr_access Tr_allocLocal(Tr_level l, bool escape) {$/;"	f
 Tr_arithExp	translate.c	/^Tr_exp Tr_arithExp(A_oper op, Tr_exp left, Tr_exp right) { \/* (+, -, *, \/) *\/$/;"	f
 Tr_arrayExp	translate.c	/^Tr_exp Tr_arrayExp(Tr_exp size, Tr_exp init) {$/;"	f
-Tr_assignExp	translate.c	/^Tr_exp Tr_assignExp(Tr_exp lval, Tr_exp exp) { return Tr_Nx(T_Move(unEx(lval), unEx(exp))); }$/;"	f
+Tr_assignExp	translate.c	/^Tr_exp Tr_assignExp(Tr_exp lval, Tr_exp exp) { return Tr_Nx(T_Move(unEx(lval), \/*unEx(exp)*\/ T_Const(5))); }$/;"	f
 Tr_breakExp	translate.c	/^Tr_exp Tr_breakExp(Tr_exp b) { return Tr_Nx(T_Jump(T_Name(unEx(b)->u.NAME), Temp_LabelList(unEx(b)->u.NAME, NULL))); }$/;"	f
 Tr_callExp	translate.c	/^Tr_exp Tr_callExp(Temp_label label, Tr_level fun, Tr_level call, Tr_expList * l) {$/;"	f
 Tr_cx	translate.c	/^	enum {Tr_ex, Tr_nx, Tr_cx} kind;$/;"	e	enum:Tr_exp_::__anon36	file:
@@ -784,8 +813,12 @@ absyn_root	y.tab.c	/^A_exp absyn_root;$/;"	v
 access	env.h	/^		struct {Tr_access access; Ty_ty ty;} var;$/;"	m	struct:E_enventry_::__anon29::__anon30
 access	translate.c	/^	F_access access;$/;"	m	struct:Tr_access_	file:
 actual_ty	semant.c	/^static Ty_ty actual_ty(Ty_ty ty){$/;"	f	file:
+add	fuck.tig.s	/^add 142+139, 138$/;"	l
+add	fuck.tig.s	/^add 157+154, 153$/;"	l
+add	fuck.tig.s	/^add 203+200, 199$/;"	l
 adjust	lex.yy.c	/^void adjust(void)$/;"	f
 alloca	y.tab.c	353;"	d	file:
+allregs	liveness.c	/^static Temp_tempList allregs; \/* i hope fix the blemish *\/$/;"	v	file:
 anyErrors	errormsg.c	/^bool anyErrors= FALSE;$/;"	v
 append_char_to_string	lex.yy.c	/^void append_char_to_string(int ch) {$/;"	f
 append_str_to_string	lex.yy.c	/^void append_str_to_string(char * s) {$/;"	f
@@ -812,6 +845,9 @@ body	assem.h	/^  AS_instrList body;$/;"	m	struct:AS_proc_
 body	frame.h	/^			T_stm body;$/;"	m	struct:F_frag_::__anon33::__anon35
 bool	util.h	/^typedef char bool;$/;"	t
 call	absyn.h	/^	    struct {S_symbol func; A_expList args;} call;$/;"	m	union:A_exp_::__anon7	typeref:struct:A_exp_::__anon7::__anon8
+call	fuck.tig.s	/^call L14$/;"	l
+call	fuck.tig.s	/^call L15$/;"	l
+call	fuck.tig.s	/^call L16$/;"	l
 calleesaves	uframe.c	/^static Temp_tempList calleesaves() $/;"	f	file:
 callersaves	uframe.c	/^static Temp_tempList callersaves() $/;"	f	file:
 cat	graph.c	/^static G_nodeList cat(G_nodeList a, G_nodeList b) {$/;"	f	file:
@@ -819,10 +855,15 @@ ch	lex.yy.c	/^static char ch;              \/* save trans-meaning char *\/$/;"	v
 charPos	lex.yy.c	/^int charPos = 1;$/;"	v
 checked_malloc	util.c	/^void *checked_malloc(int len)$/;"	f
 chstr	prabsyn.c	/^void chstr(string org){$/;"	f
+cmp	fuck.tig.s	/^cmp 104, 187$/;"	l
+cmp	fuck.tig.s	/^cmp 125, 100$/;"	l
+cmp	fuck.tig.s	/^cmp 177, 180$/;"	l
+cmp	fuck.tig.s	/^cmp 196, 199$/;"	l
 codegen	ucodegen.c	/^AS_instrList codegen(F_frame f, T_stmList s)$/;"	f
 comment	lex.yy.c	608;"	d	file:
 comment_nest	lex.yy.c	/^static int comment_nest = 0;$/;"	v	file:
 commute	canon.c	/^static bool commute(T_stm x, T_exp y)$/;"	f	file:
+confilictGraph	liveness.c	/^static G_graph confilictGraph(G_nodeList nl)$/;"	f	file:
 cx	translate.c	/^		struct Cx cx;\/*condition-stm*\/ $/;"	m	union:Tr_exp_::__anon37	typeref:struct:Tr_exp_::__anon37::Cx	file:
 dec	tiger.y	/^dec: tydecs {$$ = $1;}$/;"	l
 dec	y.tab.c	/^    A_dec dec;$/;"	m	union:YYSTYPE	file:
@@ -859,6 +900,7 @@ escape	absyn.h	/^	    struct {S_symbol var; A_exp lo,hi,body; bool escape;} forr
 escape	absyn.h	/^	    struct {S_symbol var; S_symbol typ; A_exp init; bool escape;} var;$/;"	m	struct:A_dec_::__anon18::__anon19
 escape	absyn.h	/^struct A_field_ {S_symbol name, typ; A_pos pos; bool escape;};$/;"	m	struct:A_field_
 ex	translate.c	/^		T_exp ex;    \/*exp*\/$/;"	m	union:Tr_exp_::__anon37	file:
+except	temp.c	/^Temp_tempList except(Temp_tempList t1, Temp_tempList t2)$/;"	f
 exp	absyn.h	/^	    struct {A_var var; A_exp exp;} assign;$/;"	m	struct:A_exp_::__anon7::__anon11
 exp	absyn.h	/^	    struct {A_var var; A_exp exp;} subscript;$/;"	m	struct:A_var_::__anon3::__anon5
 exp	absyn.h	/^struct A_efield_ {S_symbol name; A_exp exp;};$/;"	m	struct:A_efield_
@@ -945,6 +987,7 @@ hi	absyn.h	/^	    struct {S_symbol var; A_exp lo,hi,body; bool escape;} forr;$/;
 i	errormsg.c	/^typedef struct intList {int i; struct intList *rest;} *IntList;$/;"	m	struct:intList	file:
 id	tiger.y	/^id: ID {\/*printf("\\n$%s$\\n",$1);*\/$$ = S_Symbol($1); \/*printf("\\nt$%s$t\\n", S_name($$));*\/}$/;"	l
 iff	absyn.h	/^	    struct {A_exp test, then, elsee;} iff; \/* elsee is optional *\/$/;"	m	union:A_exp_::__anon7	typeref:struct:A_exp_::__anon7::__anon12
+in	liveness.c	/^static G_table in, out;$/;"	v	file:
 inDegree	graph.c	/^static int inDegree(G_node n)$/;"	f	file:
 inFrame	uframe.c	/^	enum {inFrame, inReg} kind;$/;"	e	enum:F_access_::__anon54	file:
 inReg	uframe.c	/^	enum {inFrame, inReg} kind;$/;"	e	enum:F_access_::__anon54	file:
@@ -953,14 +996,27 @@ indent	printtree.c	/^static void indent(FILE *out, int d) {$/;"	f	file:
 info	graph.c	/^  void *info; \/* additional info *\/$/;"	m	struct:G_node_	file:
 init	absyn.h	/^	    struct {S_symbol typ; A_exp size, init;} array;$/;"	m	struct:A_exp_::__anon7::__anon16
 init	absyn.h	/^	    struct {S_symbol var; S_symbol typ; A_exp init; bool escape;} var;$/;"	m	struct:A_dec_::__anon18::__anon19
+initConflictg	liveness.c	/^static void initConflictg(G_graph g)$/;"	f	file:
+initLivenessInfo	liveness.c	/^static void initLivenessInfo(G_nodeList nl) $/;"	f	file:
 init_string	lex.yy.c	/^void init_string() {$/;"	f
 instrList	ucodegen.c	/^static AS_instrList instrList = NULL, last = NULL;$/;"	v	file:
 intList	errormsg.c	/^static IntList intList(int i, IntList rest) $/;"	f	file:
 intList	errormsg.c	/^typedef struct intList {int i; struct intList *rest;} *IntList;$/;"	s	file:
 intt	absyn.h	/^	    int intt;$/;"	m	union:A_exp_::__anon7
 isNop	canon.c	/^static bool isNop(T_stm x) $/;"	f	file:
+isequalTempList	temp.c	/^bool isequalTempList(Temp_tempList t1, Temp_tempList t2)$/;"	f
 ival	y.tab.c	/^	int ival;$/;"	m	union:YYSTYPE	file:
 ival	y.tab.h	/^	int ival;$/;"	m	union:YYSTYPE
+je	fuck.tig.s	/^je L17$/;"	l
+je	fuck.tig.s	/^je L19$/;"	l
+je	fuck.tig.s	/^je L27$/;"	l
+jl	fuck.tig.s	/^jl L23$/;"	l
+jmp	fuck.tig.s	/^jmp L21$/;"	l
+jmp	fuck.tig.s	/^jmp L29$/;"	l
+jmp	fuck.tig.s	/^jmp L30$/;"	l
+jmp	fuck.tig.s	/^jmp L32$/;"	l
+jmp	fuck.tig.s	/^jmp L34$/;"	l
+jmp	fuck.tig.s	/^jmp L36$/;"	l
 joinPatch	translate.c	/^static patchList joinPatch(patchList fir, patchList scd) {$/;"	f	file:
 jumps	assem.h	/^		struct {string assem; Temp_tempList dst, src; AS_targets jumps;} OPER;$/;"	m	struct:AS_instr_::__anon24::__anon25
 jumps	tree.h	/^		struct {T_exp exp; Temp_labelList jumps;} JUMP;$/;"	m	struct:T_stm_::__anon41::__anon43
@@ -994,6 +1050,7 @@ level	translate.c	/^	Tr_level level;$/;"	m	struct:Tr_access_	file:
 lineNum	errormsg.c	/^static int lineNum = 1;$/;"	v	file:
 linePos	errormsg.c	/^static IntList linePos=NULL;$/;"	v	file:
 linear	canon.c	/^static T_stmList linear(T_stm stm, T_stmList right)$/;"	f	file:
+livenessAnalyze	liveness.c	/^static void livenessAnalyze(G_graph flow)$/;"	f	file:
 lo	absyn.h	/^	    struct {S_symbol var; A_exp lo,hi,body; bool escape;} forr;$/;"	m	struct:A_exp_::__anon7::__anon14
 local_count	uframe.c	/^	int local_count;\/*local-var numb*\/$/;"	m	struct:F_frame_	file:
 lvalue	tiger.y	/^lvalue: id {\/*printf("\\nf$%s$f\\n", S_name($1));*\/ $$ = A_SimpleVar(EM_tokPos, $1);}	$/;"	l
@@ -1007,6 +1064,70 @@ makeFormals	semant.c	/^static U_boolList makeFormals(A_fieldList params) {$/;"	f
 marksym	symbol.c	/^static struct S_symbol_ marksym = {"<mark>",0}; \/*a mark rember the position into a scope*\/$/;"	v	typeref:struct:S_symbol_	file:
 mkBlocks	canon.c	/^static C_stmListList mkBlocks(T_stmList stms, Temp_label done)$/;"	f	file:
 mksymbol	symbol.c	/^static S_symbol mksymbol(string name, S_symbol next)$/;"	f	file:
+mov	fuck.tig.s	/^mov $0x0, 184$/;"	l
+mov	fuck.tig.s	/^mov $0x0, 187$/;"	l
+mov	fuck.tig.s	/^mov $0x0, 206$/;"	l
+mov	fuck.tig.s	/^mov $0x1, 175$/;"	l
+mov	fuck.tig.s	/^mov $0x1, 194$/;"	l
+mov	fuck.tig.s	/^mov $0x5, 106$/;"	l
+mov	fuck.tig.s	/^mov $0x5, 172$/;"	l
+mov	fuck.tig.s	/^mov $0x5, 210$/;"	l
+mov	fuck.tig.s	/^mov $0x5, 222$/;"	l
+mov	fuck.tig.s	/^mov -4(122), 121$/;"	l
+mov	fuck.tig.s	/^mov -4(178), 177$/;"	l
+mov	fuck.tig.s	/^mov -4(197), 196$/;"	l
+mov	fuck.tig.s	/^mov -4(201), 200$/;"	l
+mov	fuck.tig.s	/^mov -4(204), 203$/;"	l
+mov	fuck.tig.s	/^mov 0(132), 131$/;"	l
+mov	fuck.tig.s	/^mov 106, -4(107)$/;"	l
+mov	fuck.tig.s	/^mov 12(126), 125$/;"	l
+mov	fuck.tig.s	/^mov 12(133), 132$/;"	l
+mov	fuck.tig.s	/^mov 12(147), 146$/;"	l
+mov	fuck.tig.s	/^mov 12(162), 161$/;"	l
+mov	fuck.tig.s	/^mov 172, -4(173)$/;"	l
+mov	fuck.tig.s	/^mov 175, 104$/;"	l
+mov	fuck.tig.s	/^mov 184, 104$/;"	l
+mov	fuck.tig.s	/^mov 194, 103$/;"	l
+mov	fuck.tig.s	/^mov 206, 103$/;"	l
+mov	fuck.tig.s	/^mov 210, -4(211)$/;"	l
+mov	fuck.tig.s	/^mov 222, -4(223)$/;"	l
+mov	fuck.tig.s	/^mov 4(146), 145$/;"	l
+mov	fuck.tig.s	/^mov 4(182), 181$/;"	l
+mov	fuck.tig.s	/^mov 4(192), 191$/;"	l
+mov	fuck.tig.s	/^mov 4(212), 211$/;"	l
+mov	fuck.tig.s	/^mov 4(213), 212$/;"	l
+mov	fuck.tig.s	/^mov 4(219), 218$/;"	l
+mov	fuck.tig.s	/^mov 4(224), 223$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 107$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 112$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 122$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 126$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 133$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 140$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 143$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 147$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 149$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 155$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 158$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 162$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 164$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 173$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 178$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 182$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 192$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 197$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 201$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 204$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 213$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 219$/;"	l
+mov	fuck.tig.s	/^mov 4(ebp), 224$/;"	l
+mov	fuck.tig.s	/^mov 8(112), 111$/;"	l
+mov	fuck.tig.s	/^mov 8(140), 139$/;"	l
+mov	fuck.tig.s	/^mov 8(143), 142$/;"	l
+mov	fuck.tig.s	/^mov 8(155), 154$/;"	l
+mov	fuck.tig.s	/^mov 8(158), 157$/;"	l
+mov	fuck.tig.s	/^mov 8(161), 160$/;"	l
+mov	fuck.tig.s	/^mov 8(181), 180$/;"	l
 moves	liveness.h	/^	L_moveList moves;$/;"	m	struct:L_graph
 munchArgs	ucodegen.c	/^static Temp_tempList munchArgs(int i, T_expList args, F_accessList formals) $/;"	f	file:
 munchExp	ucodegen.c	/^static Temp_temp munchExp(T_exp e)$/;"	f	file:
@@ -1043,6 +1164,7 @@ op	absyn.h	/^	    struct {A_oper oper; A_exp left; A_exp right;} op;$/;"	m	union
 op	tree.h	/^			T_relOp op;$/;"	m	struct:T_stm_::__anon41::__anon44
 op	tree.h	/^		struct {T_binOp op; T_exp left, right;} BINOP;$/;"	m	struct:T_exp_::__anon47::__anon48
 oper	absyn.h	/^	    struct {A_oper oper; A_exp left; A_exp right;} op;$/;"	m	struct:A_exp_::__anon7::__anon9
+out	liveness.c	/^static G_table in, out;$/;"	v	file:
 outDegree	graph.c	/^static int outDegree(G_node n)$/;"	f	file:
 outer	translate.c	/^static Tr_level outer = NULL;$/;"	v	file:
 outfile	temp.c	/^static FILE *outfile;$/;"	v	file:
@@ -1083,12 +1205,28 @@ print	test_translate.c	/^void print(Tr_exp et) {$/;"	f
 printExp	printtree.c	/^void printExp(T_exp e) {$/;"	f
 printStm	printtree.c	/^void printStm(T_stm s) {$/;"	f
 printStmList	printtree.c	/^void printStmList (FILE *out, T_stmList stmList) $/;"	f
+printTempList	temp.c	/^void printTempList(void * tll) {$/;"	f
 print_frag	test_translate.c	/^void print_frag(F_fragList fl) {$/;"	f
+printtemp	graph.c	/^void printtemp(void * temp) { Temp_temp t = (Temp_temp) temp; printf("temp: %d\\n", Temp_tempint(t)); }$/;"	f
 proc	frame.h	/^		} proc;$/;"	m	union:F_frag_::__anon33	typeref:struct:F_frag_::__anon33::__anon35
 program	tiger.y	/^program:  exp {absyn_root=$1;}$/;"	l
 prolog	assem.h	/^  string prolog;$/;"	m	struct:AS_proc_
 public_unEx	test_translate.c	/^T_exp public_unEx(Tr_exp e) {$/;"	f
 public_unNx	test_translate.c	/^T_stm public_unNx(Tr_exp e) {$/;"	f
+push	fuck.tig.s	/^push 111$/;"	l
+push	fuck.tig.s	/^push 131$/;"	l
+push	fuck.tig.s	/^push 138$/;"	l
+push	fuck.tig.s	/^push 145$/;"	l
+push	fuck.tig.s	/^push 149$/;"	l
+push	fuck.tig.s	/^push 153$/;"	l
+push	fuck.tig.s	/^push 160$/;"	l
+push	fuck.tig.s	/^push 164$/;"	l
+push	fuck.tig.s	/^push 191$/;"	l
+push	fuck.tig.s	/^push 218$/;"	l
+push	fuck.tig.s	/^push L18$/;"	l
+push	fuck.tig.s	/^push L25$/;"	l
+push	fuck.tig.s	/^push L26$/;"	l
+push	fuck.tig.s	/^push ebp$/;"	l
 ra	uframe.c	/^static Temp_temp ra = NULL;$/;"	v	file:
 record	absyn.h	/^		A_fieldList record;$/;"	m	union:A_ty_::__anon21
 record	absyn.h	/^	    struct {S_symbol typ; A_efieldList fields;} record;$/;"	m	union:A_exp_::__anon7	typeref:struct:A_exp_::__anon7::__anon10
@@ -1101,6 +1239,7 @@ reg_names	ucodegen.c	/^static string reg_names[] = {"eax", "ebx", "ecx", "edx", 
 rel_oper	printtree.c	/^static char rel_oper[][12] = {$/;"	v	file:
 remain	lex.yy.c	/^static int remain;$/;"	v	file:
 reorder	canon.c	/^static T_stm reorder(expRefList rlist) $/;"	f	file:
+reqAllRegs	liveness.c	/^static void reqAllRegs(G_nodeList nl)$/;"	f	file:
 res	prabsyn.c	/^char res[MAX_LENGTH];$/;"	v
 rest	errormsg.c	/^typedef struct intList {int i; struct intList *rest;} *IntList;$/;"	m	struct:intList	typeref:struct:intList::intList	file:
 result	absyn.h	/^	S_symbol result; $/;"	m	struct:A_fundec_
@@ -1174,6 +1313,7 @@ tail	tree.h	/^struct T_stmList_ {T_stm head; T_stmList tail;};$/;"	m	struct:T_st
 tail	types.h	/^struct Ty_fieldList_ {Ty_field head; Ty_fieldList tail;};$/;"	m	struct:Ty_fieldList_
 tail	types.h	/^struct Ty_tyList_ {Ty_ty head; Ty_tyList tail;};$/;"	m	struct:Ty_tyList_
 tail	util.h	/^struct U_boolList_ {bool head; U_boolList tail;};$/;"	m	struct:U_boolList_
+tempMapNode	liveness.c	/^TAB_table tempMapNode;$/;"	v
 temps	temp.c	/^static int temps = 100;$/;"	v	file:
 test	absyn.h	/^	    struct {A_exp test, body;} whilee;$/;"	m	struct:A_exp_::__anon7::__anon13
 test	absyn.h	/^	    struct {A_exp test, then, elsee;} iff; \/* elsee is optional *\/$/;"	m	struct:A_exp_::__anon7::__anon12
@@ -1226,6 +1366,7 @@ unCx	translate.c	/^static struct Cx unCx(Tr_exp e){$/;"	f	file:
 unEx	translate.c	/^static T_exp unEx(Tr_exp e) {$/;"	f	file:
 unNx	translate.c	/^static T_stm unNx(Tr_exp e) {$/;"	f	file:
 under	temp.c	/^struct Temp_map_ {TAB_table tab; Temp_map under;};$/;"	m	struct:Temp_map_	file:
+unionn	temp.c	/^Temp_tempList unionn(Temp_tempList t1, Temp_tempList t2)$/;"	f
 unput	lex.yy.c	188;"	d	file:
 value	table.c	/^struct binder_ {void *key; void *value; binder next; void *prevtop;};$/;"	m	struct:binder_	file:
 var	absyn.h	/^		A_var var;$/;"	m	union:A_exp_::__anon7

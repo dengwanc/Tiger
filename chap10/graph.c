@@ -96,6 +96,8 @@ void G_rmEdge(G_node from, G_node to) {
   from->succs=delete(to,from->succs);
 }
 
+void printtemp(void * temp) { Temp_temp t = (Temp_temp) temp; printf("temp: %d\n", Temp_tempint(t)); }
+
  /**
   * Print a human-readable dump for debug.
   */
@@ -104,9 +106,12 @@ void G_show(FILE *out, G_nodeList p, void showInfo(void *)) {
     G_node n = p->head;
     G_nodeList q;
     assert(n);
+	
     if (showInfo) showInfo(n->info);
+	
     fprintf(out, " (%d)->succ: ", n->mykey); 
     for(q=G_succ(n); q; q=q->tail) fprintf(out, "%d ", q->head->mykey);
+	
     fprintf(out, "\n");
   }
 }
@@ -115,7 +120,7 @@ void G_show(FILE *out, G_nodeList p, void showInfo(void *)) {
 void show_graph(G_graph g) 
 {
 	assert(g);
-	G_show(stdout, g->mynodes, show_instr);
+	G_show(stdout, g->mynodes, /*show_instr*/ printtemp);
 } 
 
 G_nodeList G_succ(G_node n) { assert(n); return n->succs; }

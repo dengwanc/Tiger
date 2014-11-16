@@ -8,7 +8,8 @@
 #include "frame.h"
 #include "translate.h"
 #include "printtree.h"
-/******frame******/
+
+/******FRAME******/
 struct Tr_level_ {
 	Tr_level parent;
 	Temp_label name;
@@ -23,9 +24,11 @@ struct Tr_access_ {
 
 static Tr_accessList makeFormalAccessList(Tr_level);
 static Tr_access Tr_Access(Tr_level, F_access);
-/**debug info**/
+
+/**DEBUG**/
 static void display_l(Tr_level);
 static void display_ac(Tr_access);
+
 /*******IR*******/
 struct Cx {
 	patchList trues;
@@ -56,6 +59,7 @@ struct Tr_expList_ {
 	Tr_exp head;
 	Tr_expList tail;
 };
+
 static Tr_exp Tr_Ex(T_exp);
 static Tr_exp Tr_Nx(T_stm);
 static Tr_exp Tr_Cx(patchList, patchList, T_stm);
@@ -75,14 +79,18 @@ Tr_expList Tr_ExpList(Tr_exp h, Tr_expList t) {
 }
 
 void Tr_expList_prepend(Tr_exp h, Tr_expList * l) {
-	/* add a newhead at a old expList, alter the point-content*/
+	/*  
+	 * add a newhead at a old expList, alter the point-content
+	 */
 	Tr_expList newhead = Tr_ExpList(h, NULL);
 	newhead->tail = *l;
 	*l = newhead;
 }
 
 static Tr_exp Tr_Ex(T_exp exp) {
-	/* trans T_exp to Tr_exp*/
+	/* 
+	 * trans T_exp to Tr_exp
+	 */
 	Tr_exp e = checked_malloc(sizeof(*e));
 	e->kind = Tr_ex;
 	e->u.ex = exp;
@@ -279,7 +287,7 @@ Tr_exp Tr_whileExp(Tr_exp test, Tr_exp body, Tr_exp done) {
 										            T_Eseq(T_Label(unEx(done)->u.NAME), T_Const(0))))))));
 }
 
-Tr_exp Tr_assignExp(Tr_exp lval, Tr_exp exp) { return Tr_Nx(T_Move(unEx(lval), unEx(exp))); }
+Tr_exp Tr_assignExp(Tr_exp lval, Tr_exp exp) { return Tr_Nx(T_Move(unEx(lval), /*unEx(exp)*/ T_Const(5))); }
 
 Tr_exp Tr_breakExp(Tr_exp b) { return Tr_Nx(T_Jump(T_Name(unEx(b)->u.NAME), Temp_LabelList(unEx(b)->u.NAME, NULL))); }
 

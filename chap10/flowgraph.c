@@ -34,7 +34,7 @@ Temp_tempList FG_def(G_node n)
 
 Temp_tempList FG_use(G_node n)
 {
-    /* get use set */
+    /* get use set (inport liveness) */
     assert(n && "invalid node");
     AS_instr i = G_nodeInfo(n);
     if (n) {

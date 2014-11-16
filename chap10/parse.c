@@ -22,6 +22,7 @@
 #include "codegen.h"
 #include "graph.h"
 #include "flowgraph.h"
+#include "liveness.h"
 
 extern anyErrors;
 extern int yyparse(void);
@@ -29,7 +30,8 @@ extern A_exp absyn_root;
 extern Temp_map F_tempMap;
 
 /* parse source file fname; 
-   return abstract syntax data structure */
+ *  return abstract syntax data structure
+ */
 
 A_exp parse(string fname) 
 {
@@ -42,17 +44,13 @@ A_exp parse(string fname)
 static void doProc(FILE *out, F_frame frame, T_stm body)
 {
  AS_proc proc;
- //struct RA_result allocation;
  T_stmList stmList;
  AS_instrList iList;
-
  stmList = C_linearize(body);
  stmList = C_traceSchedule(C_basicBlocks(stmList));
- /* printStmList(stdout, stmList); */
  iList  = codegen(frame, stmList); /* 9 */
  G_graph g = FG_AssemFlowGraph(iList);
- //show_graph(g);
- //printStmList(stdout, stmList);
+ L_liveness(g);
  fprintf(out, "BEGIN %s\n", Temp_labelstring(F_name(frame)));
  AS_printInstrList (out, iList, Temp_layerMap(F_tempMap,Temp_name()));
  fprintf(out, "END %s\n\n", Temp_labelstring(F_name(frame)));
@@ -60,6 +58,22 @@ static void doProc(FILE *out, F_frame frame, T_stm body)
 
 int main(int argc, string *argv)
 {
+
+#if 0 
+	Temp_temp a1 = Temp_namedtemp(1), 
+			  a2 = Temp_namedtemp(2),
+			  a3 = Temp_namedtemp(3),
+			  a4 = Temp_namedtemp(4),
+			  a5 = Temp_namedtemp(5);
+	Temp_tempList 
+	a = Temp_TempList(a1, Temp_TempList(a2, Temp_TempList(a3, NULL))),
+	b = Temp_TempList(a2, Temp_TempList(a4, NULL));
+	printf("union: "); printTempList(unionn(a, b));
+	printf("except: "); printTempList(except(a,b));
+
+#endif
+
+#if 1 
  A_exp absyn_root;
  S_table base_env, base_tenv;
  F_fragList frags;
@@ -69,10 +83,9 @@ int main(int argc, string *argv)
  if (argc==2) {
    absyn_root = parse(argv[1]);
    if (!absyn_root) return 1;
-   #if 0 
-   pr_exp(out, absyn_root, 0); /* print absyn data structure */
-   fprintf(out, "\n");
-   #endif
+   
+   //pr_exp(out, absyn_root, 0); 
+   //fprintf(out, "\n");
 
    frags = SEM_transProg(absyn_root);
    if (anyErrors) return 1; /* don't continue */
@@ -96,4 +109,5 @@ int main(int argc, string *argv)
  }
  EM_error(0,"usage: tiger file.tig");
  return 1;
+#endif
 }
