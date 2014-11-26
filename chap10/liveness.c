@@ -28,7 +28,7 @@ L_moveList L_MoveList(G_node src, G_node dst, L_moveList tail)
 
 struct L_graph L_liveness(G_graph flow)
 {
-    assert(flow);
+	assert(flow);
 	struct L_graph lg;
 	livenessAnalyze(flow);
 	G_graph g = confilictGraph(G_nodes(flow));
@@ -97,7 +97,7 @@ static G_graph confilictGraph(G_nodeList nl)
 						}
 
 					} else if (i->kind == I_OPER || i->kind == I_LABEL) {
-						
+
 						G_addEdge(a, b);
 
 					} else assert(0);
@@ -133,14 +133,14 @@ static void reqAllRegs(G_nodeList nl)
  */
 static void livenessAnalyze(G_graph flow)
 {
-    assert(flow);
+	assert(flow);
 	G_nodeList nll = G_nodes(flow), nl;
 	initLivenessInfo(nll);
 
 	bool done;
 	do {
 		done = TRUE; /* is done flag */
-        nl = nll;
+		nl = nll;
 
 		for (; nl; nl = nl->tail) {
 
@@ -156,13 +156,13 @@ static void livenessAnalyze(G_graph flow)
 			 */
 			intl = unionn(FG_use(nl->head), except(outtl, FG_def(nl->head)));
 			G_enter(in, nl->head, intl); // update in-table
-			
+
 			/*
 			 * out[n] = U in[s] {s, s->succ[n]} 
 			 * equation 2
 			 */
 			G_nodeList succ = G_succ(nl->head);
-			
+
 			for (; succ; succ = succ->tail) {
 				outtl = unionn(outtl, (Temp_tempList)G_look(in, succ->head));
 			}	
@@ -178,7 +178,7 @@ static void livenessAnalyze(G_graph flow)
 
 static void initLivenessInfo(G_nodeList nl) 
 {
-    in = G_empty();
+	in = G_empty();
 	out = G_empty();
 
 	for (; nl; nl = nl->tail) {
