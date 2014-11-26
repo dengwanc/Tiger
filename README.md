@@ -13,12 +13,12 @@
     * comment(can be nested): /* here  /* is */ content */
     
 ### Declare:
-	* declare sequence:
+   * declare sequence:
 	
-	decs -> {dec}
+        decs -> {dec}
 	dec  -> tydec
 	     -> vardec
-		 -> fundec
+             -> fundec
     
     * type declare:
 
