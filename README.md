@@ -18,9 +18,9 @@
     	decs -> {dec}
 	dec  -> tydec
 	     -> vardec
-             -> fundec
-             
-        * type declare:
+	     -> fundec
+	     
+    * type declare:
 
 
 	
