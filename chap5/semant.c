@@ -25,7 +25,7 @@ void SEM_transProg(A_exp exp){
 	S_table t = E_base_tenv();
 	S_table v = E_base_venv();
 	et = transExp(v, t, exp);
-	printf("this exp return: %d\n", et.ty->kind); /* check the return result (use Ty_ty->kind stand) */
+	printf("@this expr return: %d\n", et.ty->kind); /* check the return result (use Ty_ty->kind stand) */
 }
 
 static struct expty transVar(S_table venv, S_table tenv, A_var v) {
