@@ -1,4 +1,4 @@
-### Tiger is a toy language. 
+### Tiger is a toy language
 ### Include:
     * nesting function
     * hidden pointer as record
