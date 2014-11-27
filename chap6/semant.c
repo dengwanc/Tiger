@@ -275,7 +275,7 @@ static void transDec(Tr_level level, S_table v, S_table t, A_dec d) {
 	case A_varDec:
 		final = transExp(level, v, t, d->u.var.init);
 		#ifdef F_P
-		puts("@@@@@@@@@@@@@");
+		puts("@@:");
 		printf("id: %s\n", S_name(d->u.var.var));
 		#endif
 		ac = Tr_allocLocal(level, d->u.var.escape);	

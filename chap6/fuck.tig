@@ -1,4 +1,7 @@
 let 
+  var A := 1
+  var B := 2
+  var C := 3
   type tree = {key: string, left: tree, right: tree}
   function preprint(tree: tree) : string =
     let
