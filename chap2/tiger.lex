@@ -18,11 +18,13 @@ int yywrap(void)
 
 void adjust(void)
 {
+	/*write current position in the file*/
+	
 	EM_tokPos=charPos;
     charPos+=yyleng;
 }
 
-/* user */
+/* user-def */
 static char * str_ptr;
 static char str[MAX_LENGTH]; /* save string like "..." */
 static char ch;              /* save trans-meaning char */
@@ -123,7 +125,7 @@ while    {adjust(); return WHILE;}
 
 \"      {adjust(); init_string(); BEGIN string;}
 <string>{
-\\			{adjust(); append_char_to_string(0x5c);}
+\\			    {adjust(); append_char_to_string(0x5c);}
 "\\\""			{adjust(); append_char_to_string(0x22);}
 \\n				{adjust(); append_char_to_string(0x0A);}
 \\t				{adjust(); append_char_to_string(0x09);}
