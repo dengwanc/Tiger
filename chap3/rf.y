@@ -125,4 +125,4 @@ args: exp COMMA args
     | exp
 	|
 
-id: ID {printf("\n$%s$\n", $1);}
+id: ID {printf("\n%s\n", $1);}
