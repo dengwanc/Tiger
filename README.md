@@ -125,6 +125,6 @@
 
 ### Code:
     * in the test/ dir there are 50s tig file you can test and refer
-### about:
+### About:
     * blog:
     * book: <Modern Compiler Implement in C>
