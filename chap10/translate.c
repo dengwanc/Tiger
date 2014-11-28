@@ -300,7 +300,7 @@ Tr_exp Tr_arithExp(A_oper op, Tr_exp left, Tr_exp right) { /* (+, -, *, /) */
 	case A_divideOp: opp = T_div; break;
 	default: assert(0);
 	}
-	return Tr_Ex(T_Binop(opp, unEx(left), unEx(left)));
+	return Tr_Ex(T_Binop(opp, unEx(left), unEx(right)));
 }
 
 Tr_exp Tr_eqExp(A_oper op, Tr_exp left, Tr_exp right) {

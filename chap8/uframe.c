@@ -63,7 +63,7 @@ static F_accessList makeFormalAccessList(F_frame f, U_boolList formals) {
 			ac = InReg(Temp_newtemp());
 		} else {
 			/*keep a space for return*/
-			ac = InFrame((i + 1) * F_WORD_SIZE);
+			ac = InFrame((i) * F_WORD_SIZE);
 		}
 		if (head) {
 			tail->tail = F_AccessList(ac, NULL);
