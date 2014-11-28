@@ -33,21 +33,12 @@ static bool efields_match(Tr_level, Tr_exp, S_table, S_table, Ty_ty, A_exp); /*m
 static Ty_fieldList makeFieldTys(S_table, A_fieldList); /*may use #define*/
 static U_boolList makeFormals(A_fieldList); /*may use #define*/
 
-F_fragList SEM_transProg(A_exp exp){
+F_fragList SEM_transProg(A_exp exp) {
 	struct expty et;
 	S_table t = E_base_tenv();
 	S_table v = E_base_venv();
-	puts("@before trans:");
 	et = transExp(Tr_outermost(), NULL, v, t, exp);
-	puts("@end trans, begin pr-main:");
-	if(!anyErrors) print(et.exp); else printf("@error cant pr");
-	puts("\n@end pr-main, begin ref:");
-	printf("this exp return: %d\n", et.ty->kind); /* check the return result (use Ty_ty->kind stand for) */
-	puts("@end ref, begin pr-frag");
-	puts("@@@@@@@@@@@@@@@@@@@@@@@");
 	F_fragList resl = Tr_getResult();
-	print_frag(resl);
-	puts("\n@end pr-falg");
 	return resl;
 }
 
@@ -65,6 +56,7 @@ static struct expty transVar(Tr_level level, Tr_exp breakk, S_table venv, S_tabl
 		trans = Tr_noExp();
 		if (x && x->kind == E_varEntry) {
 			trans = Tr_simpleVar(x->u.var.access, level);
+			//printExp(public_unEx(trans), stdout);
 			return expTy(trans, actual_ty(x->u.var.ty));
 		} else {
 			EM_error(v->pos, "undefined var %s", S_name(v->u.simple));

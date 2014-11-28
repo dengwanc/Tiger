@@ -46,3 +46,4 @@ F_fragList Tr_getResult();
 /******DEBUD INFO******/
 T_exp public_unEx(Tr_exp);
 T_stm public_unNx(Tr_exp);
+void print_frag(F_fragList, FILE *);

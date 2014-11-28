@@ -3,8 +3,8 @@
 
 /* function prototype from printtree.c */
 void printStmList(FILE * out, T_stmList stmList);
-void printExp(T_exp);
-void printStm(T_stm);
+void printExp(T_exp, FILE * out);
+void printStm(T_stm, FILE * out);
 #endif /* TIGER_PRINTTREE_H_ */
 
 

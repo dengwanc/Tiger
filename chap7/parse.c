@@ -1,5 +1,7 @@
-/*
- * parse.c - Parse source file.
+/* 29.11.14 by Mkth
+ * translate to Tree IR
+ * input A_exp AST
+ * output function Fragment
  */
 
 #include <stdio.h>
@@ -38,11 +40,19 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
 	A_exp temp = parse(argv[1]);
+	FILE * f1 = fopen("1.txt", "w");
+	FILE * f2 = fopen("2.txt", "w");
 	if (temp) {
-		//pr_exp(stdout, temp, 4);
-		//display();
-		//printf("-----------------------\n");
-		SEM_transProg(temp);
+		F_fragList fl = SEM_transProg(temp);
+		print_frag(fl, f1);
 	}
+	fclose(f1);
+	fclose(f2);
 	return 0;
+}
+
+F_fragList newAFragment()
+{
+	F_fragList fl = 0;
+	return 	fl;
 }

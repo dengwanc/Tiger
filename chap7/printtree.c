@@ -108,9 +108,9 @@ void printStmList (FILE *out, T_stmList stmList)
   }
 }
 
-void printExp(T_exp e) {
-	pr_tree_exp(stdout, e, 0);
+void printExp(T_exp e, FILE * out) {
+	pr_tree_exp(out, e, 0);
 }
-void printStm(T_stm s) {
-	pr_stm(stdout, s, 0);
+void printStm(T_stm s, FILE * out) {
+	pr_stm(out, s, 0);
 }

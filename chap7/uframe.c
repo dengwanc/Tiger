@@ -4,6 +4,7 @@
 #include "temp.h"
 #include "tree.h"
 #include "frame.h"
+#include "printtree.h"
 
 const int F_WORD_SIZE = 4; /* 4 byte */
 static const int F_MAX_REG = 6;  /* paras in regs number */ 
@@ -59,7 +60,7 @@ static F_accessList makeFormalAccessList(F_frame f, U_boolList formals) {
 			ac = InReg(Temp_newtemp());
 		} else {
 			/*keep a space for return*/
-			ac = InFrame((i + 1) * F_WORD_SIZE);
+			ac = InFrame((i/* + 1*/) * F_WORD_SIZE);
 		}
 		if (head) {
 			tail->tail = F_AccessList(ac, NULL);
@@ -128,7 +129,8 @@ Temp_temp F_FP(void) { /* frame-pointer */
 
 T_exp F_Exp(F_access access, T_exp framePtr){ /* visit frame-offs addr & get content */
 	if (access->kind == inFrame) {
-		return T_Mem(T_Binop(T_plus, framePtr, T_Const(access->u.offs)));
+		T_exp e = T_Mem(T_Binop(T_plus, framePtr, T_Const(access->u.offs)));
+		return e;
 	} else {
 		return T_Temp(access->u.reg);
 	}

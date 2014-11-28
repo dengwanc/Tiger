@@ -44,6 +44,8 @@ int main(int argc, char **argv) {
 		pr_exp(/*stdout*/f1, temp, 4);
 	}
 	pr_exp(f2, newATree(), 4);
+	fclose(f1);
+	fclose(f2);
 	return 0;
 }
 

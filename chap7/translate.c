@@ -158,7 +158,7 @@ static struct Cx unCx(Tr_exp e){
 	case Tr_ex: {
 		struct Cx cx;
 		/*there is no real-label in patchList*/
-		cx.stm = T_Cjump(T_eq, e->u.ex, T_Const(0), NULL, NULL);
+		cx.stm = T_Cjump(T_eq, e->u.ex, T_Const(1), NULL, NULL);
 		cx.trues = PatchList(&(cx.stm->u.CJUMP.true), NULL);
 		cx.falses = PatchList(&(cx.stm->u.CJUMP.false), NULL);
 		return cx;
@@ -290,7 +290,7 @@ Tr_exp Tr_arithExp(A_oper op, Tr_exp left, Tr_exp right) { /* (+, -, *, /) */
 	case A_divideOp: opp = T_div; break;
 	default: assert(0);
 	}
-	return Tr_Ex(T_Binop(opp, unEx(left), unEx(left)));
+	return Tr_Ex(T_Binop(opp, unEx(left), unEx(right)));
 }
 
 Tr_exp Tr_eqExp(A_oper op, Tr_exp left, Tr_exp right) {
