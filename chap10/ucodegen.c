@@ -48,19 +48,19 @@ static Temp_temp munchExp(T_exp e)
             char * op = NULL, * sign = NULL;
             T_exp left = e->u.BINOP.left, right = e->u.BINOP.right;
             MATCH_OP(e->u.BINOP.op, op, sign);
-
-            if (left->kind == T_CONST) { /* BINOP(op, CONST, e) */
-                WRITE_ASM_STR3("%s `s0%s%d, `d0", op, sign, left->u.CONST);	
-                emit(AS_Oper(p2asm_str, TL(r, NULL), TL(munchExp(right), NULL), NULL));
+			
+			if (left->kind == T_CONST) { /* BINOP(op, CONST, e) */
+				WRITE_ASM_STR2("%s $%x, `d0", op, left->u.CONST);	
+                emit(AS_Oper(p2asm_str, TL(r = munchExp(right), NULL), NULL, NULL));
             } else if (e->u.BINOP.right->kind == T_CONST) { /* BINOP(op, e, CONST) */
-                WRITE_ASM_STR3("%s `s0%s%d, `d0", op, sign, right->u.CONST);	
-                emit(AS_Oper(p2asm_str, TL(r, NULL), TL(munchExp(left), NULL), NULL));
+                WRITE_ASM_STR2("%s $%x, `d0", op, right->u.CONST);	
+                emit(AS_Oper(p2asm_str, TL(r = munchExp(left), NULL), NULL, NULL));
             } else { /* BINOP(op, e, e) */
-                WRITE_ASM_STR2("%s `s0%s`s1, `d0", op, sign);
-                emit(AS_Oper(p2asm_str, TL(r, NULL), TL(munchExp(left), TL(munchExp(right), NULL)), NULL));
+                WRITE_ASM_STR("%s `s0, `d0", op);
+                emit(AS_Oper(p2asm_str, TL(r = munchExp(right), NULL), TL(munchExp(left), NULL), NULL));
             }
             return r;
-        }
+		}
 		case T_MEM: 
         {
             T_exp mem = e->u.MEM;

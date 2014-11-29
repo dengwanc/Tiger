@@ -25,11 +25,15 @@ static Temp_tempList munchArgs(int, T_expList, F_accessList);
 
 #define WRITE_ASM_STR(Str, Arg) \
 	sprintf(assem_string, Str, Arg); \
-p2asm_str = String(assem_string)
+	p2asm_str = String(assem_string)
 
 #define WRITE_ASM_STR2(Str, A1, A2) \
 	sprintf(assem_string, Str, A1, A2); \
-p2asm_str = String(assem_string)
+	p2asm_str = String(assem_string)
+
+#define WRITE_ASM_STR3(Str, A1, A2, A3) \
+	sprintf(assem_string, Str, A1, A2, A3); \
+	p2asm_str = String(assem_string)
 
 static Temp_temp munchExp(T_exp e)
 {
@@ -45,14 +49,14 @@ static Temp_temp munchExp(T_exp e)
             MATCH_OP(e->u.BINOP.op, op, sign);
 
             if (left->kind == T_CONST) { /* BINOP(op, CONST, e) */
-                WRITE_ASM_STR2("%s $0x%x, `d0", op, left->u.CONST);	
-                emit(AS_Oper(p2asm_str, TL(r, NULL), TL(munchExp(right), NULL), NULL));
+				WRITE_ASM_STR2("%s $%x, `d0", op, left->u.CONST);	
+                emit(AS_Oper(p2asm_str, TL(r = munchExp(right), NULL), NULL, NULL));
             } else if (e->u.BINOP.right->kind == T_CONST) { /* BINOP(op, e, CONST) */
-                WRITE_ASM_STR2("%s $0x%x, `d0", op, right->u.CONST);	
-                emit(AS_Oper(p2asm_str, TL(r, NULL), TL(munchExp(left), NULL), NULL));
+                WRITE_ASM_STR2("%s $%x, `d0", op, right->u.CONST);	
+                emit(AS_Oper(p2asm_str, TL(r = munchExp(left), NULL), NULL, NULL));
             } else { /* BINOP(op, e, e) */
                 WRITE_ASM_STR("%s `s0, `d0", op);
-                emit(AS_Oper(p2asm_str, TL(r, NULL), TL(munchExp(left), TL(munchExp(right), NULL)), NULL));
+                emit(AS_Oper(p2asm_str, TL(r = munchExp(right), NULL), TL(munchExp(left), NULL), NULL));
             }
             return r;
         }

@@ -41,12 +41,14 @@ A_exp parse(string fname)
 
 static void doProc(FILE *out, F_frame frame, T_stm body)
 {
+ //printStm(body);
  AS_proc proc;
  //struct RA_result allocation;
  T_stmList stmList;
  AS_instrList iList;
 
  stmList = C_linearize(body);
+ //printStmList(stdout, stmList);
  stmList = C_traceSchedule(C_basicBlocks(stmList));
  /* printStmList(stdout, stmList); */
  iList  = codegen(frame, stmList); /* 9 */

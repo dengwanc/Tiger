@@ -7,14 +7,14 @@ L11: string
 BEGIN L12
 L31
 mov $0x5, 106
-mov 4(ebp), 107
+mov 0(ebp), 107
 mov 106, -4(107)
-mov 4(ebp), 112
-mov 8(112), 111
+mov 0(ebp), 112
+mov 4(112), 111
 push 111
 push ebp
 call L15
-mov 4(ebp), 122
+mov 0(ebp), 122
 mov -4(122), 121
 jmp L30
 L30
@@ -22,42 +22,38 @@ END L12
 
 BEGIN L15
 L33
-mov 4(ebp), 126
-mov 12(126), 125
+mov 0(ebp), 126
+mov 8(126), 125
 cmp 125, 100
 je L27
 L28
-mov 4(ebp), 133
-mov 12(133), 132
+mov 0(ebp), 133
+mov 8(133), 132
 mov 0(132), 131
 push 131
 push ebp
 call L16
-mov 4(ebp), 140
-mov 8(140), 139
-mov 4(ebp), 143
-mov 8(143), 142
-add 142+139, 138
-push 138
-mov 4(ebp), 147
-mov 12(147), 146
-mov 4(146), 145
-push 145
-mov 4(ebp), 149
-push 149
+mov 0(ebp), 140
+mov 4(140), 139
+add $1, 139
+push 139
+mov 0(ebp), 144
+mov 8(144), 143
+mov 4(143), 142
+push 142
+mov 0(ebp), 146
+push 146
 call L15
-mov 4(ebp), 155
+mov 0(ebp), 152
+mov 4(152), 151
+add $1, 151
+push 151
+mov 0(ebp), 156
+mov 8(156), 155
 mov 8(155), 154
-mov 4(ebp), 158
-mov 8(158), 157
-add 157+154, 153
-push 153
-mov 4(ebp), 162
-mov 12(162), 161
-mov 8(161), 160
-push 160
-mov 4(ebp), 164
-push 164
+push 154
+mov 0(ebp), 158
+push 158
 call L15
 L29
 jmp L32
@@ -71,58 +67,56 @@ END L15
 
 BEGIN L16
 L35
-mov $0x5, 172
-mov 4(ebp), 173
-mov 172, -4(173)
+mov $0x5, 166
+mov 0(ebp), 167
+mov 166, -4(167)
 L21
-mov $0x1, 175
-mov 175, 104
-mov 4(ebp), 178
-mov -4(178), 177
-mov 4(ebp), 182
-mov 4(182), 181
-mov 8(181), 180
-cmp 177, 180
+mov $0x1, 169
+mov 169, 104
+mov 0(ebp), 172
+mov -4(172), 171
+mov 0(ebp), 176
+mov 0(176), 175
+mov 4(175), 174
+cmp 171, 174
 jl L23
 L24
-mov $0x0, 184
-mov 184, 104
+mov $0x0, 178
+mov 178, 104
 L23
-mov $0x0, 187
-cmp 104, 187
+mov $0x0, 181
+cmp 104, 181
 je L17
 L22
 push L18
-mov 4(ebp), 192
-mov 4(192), 191
-push 191
+mov 0(ebp), 186
+mov 0(186), 185
+push 185
 call L14
-mov $0x1, 194
-mov 194, 103
-mov 4(ebp), 197
-mov -4(197), 196
-mov 4(ebp), 201
-mov -4(201), 200
-mov 4(ebp), 204
-mov -4(204), 203
-add 203+200, 199
-cmp 196, 199
+mov $0x1, 188
+mov 188, 103
+mov 0(ebp), 191
+mov -4(191), 190
+mov 0(ebp), 195
+mov -4(195), 194
+add $1, 194
+cmp 190, 194
 je L19
 L20
-mov $0x0, 206
-mov 206, 103
+mov $0x0, 197
+mov 197, 103
 L19
 jmp L21
 L17
-mov $0x5, 210
-mov 4(ebp), 213
-mov 4(213), 212
-mov 4(212), 211
-mov 210, -4(211)
+mov $0x5, 201
+mov 0(ebp), 204
+mov 0(204), 203
+mov 0(203), 202
+mov 201, -4(202)
 push L25
-mov 4(ebp), 219
-mov 4(219), 218
-push 218
+mov 0(ebp), 210
+mov 0(210), 209
+push 209
 call L14
 jmp L34
 L34
@@ -130,10 +124,10 @@ END L16
 
 BEGIN L14
 L37
-mov $0x5, 222
-mov 4(ebp), 224
-mov 4(224), 223
-mov 222, -4(223)
+mov $0x5, 213
+mov 0(ebp), 215
+mov 0(215), 214
+mov 213, -4(214)
 jmp L36
 L36
 END L14

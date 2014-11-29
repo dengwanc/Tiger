@@ -179,7 +179,7 @@ static struct Cx unCx(Tr_exp e){
 
 Tr_exp Tr_simpleVar(Tr_access ac, Tr_level l) {
 	T_exp addr = T_Temp(F_FP()); /*addr is frame point*/
-	while (l && l != ac->level->parent) { /* until find the level which def the var */
+	while (l->parent && l != ac->level->parent) { /* until find the level which def the var */
 		F_access sl = F_formals(l->frame)->head;
 		addr = F_Exp(sl, addr);
 		l = l->parent;

@@ -1,8 +1,8 @@
 let
-	function mod(m: int, n: int)
-	:int = m + n/*(
-	while (m < n) do m = m - n;
-	n
-	)*/
+	var i := 0
+	var j := 1
+	function 
+	mod(m: int, n: int)
+	: int = (j + n)
 in
 end

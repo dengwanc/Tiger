@@ -1,8 +1,8 @@
 let
+	var i := 0
+	var j := 1
 	function 
 	mod(m: int, n: int)
-	: int = (
-		while (9 < 7) do 9 + 9;
-		n)
+	: int = (9 + 6)
 in
 end

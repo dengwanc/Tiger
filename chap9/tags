@@ -12,7 +12,7 @@ ARRAY	y.tab.c	/^     ARRAY = 286,$/;"	e	enum:yytokentype	file:
 ARRAY	y.tab.c	193;"	d	file:
 ARRAY	y.tab.h	/^     ARRAY = 286,$/;"	e	enum:yytokentype
 ARRAY	y.tab.h	116;"	d
-ASSEM_MOVE_MEM_PLUS	ucodegen.c	99;"	d	file:
+ASSEM_MOVE_MEM_PLUS	ucodegen.c	102;"	d	file:
 ASSIGN	y.tab.c	/^     ASSIGN = 262,$/;"	e	enum:yytokentype	file:
 ASSIGN	y.tab.c	169;"	d	file:
 ASSIGN	y.tab.h	/^     ASSIGN = 262,$/;"	e	enum:yytokentype
@@ -322,7 +322,7 @@ LT	y.tab.c	/^     LT = 268,$/;"	e	enum:yytokentype	file:
 LT	y.tab.c	175;"	d	file:
 LT	y.tab.h	/^     LT = 268,$/;"	e	enum:yytokentype
 LT	y.tab.h	98;"	d
-MATCH_CMP	ucodegen.c	106;"	d	file:
+MATCH_CMP	ucodegen.c	109;"	d	file:
 MATCH_OP	ucodegen.c	17;"	d	file:
 MAX_LENGTH	util.h	8;"	d
 MEM	tree.h	/^		T_exp MEM;$/;"	m	union:T_exp_::__anon47
@@ -608,6 +608,7 @@ WHILE	y.tab.h	/^     WHILE = 290,$/;"	e	enum:yytokentype
 WHILE	y.tab.h	120;"	d
 WRITE_ASM_STR	ucodegen.c	26;"	d	file:
 WRITE_ASM_STR2	ucodegen.c	30;"	d	file:
+WRITE_ASM_STR3	ucodegen.c	34;"	d	file:
 YYABORT	y.tab.c	807;"	d	file:
 YYACCEPT	y.tab.c	806;"	d	file:
 YYBACKUP	y.tab.c	828;"	d	file:
@@ -749,7 +750,7 @@ absyn_root	y.tab.c	/^A_exp absyn_root;$/;"	v
 access	env.h	/^		struct {Tr_access access; Ty_ty ty;} var;$/;"	m	struct:E_enventry_::__anon29::__anon30
 access	translate.c	/^	F_access access;$/;"	m	struct:Tr_access_	file:
 actual_ty	semant.c	/^static Ty_ty actual_ty(Ty_ty ty){$/;"	f	file:
-add	function.tig.s	/^add 105, 101$/;"	l
+add	function.tig.s	/^add $2, 102$/;"	l
 adjust	lex.yy.c	/^void adjust(void)$/;"	f
 alloca	y.tab.c	353;"	d	file:
 anyErrors	errormsg.c	/^bool anyErrors= FALSE;$/;"	v
@@ -967,10 +968,9 @@ makeFormals	semant.c	/^static U_boolList makeFormals(A_fieldList params) {$/;"	f
 marksym	symbol.c	/^static struct S_symbol_ marksym = {"<mark>",0}; \/*a mark rember the position into a scope*\/$/;"	v	typeref:struct:S_symbol_	file:
 mkBlocks	canon.c	/^static C_stmListList mkBlocks(T_stmList stms, Temp_label done)$/;"	f	file:
 mksymbol	symbol.c	/^static S_symbol mksymbol(string name, S_symbol next)$/;"	f	file:
-mov	function.tig.s	/^mov 4(ebp), 103$/;"	l
-mov	function.tig.s	/^mov 4(ebp), 106$/;"	l
-mov	function.tig.s	/^mov 8(103), 102$/;"	l
-mov	function.tig.s	/^mov 8(106), 105$/;"	l
+mov	function.tig.s	/^mov -4(103), 102$/;"	l
+mov	function.tig.s	/^mov 0(104), 103$/;"	l
+mov	function.tig.s	/^mov 0(ebp), 104$/;"	l
 munchArgs	ucodegen.c	/^static Temp_tempList munchArgs(int i, T_expList args, F_accessList formals) $/;"	f	file:
 munchExp	ucodegen.c	/^static Temp_temp munchExp(T_exp e)$/;"	f	file:
 munchStm	ucodegen.c	/^static void munchStm(T_stm s)$/;"	f	file:
