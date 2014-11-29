@@ -209,8 +209,6 @@ static F_fragList stringFragList = NULL;
 Tr_exp Tr_stringExp(string s) { 
 	/*const-string is a label point a addr*/
 	Temp_label slabel = Temp_newlabel();
-    //pr_format_str(s);
-    //puts("");
 	F_frag fragment = F_StringFrag(slabel, s);
 	stringFragList = F_FragList(fragment, stringFragList);
 	return Tr_Ex(T_Name(slabel));
@@ -287,7 +285,7 @@ Tr_exp Tr_whileExp(Tr_exp test, Tr_exp body, Tr_exp done) {
 										            T_Eseq(T_Label(unEx(done)->u.NAME), T_Const(0))))))));
 }
 
-Tr_exp Tr_assignExp(Tr_exp lval, Tr_exp exp) { return Tr_Nx(T_Move(unEx(lval), /*unEx(exp)*/ T_Const(5))); }
+Tr_exp Tr_assignExp(Tr_exp lval, Tr_exp exp) { return Tr_Nx(T_Move(unEx(lval), unEx(exp))); }
 
 Tr_exp Tr_breakExp(Tr_exp b) { return Tr_Nx(T_Jump(T_Name(unEx(b)->u.NAME), Temp_LabelList(unEx(b)->u.NAME, NULL))); }
 

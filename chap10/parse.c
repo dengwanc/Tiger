@@ -43,6 +43,7 @@ A_exp parse(string fname)
 
 static void doProc(FILE *out, F_frame frame, T_stm body)
 {
+	//printStm(body);
 	AS_proc proc;
 	T_stmList stmList;
 	AS_instrList iList;
@@ -51,9 +52,9 @@ static void doProc(FILE *out, F_frame frame, T_stm body)
 	iList  = codegen(frame, stmList); /* 9 */
 	G_graph g = FG_AssemFlowGraph(iList);
 	L_liveness(g);
-	fprintf(out, "BEGIN %s\n", Temp_labelstring(F_name(frame)));
+	//fprintf(out, "BEGIN %s\n", Temp_labelstring(F_name(frame)));
 	AS_printInstrList (out, iList, Temp_layerMap(F_tempMap,Temp_name()));
-	fprintf(out, "END %s\n\n", Temp_labelstring(F_name(frame)));
+	//fprintf(out, "END %s\n\n", Temp_labelstring(F_name(frame)));
 }
 
 int main(int argc, string *argv)
@@ -84,7 +85,7 @@ int main(int argc, string *argv)
 		absyn_root = parse(argv[1]);
 		if (!absyn_root) return 1;
 
-
+        //pr_exp(stdout,absyn_root, 4);
 		frags = SEM_transProg(absyn_root);
 		if (anyErrors) return 1; /* don't continue */
 

@@ -3,6 +3,7 @@
 #include "symbol.h"
 #include "temp.h"
 #include "tree.h"
+#include "assem.h"
 #include "frame.h"
 
 const int F_WORD_SIZE = 4; /* 4 byte */
@@ -194,6 +195,22 @@ T_exp F_externalCall(string str, T_expList args) {
 
 T_stm F_procEntryExit1(F_frame frame, T_stm stm) {
 	return stm;
+}
+
+static Temp_tempList returnSink = NULL;
+AS_instrList  F_procEntryExit2(AS_instrList body)
+{
+	/* tell reg-alloc-engine which regs are lives in proc-Exit
+	 */
+	if (!returnSink) returnSink = calleesaves();
+	return AS_splice(body, AS_InstrList(AS_Oper("", NULL, returnSink, NULL), NULL));
+}
+
+AS_proc F_procEntryExit3(F_frame frame, AS_instrList body)
+{
+	char buf[100];
+	sprintf(buf, "PROC %s\n", Temp_labelstring(frame->name));
+	return AS_Proc(String(buf), body, "END\n");
 }
 
 /*******DEBUG_INFO********/
