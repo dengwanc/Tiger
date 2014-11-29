@@ -332,8 +332,13 @@ L11	fuck.tig.s	/^L11: string$/;"	l
 L12	function.tig.s	/^L12$/;"	l
 L13	fuck.tig.s	/^L13: $/;"	l
 L13	function.tig.s	/^L13$/;"	l
+L14	function.tig.s	/^L14$/;"	l
+L15	function.tig.s	/^L15$/;"	l
+L16	function.tig.s	/^L16$/;"	l
 L17	fuck.tig.s	/^L17$/;"	l
+L17	function.tig.s	/^L17$/;"	l
 L18	fuck.tig.s	/^L18:  $/;"	l
+L18	function.tig.s	/^L18$/;"	l
 L19	fuck.tig.s	/^L19$/;"	l
 L20	fuck.tig.s	/^L20$/;"	l
 L21	fuck.tig.s	/^L21$/;"	l
@@ -385,7 +390,7 @@ L_gtemp	liveness.c	/^Temp_temp L_gtemp(G_node n)$/;"	f
 L_liveness	liveness.c	/^struct L_graph L_liveness(G_graph flow)$/;"	f
 L_moveList	liveness.h	/^typedef struct L_moveList_ * L_moveList;$/;"	t	typeref:struct:L_moveList_
 L_moveList_	liveness.h	/^struct L_moveList_ {$/;"	s
-LiveMap	liveness.c	/^static G_table LiveMap(G_graph flow)$/;"	f	file:
+LiveMap	liveness.c	/^static Temp_tempList LiveMap(G_node n)$/;"	f	file:
 MATCH_CMP	ucodegen.c	111;"	d	file:
 MATCH_OP	ucodegen.c	18;"	d	file:
 MAX_LENGTH	util.h	8;"	d
@@ -863,6 +868,8 @@ cmp	fuck.tig.s	/^cmp 104, 181$/;"	l
 cmp	fuck.tig.s	/^cmp 125, 100$/;"	l
 cmp	fuck.tig.s	/^cmp 171, 174$/;"	l
 cmp	fuck.tig.s	/^cmp 190, 194$/;"	l
+cmp	function.tig.s	/^cmp 101, 111$/;"	l
+cmp	function.tig.s	/^cmp 104, 107$/;"	l
 codegen	ucodegen.c	/^AS_instrList codegen(F_frame f, T_stmList s)$/;"	f
 comment	lex.yy.c	608;"	d	file:
 comment_nest	lex.yy.c	/^static int comment_nest = 0;$/;"	v	file:
@@ -1013,14 +1020,17 @@ ival	y.tab.h	/^	int ival;$/;"	m	union:YYSTYPE
 je	fuck.tig.s	/^je L17$/;"	l
 je	fuck.tig.s	/^je L19$/;"	l
 je	fuck.tig.s	/^je L27$/;"	l
+je	function.tig.s	/^je L14$/;"	l
 jl	fuck.tig.s	/^jl L23$/;"	l
+jl	function.tig.s	/^jl L12$/;"	l
 jmp	fuck.tig.s	/^jmp L21$/;"	l
 jmp	fuck.tig.s	/^jmp L29$/;"	l
 jmp	fuck.tig.s	/^jmp L30$/;"	l
 jmp	fuck.tig.s	/^jmp L32$/;"	l
 jmp	fuck.tig.s	/^jmp L34$/;"	l
 jmp	fuck.tig.s	/^jmp L36$/;"	l
-jmp	function.tig.s	/^jmp L12$/;"	l
+jmp	function.tig.s	/^jmp L15$/;"	l
+jmp	function.tig.s	/^jmp L17$/;"	l
 joinPatch	translate.c	/^static patchList joinPatch(patchList fir, patchList scd) {$/;"	f	file:
 jumps	assem.h	/^		struct {string assem; Temp_tempList dst, src; AS_targets jumps;} OPER;$/;"	m	struct:AS_instr_::__anon24::__anon25
 jumps	tree.h	/^		struct {T_exp exp; Temp_labelList jumps;} JUMP;$/;"	m	struct:T_stm_::__anon41::__anon43
@@ -1125,17 +1135,27 @@ mov	fuck.tig.s	/^mov 8(133), 132$/;"	l
 mov	fuck.tig.s	/^mov 8(144), 143$/;"	l
 mov	fuck.tig.s	/^mov 8(155), 154$/;"	l
 mov	fuck.tig.s	/^mov 8(156), 155$/;"	l
-mov	function.tig.s	/^mov $0x5, 101$/;"	l
-mov	function.tig.s	/^mov 0(ebp), 102$/;"	l
-mov	function.tig.s	/^mov 101, -4(102)$/;"	l
+mov	function.tig.s	/^mov $0x0, 108$/;"	l
+mov	function.tig.s	/^mov $0x0, 111$/;"	l
+mov	function.tig.s	/^mov $0x0, 112$/;"	l
+mov	function.tig.s	/^mov $0x1, 102$/;"	l
+mov	function.tig.s	/^mov $0x13, 107$/;"	l
+mov	function.tig.s	/^mov -12(117), 116$/;"	l
+mov	function.tig.s	/^mov -4(105), 104$/;"	l
+mov	function.tig.s	/^mov 0(ebp), 105$/;"	l
+mov	function.tig.s	/^mov 0(ebp), 113$/;"	l
+mov	function.tig.s	/^mov 0(ebp), 117$/;"	l
+mov	function.tig.s	/^mov 102, 101$/;"	l
+mov	function.tig.s	/^mov 108, 101$/;"	l
+mov	function.tig.s	/^mov 112, -4(113)$/;"	l
 moves	liveness.h	/^	L_moveList moves;$/;"	m	struct:L_graph
 munchArgs	ucodegen.c	/^static Temp_tempList munchArgs(int i, T_expList args\/*, F_accessList formals*\/) $/;"	f	file:
 munchExp	ucodegen.c	/^static Temp_temp munchExp(T_exp e)$/;"	f	file:
 munchStm	ucodegen.c	/^static void munchStm(T_stm s)$/;"	f	file:
 mygraph	graph.c	/^  G_graph mygraph;$/;"	m	struct:G_node_	file:
-mykey	graph.c	/^  int mykey;$/;"	m	struct:G_node_	file:
-mylast	graph.c	/^    G_nodeList mylast;  \/* the tail of the node-list *\/$/;"	m	struct:G_graph_	file:
-mynodes	graph.c	/^    G_nodeList mynodes; \/* the head of the node-list *\/$/;"	m	struct:G_graph_	file:
+mykey	graph.c	/^  int mykey; \/*this node is order-x add graph*\/$/;"	m	struct:G_node_	file:
+mylast	graph.c	/^    G_nodeList mylast;  \/* the node-list point the tail *\/$/;"	m	struct:G_graph_	file:
+mynodes	graph.c	/^    G_nodeList mynodes; \/* the node-list point the head *\/$/;"	m	struct:G_graph_	file:
 name	absyn.h	/^		S_symbol name;$/;"	m	union:A_ty_::__anon21
 name	absyn.h	/^    S_symbol name; $/;"	m	struct:A_fundec_
 name	absyn.h	/^struct A_efield_ {S_symbol name; A_exp exp;};$/;"	m	struct:A_efield_

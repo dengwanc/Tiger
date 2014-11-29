@@ -51,7 +51,10 @@ static void doProc(FILE *out, F_frame frame, T_stm body)
 	stmList = C_traceSchedule(C_basicBlocks(stmList));
 	iList  = codegen(frame, stmList); /* 9 */
 	G_graph g = FG_AssemFlowGraph(iList);
-	L_liveness(g);
+	//G_show(stdout, G_nodes(g), show_instr);
+	//show_graph(g);
+	struct L_graph lg = L_liveness(g);
+	show_graph(lg.graph);
 	//fprintf(out, "BEGIN %s\n", Temp_labelstring(F_name(frame)));
 	AS_printInstrList (out, iList, Temp_layerMap(F_tempMap,Temp_name()));
 	//fprintf(out, "END %s\n\n", Temp_labelstring(F_name(frame)));

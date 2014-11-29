@@ -19,6 +19,10 @@ static G_graph confilictGraph(G_nodeList);
 
 L_moveList L_MoveList(G_node src, G_node dst, L_moveList tail)
 {
+	/* the constructor of L_moveList
+	 * alloc the same register in move-instr. src <=> dst @1 
+	 * L_moveList is a list of @1
+	 */
 	L_moveList moves = checked_malloc(sizeof(*moves));
 	moves->src = src;
 	moves->dst = dst;
@@ -30,11 +34,12 @@ struct L_graph L_liveness(G_graph flow)
 {
 	assert(flow);
 	struct L_graph lg;
-	livenessAnalyze(flow);
+	livenessAnalyze(flow); /* solution of data-flow */
+    //G_show(stdout, G_nodes(flow), show_instr);	
 	G_graph g = confilictGraph(G_nodes(flow));
-	//show_graph(g);
-	//printf("\n\n\n");
 	lg.graph = g;
+	//show_graph(g);
+	/* there ignore L_moveList due to dont know how to do */
 	return lg;
 }
 
@@ -51,8 +56,7 @@ static void initConflictg(G_graph g)
 
 static G_graph confilictGraph(G_nodeList nl)
 {
-	/*
-	 * init a graph node-info save temp type
+	/* init a graph node-info save temp type
 	 * with create a all-regs list
 	 * with ctrate a temp -> node table
 	 */
@@ -110,12 +114,12 @@ static G_graph confilictGraph(G_nodeList nl)
 
 Temp_temp L_gtemp(G_node n)
 {
-	return NULL;
+	return (Temp_temp)G_nodeInfo(n);
 }
 
-static G_table LiveMap(G_graph flow)
+static Temp_tempList LiveMap(G_node n)
 {
-	return NULL;
+	return unionn(TAB_look(in, n), TAB_look(out, n));
 }
 
 static void reqAllRegs(G_nodeList nl)

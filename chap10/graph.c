@@ -17,13 +17,13 @@
 
 struct G_graph_ { /* digraph */
     int nodecount;
-    G_nodeList mynodes; /* the head of the node-list */
-    G_nodeList mylast;  /* the tail of the node-list */
+    G_nodeList mynodes; /* the node-list point the head */
+    G_nodeList mylast;  /* the node-list point the tail */
 };
 
 struct G_node_ {
   G_graph mygraph;
-  int mykey;
+  int mykey; /*this node is order-x add graph*/
   G_nodeList succs; 
   G_nodeList preds; 
   void *info; /* additional info */
@@ -85,43 +85,18 @@ void G_addEdge(G_node from, G_node to)
 }
 
 static G_nodeList delete(G_node a, G_nodeList l) {
+  /* assis function of rmEdge */
   assert(a && l);
   if (a==l->head) return l->tail;
   else return G_NodeList(l->head, delete(a, l->tail)); /* re-create node-list, waste space*/
 }
 
 void G_rmEdge(G_node from, G_node to) {
+  /* delete the edge from->to */
   assert(from && to);
   to->preds=delete(from,to->preds);
   from->succs=delete(to,from->succs);
 }
-
-void printtemp(void * temp) { Temp_temp t = (Temp_temp) temp; printf("temp: %d\n", Temp_tempint(t)); }
-
- /**
-  * Print a human-readable dump for debug.
-  */
-void G_show(FILE *out, G_nodeList p, void showInfo(void *)) {
-  for (; p; p=p->tail) {
-    G_node n = p->head;
-    G_nodeList q;
-    assert(n);
-	
-    if (showInfo) showInfo(n->info);
-	
-    fprintf(out, " (%d)->succ: ", n->mykey); 
-    for(q=G_succ(n); q; q=q->tail) fprintf(out, "%d ", q->head->mykey);
-	
-    fprintf(out, "\n");
-  }
-}
-
-/* user add */
-void show_graph(G_graph g) 
-{
-	assert(g);
-	G_show(stdout, g->mynodes, /*show_instr*/ printtemp);
-} 
 
 G_nodeList G_succ(G_node n) { assert(n); return n->succs; }
 
@@ -179,4 +154,32 @@ void *G_look(G_table t, G_node node)
   return TAB_look(t, node);
 }
 
+void printtemp(void * temp) { Temp_temp t = (Temp_temp) temp; printf("temp: %d\n", Temp_tempint(t)); }
+
+ /**
+  * Print a human-readable dump for debug.
+  */
+void G_show(FILE *out, G_nodeList p, void showInfo(void *)) {
+  for (; p; p=p->tail) {
+    G_node n = p->head;
+    G_nodeList q;
+    assert(n);
+	
+	
+    fprintf(out, "(%d)->succ: ", n->mykey); 
+    for(q=G_succ(n); q; q=q->tail) fprintf(out, "%d ", q->head->mykey);
+	fprintf(out, "\n(%d)->pred: ", n->mykey);
+	for(q=G_pred(n); q; q=q->tail) fprintf(out, "%d ", q->head->mykey);
+    fprintf(out, "\nNodeInfo: ");	
+    if (showInfo) showInfo(n->info);
+    fprintf(out, "\n");
+  }
+}
+
+/* user add */
+void show_graph(G_graph g) 
+{
+	assert(g);
+	G_show(stdout, g->mynodes, printtemp);
+} 
 

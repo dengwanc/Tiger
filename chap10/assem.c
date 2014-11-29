@@ -165,12 +165,13 @@ void show_instr(void * i)
 	AS_instr instr = (AS_instr) i;
 	assert(F_tempMap);
 	assert(instr);
-	/*
-	switch (instr->kind) {
-		case I_OPER: puts(instr->u.OPER.assem);
-		case I_LABEL: puts(instr->u.LABEL.assem);
-		case I_MOVE: puts(instr->u.MOVE.assem);
-	}
-	*/
-    AS_print(stdout, instr, F_tempMap);	
+
+	/*switch (instr->kind) {
+		case I_OPER: puts(instr->u.OPER.assem); break;
+		case I_LABEL: puts(instr->u.LABEL.assem); break;
+		case I_MOVE: puts(instr->u.MOVE.assem); break;
+		default: assert("Invalid SHOW INSTR");
+	}*/
+
+    AS_print(stdout, instr, Temp_layerMap(F_tempMap, Temp_name()));
 }
