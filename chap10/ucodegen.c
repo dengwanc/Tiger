@@ -5,6 +5,7 @@
 #include "tree.h"
 #include "frame.h"
 #include "assem.h"
+#include "printtree.h"
 
 extern Temp_map F_tempMap;
 static F_frame  Co_frame = NULL; /* current function frame */
@@ -12,7 +13,7 @@ static F_frame  Co_frame = NULL; /* current function frame */
 static void emit(AS_instr);
 static Temp_temp munchExp(T_exp);
 static void munchStm(T_stm);
-static Temp_tempList munchArgs(int, T_expList, F_accessList);
+static Temp_tempList munchArgs(int, T_expList);
 
 #define MATCH_OP(I, Op, Sign) \
 	switch (I) { \
@@ -30,7 +31,6 @@ p2asm_str = String(assem_string)
 #define WRITE_ASM_STR2(Str, A1, A2) \
 	sprintf(assem_string, Str, A1, A2); \
 p2asm_str = String(assem_string)
-
 
 #define WRITE_ASM_STR3(Str, A1, A2, A3) \
 	sprintf(assem_string, Str, A1, A2, A3); \
@@ -93,8 +93,8 @@ static Temp_temp munchExp(T_exp e)
         case T_CALL: 
         {
             r = munchExp(e->u.CALL.fun);
-            emit(AS_Oper(String("call `s0"), F_calldefs(), TL(r, munchArgs(0, e->u.CALL.args, F_formals(Co_frame))), NULL));
-            return r;
+            emit(AS_Oper(String("call `s0"), F_calldefs(), TL(r, munchArgs(0, e->u.CALL.args)), NULL));
+			return r; /* return value unsure */
         }
 		default: assert(0 && "invalid T_exp");
 	}
@@ -180,23 +180,21 @@ static void munchStm(T_stm s)
 
 static string reg_names[] = {"eax", "ebx", "ecx", "edx", "edi", "esi"}; 
 static int    reg_count = 0;
-static Temp_tempList munchArgs(int i, T_expList args, F_accessList formals) 
+static Temp_tempList munchArgs(int i, T_expList args/*, F_accessList formals*/) 
 {
-    if (!Co_frame) assert(0 && "Invalid Frame");
-	/* get args register-list */
-	if (!args || !formals) return NULL;
+	/* pass params to function
+	 * actually use all push stack, no reg pass paras
+	 */
 
-	Temp_tempList tlist = munchArgs(i + 1, args->tail, formals->tail);
+	/* get args register-list */
+	if (!args) return NULL;
+
+	Temp_tempList tlist = munchArgs(i + 1, args->tail);
 	Temp_temp rarg = munchExp(args->head);
 	char assem_string[100];
 	string p2asm_str;
 
-	if (F_isEscape(formals->head) || reg_count > 5) {
-		emit(AS_Oper(String("push `s0"), NULL, TL(rarg, NULL), NULL));	
-	} else {
-		WRITE_ASM_STR("mov `s0 %s", reg_names[reg_count++]);
-		emit(AS_Move(p2asm_str, NULL, TL(rarg, NULL)));
-	}
+	emit(AS_Oper(String("push `s0"), NULL, TL(rarg, NULL), NULL));	
 	return (rarg, tlist);
 }
 

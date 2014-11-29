@@ -12,7 +12,7 @@ ARRAY	y.tab.c	/^     ARRAY = 286,$/;"	e	enum:yytokentype	file:
 ARRAY	y.tab.c	193;"	d	file:
 ARRAY	y.tab.h	/^     ARRAY = 286,$/;"	e	enum:yytokentype
 ARRAY	y.tab.h	116;"	d
-ASSEM_MOVE_MEM_PLUS	ucodegen.c	104;"	d	file:
+ASSEM_MOVE_MEM_PLUS	ucodegen.c	105;"	d	file:
 ASSIGN	y.tab.c	/^     ASSIGN = 262,$/;"	e	enum:yytokentype	file:
 ASSIGN	y.tab.c	169;"	d	file:
 ASSIGN	y.tab.h	/^     ASSIGN = 262,$/;"	e	enum:yytokentype
@@ -138,6 +138,7 @@ BEGIN	fuck.tig.s	/^BEGIN L14$/;"	l
 BEGIN	fuck.tig.s	/^BEGIN L15$/;"	l
 BEGIN	fuck.tig.s	/^BEGIN L16$/;"	l
 BEGIN	function.tig.s	/^BEGIN L11$/;"	l
+BEGIN	function.tig.s	/^BEGIN L12$/;"	l
 BEGIN	lex.yy.c	125;"	d	file:
 BINOP	tree.h	/^		struct {T_binOp op; T_exp left, right;} BINOP;$/;"	m	union:T_exp_::__anon47	typeref:struct:T_exp_::__anon47::__anon48
 BREAK	y.tab.c	/^     BREAK = 298,$/;"	e	enum:yytokentype	file:
@@ -309,7 +310,7 @@ IN	y.tab.c	202;"	d	file:
 IN	y.tab.h	/^     IN = 295,$/;"	e	enum:yytokentype
 IN	y.tab.h	125;"	d
 INITIAL	lex.yy.c	607;"	d	file:
-INIT_REG	uframe.c	123;"	d	file:
+INIT_REG	uframe.c	122;"	d	file:
 INT	y.tab.c	/^     INT = 260,$/;"	e	enum:yytokentype	file:
 INT	y.tab.c	167;"	d	file:
 INT	y.tab.h	/^     INT = 260,$/;"	e	enum:yytokentype
@@ -328,9 +329,11 @@ InReg	uframe.c	/^static F_access InReg(Temp_temp t) {$/;"	f	file:
 IntList	errormsg.c	/^typedef struct intList {int i; struct intList *rest;} *IntList;$/;"	t	typeref:struct:intList	file:
 JUMP	tree.h	/^		struct {T_exp exp; Temp_labelList jumps;} JUMP;$/;"	m	union:T_stm_::__anon41	typeref:struct:T_stm_::__anon41::__anon43
 L11	fuck.tig.s	/^L11: string$/;"	l
-L12	function.tig.s	/^L12$/;"	l
 L13	fuck.tig.s	/^L13: $/;"	l
 L13	function.tig.s	/^L13$/;"	l
+L14	function.tig.s	/^L14$/;"	l
+L15	function.tig.s	/^L15$/;"	l
+L16	function.tig.s	/^L16$/;"	l
 L17	fuck.tig.s	/^L17$/;"	l
 L18	fuck.tig.s	/^L18:  $/;"	l
 L19	fuck.tig.s	/^L19$/;"	l
@@ -385,8 +388,8 @@ L_liveness	liveness.c	/^struct L_graph L_liveness(G_graph flow)$/;"	f
 L_moveList	liveness.h	/^typedef struct L_moveList_ * L_moveList;$/;"	t	typeref:struct:L_moveList_
 L_moveList_	liveness.h	/^struct L_moveList_ {$/;"	s
 LiveMap	liveness.c	/^static G_table LiveMap(G_graph flow)$/;"	f	file:
-MATCH_CMP	ucodegen.c	111;"	d	file:
-MATCH_OP	ucodegen.c	17;"	d	file:
+MATCH_CMP	ucodegen.c	112;"	d	file:
+MATCH_OP	ucodegen.c	18;"	d	file:
 MAX_LENGTH	util.h	8;"	d
 MEM	tree.h	/^		T_exp MEM;$/;"	m	union:T_exp_::__anon47
 MINUS	y.tab.c	/^     MINUS = 271,$/;"	e	enum:yytokentype	file:
@@ -672,9 +675,9 @@ WHILE	y.tab.c	/^     WHILE = 290,$/;"	e	enum:yytokentype	file:
 WHILE	y.tab.c	197;"	d	file:
 WHILE	y.tab.h	/^     WHILE = 290,$/;"	e	enum:yytokentype
 WHILE	y.tab.h	120;"	d
-WRITE_ASM_STR	ucodegen.c	26;"	d	file:
-WRITE_ASM_STR2	ucodegen.c	30;"	d	file:
-WRITE_ASM_STR3	ucodegen.c	35;"	d	file:
+WRITE_ASM_STR	ucodegen.c	27;"	d	file:
+WRITE_ASM_STR2	ucodegen.c	31;"	d	file:
+WRITE_ASM_STR3	ucodegen.c	36;"	d	file:
 YYABORT	y.tab.c	807;"	d	file:
 YYACCEPT	y.tab.c	806;"	d	file:
 YYBACKUP	y.tab.c	828;"	d	file:
@@ -819,7 +822,7 @@ actual_ty	semant.c	/^static Ty_ty actual_ty(Ty_ty ty){$/;"	f	file:
 add	fuck.tig.s	/^add $1, 139$/;"	l
 add	fuck.tig.s	/^add $1, 151$/;"	l
 add	fuck.tig.s	/^add $1, 194$/;"	l
-add	function.tig.s	/^add 102, 106$/;"	l
+add	function.tig.s	/^add $9, 115$/;"	l
 adjust	lex.yy.c	/^void adjust(void)$/;"	f
 alloca	y.tab.c	353;"	d	file:
 allregs	liveness.c	/^static Temp_tempList allregs; \/* i hope fix the blemish *\/$/;"	v	file:
@@ -852,6 +855,7 @@ call	absyn.h	/^	    struct {S_symbol func; A_expList args;} call;$/;"	m	union:A_
 call	fuck.tig.s	/^call L14$/;"	l
 call	fuck.tig.s	/^call L15$/;"	l
 call	fuck.tig.s	/^call L16$/;"	l
+call	function.tig.s	/^call L11$/;"	l
 calleesaves	uframe.c	/^static Temp_tempList calleesaves() $/;"	f	file:
 callersaves	uframe.c	/^static Temp_tempList callersaves() $/;"	f	file:
 cat	graph.c	/^static G_nodeList cat(G_nodeList a, G_nodeList b) {$/;"	f	file:
@@ -1020,7 +1024,8 @@ jmp	fuck.tig.s	/^jmp L30$/;"	l
 jmp	fuck.tig.s	/^jmp L32$/;"	l
 jmp	fuck.tig.s	/^jmp L34$/;"	l
 jmp	fuck.tig.s	/^jmp L36$/;"	l
-jmp	function.tig.s	/^jmp L12$/;"	l
+jmp	function.tig.s	/^jmp L13$/;"	l
+jmp	function.tig.s	/^jmp L15$/;"	l
 joinPatch	translate.c	/^static patchList joinPatch(patchList fir, patchList scd) {$/;"	f	file:
 jumps	assem.h	/^		struct {string assem; Temp_tempList dst, src; AS_targets jumps;} OPER;$/;"	m	struct:AS_instr_::__anon24::__anon25
 jumps	tree.h	/^		struct {T_exp exp; Temp_labelList jumps;} JUMP;$/;"	m	struct:T_stm_::__anon41::__anon43
@@ -1125,13 +1130,12 @@ mov	fuck.tig.s	/^mov 8(133), 132$/;"	l
 mov	fuck.tig.s	/^mov 8(144), 143$/;"	l
 mov	fuck.tig.s	/^mov 8(155), 154$/;"	l
 mov	fuck.tig.s	/^mov 8(156), 155$/;"	l
-mov	function.tig.s	/^mov -8(103), 102$/;"	l
-mov	function.tig.s	/^mov 0(104), 103$/;"	l
-mov	function.tig.s	/^mov 0(ebp), 104$/;"	l
-mov	function.tig.s	/^mov 0(ebp), 107$/;"	l
-mov	function.tig.s	/^mov 8(107), 106$/;"	l
+mov	function.tig.s	/^mov $0x2, 103$/;"	l
+mov	function.tig.s	/^mov $0x4, 104$/;"	l
+mov	function.tig.s	/^mov $0x6, 115$/;"	l
+mov	function.tig.s	/^mov 0(ebp), 105$/;"	l
 moves	liveness.h	/^	L_moveList moves;$/;"	m	struct:L_graph
-munchArgs	ucodegen.c	/^static Temp_tempList munchArgs(int i, T_expList args, F_accessList formals) $/;"	f	file:
+munchArgs	ucodegen.c	/^static Temp_tempList munchArgs(int i, T_expList args\/*, F_accessList formals*\/) $/;"	f	file:
 munchExp	ucodegen.c	/^static Temp_temp munchExp(T_exp e)$/;"	f	file:
 munchStm	ucodegen.c	/^static void munchStm(T_stm s)$/;"	f	file:
 mygraph	graph.c	/^  G_graph mygraph;$/;"	m	struct:G_node_	file:
@@ -1229,7 +1233,10 @@ push	fuck.tig.s	/^push L18$/;"	l
 push	fuck.tig.s	/^push L25$/;"	l
 push	fuck.tig.s	/^push L26$/;"	l
 push	fuck.tig.s	/^push ebp$/;"	l
-ra	uframe.c	/^static Temp_temp ra = NULL;$/;"	v	file:
+push	function.tig.s	/^push 103$/;"	l
+push	function.tig.s	/^push 104$/;"	l
+push	function.tig.s	/^push 105$/;"	l
+ra	uframe.c	/^static Temp_temp ra = NULL; \/* may addr in memory may no use *\/$/;"	v	file:
 record	absyn.h	/^		A_fieldList record;$/;"	m	union:A_ty_::__anon21
 record	absyn.h	/^	    struct {S_symbol typ; A_efieldList fields;} record;$/;"	m	union:A_exp_::__anon7	typeref:struct:A_exp_::__anon7::__anon10
 record	tiger.y	/^record: id LBRACE refields RBRACE {$$ = A_RecordExp(EM_tokPos, $1, $3);}$/;"	l

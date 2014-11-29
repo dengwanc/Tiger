@@ -4,5 +4,6 @@ let
 	function 
 	mod(m: int, n: int)
 	: int = (9 + 6)
+	function a(): int = mod(2, 4)
 in
 end

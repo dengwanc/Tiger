@@ -61,7 +61,6 @@ static F_accessList makeFormalAccessList(F_frame f, U_boolList formals) {
 		if (i < F_MAX_REG && !fmls->head) {
 			ac = InReg(Temp_newtemp());
 		} else {
-			/*keep a space for return*/
 			ac = InFrame((i) * F_WORD_SIZE);
 		}
 		if (head) {
@@ -122,6 +121,7 @@ F_fragList F_FragList(F_frag head, F_fragList tail) {
 
 #define INIT_REG(Reg, Name) (Reg ? Reg : (Reg = Temp_newtemp(), Temp_enter(F_TEMPMAP, Reg, Name), Reg))
 
+/* kinds special register */
 static Temp_temp fp = NULL;
 Temp_temp F_FP() { return INIT_REG(fp, "ebp"); } 
 
@@ -131,13 +131,15 @@ Temp_temp F_SP() { return INIT_REG(fp, "esp"); }
 static Temp_temp rv = NULL; 
 Temp_temp F_RV() { return INIT_REG(rv, "eax"); }
 
-static Temp_temp ra = NULL;
+static Temp_temp ra = NULL; /* may addr in memory may no use */
 Temp_temp F_RA() { return INIT_REG(ra, "---"); }
 
 static Temp_tempList callersaves() 
 {
-	/* assist-function of calldefs() */
-
+	/* assist-function of calldefs() 
+	 * kinds of usual register
+	 */
+	
 	Temp_temp ebx = Temp_newtemp(),
 			  ecx = Temp_newtemp(),
 			  edx = Temp_newtemp(),
@@ -158,16 +160,14 @@ static Temp_tempList sepecialregs()
     return spcregs;
 }
 
-/*-short argsregs, because pass arg by stack*/
+/* no regs pass arg, because pass arg only by stack */
 
 static Temp_tempList calleesaves() 
 {   
-    /* callee protect sp, fp, ebx */
+    /* callee protect sp, fp */
     static Temp_tempList calleeregs = NULL;
     if (!calleeregs) {
-        Temp_temp ebx = Temp_newtemp();
-        Temp_enter(F_TEMPMAP, ebx, "ebx");
-        calleeregs = TL(F_SP(), TL(F_FP(), TL(ebx, NULL)));
+        calleeregs = TL(F_SP(), TL(F_FP(), NULL));
     }
     return calleeregs;
 }
@@ -177,7 +177,7 @@ Temp_tempList F_calldefs()
 {
 	/* some registers that may raise side-effect (caller procted, return-val-reg, return-addr-reg) */
 	static Temp_tempList protected_regs = NULL;
-	return protected_regs ? protected_regs : (protected_regs = callersaves());
+	return protected_regs ? protected_regs : (protected_regs = TL(F_RV(), callersaves()));
 }
 
 T_exp F_Exp(F_access access, T_exp framePtr){ /* visit frame-offs addr & get content */

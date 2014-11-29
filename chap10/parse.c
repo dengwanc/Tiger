@@ -84,8 +84,6 @@ int main(int argc, string *argv)
 		absyn_root = parse(argv[1]);
 		if (!absyn_root) return 1;
 
-		//pr_exp(out, absyn_root, 0); 
-		//fprintf(out, "\n");
 
 		frags = SEM_transProg(absyn_root);
 		if (anyErrors) return 1; /* don't continue */
@@ -96,7 +94,7 @@ int main(int argc, string *argv)
 
 		for (;frags;frags=frags->tail) {
 			if (frags->head->kind == F_procFrag) {
-				//printStm(frags->head->u.proc.body);
+				//puts(Temp_labelstring(F_name(frags->head->u.proc.frame)));
 				doProc(out, frags->head->u.proc.frame, frags->head->u.proc.body);
 			}
 			else if (frags->head->kind == F_stringFrag) {
