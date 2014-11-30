@@ -79,8 +79,7 @@ Tr_expList Tr_ExpList(Tr_exp h, Tr_expList t) {
 }
 
 void Tr_expList_prepend(Tr_exp h, Tr_expList * l) {
-	/*  
-	 * add a newhead at a old expList, alter the point-content
+	/* add a newhead at a old expList, alter the point-content
 	 */
 	Tr_expList newhead = Tr_ExpList(h, NULL);
 	newhead->tail = *l;
@@ -265,6 +264,7 @@ Tr_exp Tr_arrayExp(Tr_exp size, Tr_exp init) {
 }
 
 Tr_exp Tr_seqExp(Tr_expList l) {
+	assert(l);
 	T_exp resl = unEx(l->head); /* resl cant be NULL */
 	for (l = l->tail; l; l = l->tail) {
 		resl = T_Eseq(T_Exp(unEx(l->head)), resl);

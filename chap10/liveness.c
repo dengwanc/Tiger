@@ -35,10 +35,9 @@ struct L_graph L_liveness(G_graph flow)
 	assert(flow);
 	struct L_graph lg;
 	livenessAnalyze(flow); /* solution of data-flow */
-    //G_show(stdout, G_nodes(flow), show_instr);	
 	G_graph g = confilictGraph(G_nodes(flow));
-	lg.graph = g;
 	//show_graph(g);
+	lg.graph = g;
 	/* there ignore L_moveList due to dont know how to do */
 	return lg;
 }
@@ -63,7 +62,7 @@ static G_graph confilictGraph(G_nodeList nl)
 	G_graph g = G_Graph();
 	reqAllRegs(nl);
 	initConflictg(g);
-
+	//show_graph(g);
 	for (; nl; nl = nl->tail) {
 		/*
 		 * get AS_instr-node info
@@ -128,6 +127,7 @@ static void reqAllRegs(G_nodeList nl)
 	for (; nl; nl = nl->tail) {
 		allregs = unionn(allregs, unionn(FG_def(nl->head), FG_use(nl->head)));
 	}
+	//printTempList(allregs);
 }
 
 /*

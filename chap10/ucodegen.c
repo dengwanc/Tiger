@@ -159,8 +159,9 @@ static void munchStm(T_stm s)
         }
 		case T_JUMP: 
         {
-            Temp_temp r = munchExp(s->u.JUMP.exp);
-            emit(AS_Oper(String("jmp `d0"), TL(r, NULL), NULL, AS_Targets(s->u.JUMP.jumps)));
+            /*Temp_temp r = munchExp(s->u.JUMP.exp);*/
+			
+            emit(AS_Oper(String("jmp `j0"), /*TL(r, NULL)*/NULL, NULL, AS_Targets(s->u.JUMP.jumps)));
             break;
         }
 		case T_CJUMP: 

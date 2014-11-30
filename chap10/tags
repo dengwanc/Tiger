@@ -137,6 +137,7 @@ BEGIN	fuck.tig.s	/^BEGIN L12$/;"	l
 BEGIN	fuck.tig.s	/^BEGIN L14$/;"	l
 BEGIN	fuck.tig.s	/^BEGIN L15$/;"	l
 BEGIN	fuck.tig.s	/^BEGIN L16$/;"	l
+BEGIN	function.tig.s	/^BEGIN L11$/;"	l
 BEGIN	lex.yy.c	125;"	d	file:
 BINOP	tree.h	/^		struct {T_binOp op; T_exp left, right;} BINOP;$/;"	m	union:T_exp_::__anon47	typeref:struct:T_exp_::__anon47::__anon48
 BREAK	y.tab.c	/^     BREAK = 298,$/;"	e	enum:yytokentype	file:
@@ -340,7 +341,9 @@ L17	function.tig.s	/^L17$/;"	l
 L18	fuck.tig.s	/^L18:  $/;"	l
 L18	function.tig.s	/^L18$/;"	l
 L19	fuck.tig.s	/^L19$/;"	l
+L19	function.tig.s	/^L19$/;"	l
 L20	fuck.tig.s	/^L20$/;"	l
+L20	function.tig.s	/^L20$/;"	l
 L21	fuck.tig.s	/^L21$/;"	l
 L22	fuck.tig.s	/^L22$/;"	l
 L23	fuck.tig.s	/^L23$/;"	l
@@ -825,6 +828,7 @@ actual_ty	semant.c	/^static Ty_ty actual_ty(Ty_ty ty){$/;"	f	file:
 add	fuck.tig.s	/^add $1, 139$/;"	l
 add	fuck.tig.s	/^add $1, 151$/;"	l
 add	fuck.tig.s	/^add $1, 194$/;"	l
+add	function.tig.s	/^add 119, 122$/;"	l
 adjust	lex.yy.c	/^void adjust(void)$/;"	f
 alloca	y.tab.c	353;"	d	file:
 allregs	liveness.c	/^static Temp_tempList allregs; \/* i hope fix the blemish *\/$/;"	v	file:
@@ -868,8 +872,9 @@ cmp	fuck.tig.s	/^cmp 104, 181$/;"	l
 cmp	fuck.tig.s	/^cmp 125, 100$/;"	l
 cmp	fuck.tig.s	/^cmp 171, 174$/;"	l
 cmp	fuck.tig.s	/^cmp 190, 194$/;"	l
-cmp	function.tig.s	/^cmp 101, 111$/;"	l
-cmp	function.tig.s	/^cmp 104, 107$/;"	l
+cmp	function.tig.s	/^cmp 101, 112$/;"	l
+cmp	function.tig.s	/^cmp 105, 108$/;"	l
+cmp	function.tig.s	/^cmp 115, 122$/;"	l
 codegen	ucodegen.c	/^AS_instrList codegen(F_frame f, T_stmList s)$/;"	f
 comment	lex.yy.c	608;"	d	file:
 comment_nest	lex.yy.c	/^static int comment_nest = 0;$/;"	v	file:
@@ -1020,17 +1025,18 @@ ival	y.tab.h	/^	int ival;$/;"	m	union:YYSTYPE
 je	fuck.tig.s	/^je L17$/;"	l
 je	fuck.tig.s	/^je L19$/;"	l
 je	fuck.tig.s	/^je L27$/;"	l
-je	function.tig.s	/^je L14$/;"	l
+je	function.tig.s	/^je L12$/;"	l
+je	function.tig.s	/^je L17$/;"	l
 jl	fuck.tig.s	/^jl L23$/;"	l
-jl	function.tig.s	/^jl L12$/;"	l
+jl	function.tig.s	/^jl L15$/;"	l
 jmp	fuck.tig.s	/^jmp L21$/;"	l
 jmp	fuck.tig.s	/^jmp L29$/;"	l
 jmp	fuck.tig.s	/^jmp L30$/;"	l
 jmp	fuck.tig.s	/^jmp L32$/;"	l
 jmp	fuck.tig.s	/^jmp L34$/;"	l
 jmp	fuck.tig.s	/^jmp L36$/;"	l
-jmp	function.tig.s	/^jmp L15$/;"	l
-jmp	function.tig.s	/^jmp L17$/;"	l
+jmp	function.tig.s	/^jmp L13$/;"	l
+jmp	function.tig.s	/^jmp L19$/;"	l
 joinPatch	translate.c	/^static patchList joinPatch(patchList fir, patchList scd) {$/;"	f	file:
 jumps	assem.h	/^		struct {string assem; Temp_tempList dst, src; AS_targets jumps;} OPER;$/;"	m	struct:AS_instr_::__anon24::__anon25
 jumps	tree.h	/^		struct {T_exp exp; Temp_labelList jumps;} JUMP;$/;"	m	struct:T_stm_::__anon41::__anon43
@@ -1135,19 +1141,24 @@ mov	fuck.tig.s	/^mov 8(133), 132$/;"	l
 mov	fuck.tig.s	/^mov 8(144), 143$/;"	l
 mov	fuck.tig.s	/^mov 8(155), 154$/;"	l
 mov	fuck.tig.s	/^mov 8(156), 155$/;"	l
-mov	function.tig.s	/^mov $0x0, 108$/;"	l
-mov	function.tig.s	/^mov $0x0, 111$/;"	l
+mov	function.tig.s	/^mov $0x0, 109$/;"	l
 mov	function.tig.s	/^mov $0x0, 112$/;"	l
-mov	function.tig.s	/^mov $0x1, 102$/;"	l
-mov	function.tig.s	/^mov $0x13, 107$/;"	l
-mov	function.tig.s	/^mov -12(117), 116$/;"	l
-mov	function.tig.s	/^mov -4(105), 104$/;"	l
-mov	function.tig.s	/^mov 0(ebp), 105$/;"	l
-mov	function.tig.s	/^mov 0(ebp), 113$/;"	l
-mov	function.tig.s	/^mov 0(ebp), 117$/;"	l
-mov	function.tig.s	/^mov 102, 101$/;"	l
-mov	function.tig.s	/^mov 108, 101$/;"	l
-mov	function.tig.s	/^mov 112, -4(113)$/;"	l
+mov	function.tig.s	/^mov $0x0, 125$/;"	l
+mov	function.tig.s	/^mov $0x1, 103$/;"	l
+mov	function.tig.s	/^mov $0x1, 113$/;"	l
+mov	function.tig.s	/^mov $0x17, 108$/;"	l
+mov	function.tig.s	/^mov -12(123), 122$/;"	l
+mov	function.tig.s	/^mov -4(106), 105$/;"	l
+mov	function.tig.s	/^mov -4(116), 115$/;"	l
+mov	function.tig.s	/^mov -4(120), 119$/;"	l
+mov	function.tig.s	/^mov 0(ebp), 106$/;"	l
+mov	function.tig.s	/^mov 0(ebp), 116$/;"	l
+mov	function.tig.s	/^mov 0(ebp), 120$/;"	l
+mov	function.tig.s	/^mov 0(ebp), 123$/;"	l
+mov	function.tig.s	/^mov 103, 101$/;"	l
+mov	function.tig.s	/^mov 109, 101$/;"	l
+mov	function.tig.s	/^mov 113, 102$/;"	l
+mov	function.tig.s	/^mov 125, 102$/;"	l
 moves	liveness.h	/^	L_moveList moves;$/;"	m	struct:L_graph
 munchArgs	ucodegen.c	/^static Temp_tempList munchArgs(int i, T_expList args\/*, F_accessList formals*\/) $/;"	f	file:
 munchExp	ucodegen.c	/^static Temp_temp munchExp(T_exp e)$/;"	f	file:

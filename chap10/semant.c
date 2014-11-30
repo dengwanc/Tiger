@@ -35,6 +35,7 @@ static U_boolList makeFormals(A_fieldList); /*may use #define*/
 
 F_fragList SEM_transProg(A_exp exp){
 	struct expty et;
+	//pr_exp(stdout, exp, 2);
 	S_table t = E_base_tenv();
 	S_table v = E_base_venv();
 	//puts("@before trans:");
@@ -201,26 +202,42 @@ static struct expty transExp(Tr_level level, Tr_exp breakk, S_table v, S_table t
 		return expTy(Tr_noExp(), Ty_Int());
 	}
 	case A_seqExp: {
-		Tr_expList l = NULL;
+		//puts("\n@be");
+		//pr_exp(stdout, e, 2);
+		//puts("\n@end");
+		Tr_expList l = NULL, tmp;
 		A_expList list = e->u.seq;
 		struct expty seqone;
 		if (!list) {
 			return expTy(Tr_noExp(), Ty_Void());
 		}
 		for (; list; list = list->tail) {
+			//pr_exp(stdout, list->head, 2);
 			seqone = transExp(level, breakk, v, t, list->head);
+			//puts("\n@be");
+			//printStm(public_unNx(seqone.exp));
+			//puts("\n@end");
 			Tr_expList_prepend(seqone.exp, &l);
 		}
+		//puts("be\n");
+		//printExp(public_unEx( Tr_seqExp(l))); puts("end\n");
 		return expTy(Tr_seqExp(l), seqone.ty);
 	}
 	case A_whileExp: {
+		//puts("@$");
+		//pr_exp(stdout, e, 2); puts("@$");
 		struct expty final = transExp(level, breakk, v, t, e->u.whilee.test);
 		if (final.ty->kind != Ty_int) {
 			EM_error(e->pos, "int required");
 		}
 		Tr_exp done = Tr_doneExp();
 		struct expty body = transExp(level, done, v, t, e->u.whilee.body);
+		//printf("\n%d\n", e->u.whilee.body->kind);
+		//pr_exp(stdout, e->u.whilee.body); puts("");
+		//printExp(public_unEx(body.exp));
+
 		return expTy(Tr_whileExp(final.exp, body.exp, done), Ty_Void());
+
 	}
 	case A_assignExp: {
 		struct expty final4 = transVar(level, breakk, v, t, e->u.assign.var);
@@ -407,6 +424,8 @@ static Tr_exp transDec(Tr_level level, Tr_exp breakk, S_table v, S_table t, A_de
 				S_enter(v, l->head->name, E_VarEntry(acls->head, s->head));
 			}
 			final = transExp(funEntry->u.fun.level, breakk, v, t, f->body);
+			//pr_exp(stdout, f->body, 2);
+			//printStm(public_unNx(final.exp));
 			fun = S_look(v, f->name);
 			if (!ty_match(fun->u.fun.result, final.ty)) {/*check return type is match body type*/
 				EM_error(f->pos, "incorrect return type in function '%s'", S_name(f->name));

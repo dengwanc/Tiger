@@ -1,26 +1,23 @@
-L18
-L15
-mov $0x1, 102
-mov 102, 101
-mov 0(ebp), 105
-mov -4(105), 104
-mov $0x13, 107
-cmp 104, 107
-jl L12
+BEGIN L11
 L13
-mov $0x0, 108
-mov 108, 101
+mov 0(ebp), 103
+mov -4(103), 102
+add $1, 102
+mov 0(ebp), 105
+mov 102, -8(105)
+mov 0(ebp), 109
+mov -12(109), 108
+mov 0(ebp), 112
+mov -4(112), 111
+add 108, 111
+mov 0(ebp), 114
+mov 111, -12(114)
+mov 0(ebp), 118
+mov -8(118), 117
+mul $2, 117
+mov 0(ebp), 120
+mov 117, -4(120)
+jmp L12
 L12
-mov $0x0, 111
-cmp 101, 111
-je L14
-L16
-mov $0x0, 112
-mov 0(ebp), 113
-mov 112, -4(113)
-jmp L15
-L14
-mov 0(ebp), 117
-mov -12(117), 116
-jmp L17
-L17
+END L11
+

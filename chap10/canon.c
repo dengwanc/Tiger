@@ -30,7 +30,13 @@ static expRefList ExpRefList(T_exp *head, expRefList tail)
 
 static bool isNop(T_stm x) 
 {   /* is T_CONST */
-	return x->kind == T_EXP && x->u.EXP->kind == T_CONST;
+	/* there is big problem 
+	 * in this case $ `if 1 then 2 else 3`
+	 * 2 and 3 will be ignore if without judge CONST == 0
+	 * but if user def 0 CONST there is a bug here
+	 * TODO here: how to judge 0 is user def ?
+	 */
+	return x->kind == T_EXP && x->u.EXP->kind == T_CONST && x->u.EXP->u.CONST == 0;
 }
 
 static T_stm seq(T_stm x, T_stm y)

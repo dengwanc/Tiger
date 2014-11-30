@@ -49,15 +49,16 @@ static void doProc(FILE *out, F_frame frame, T_stm body)
 	AS_instrList iList;
 	stmList = C_linearize(body);
 	stmList = C_traceSchedule(C_basicBlocks(stmList));
+	//printStmList(stdout, stmList);
 	iList  = codegen(frame, stmList); /* 9 */
 	G_graph g = FG_AssemFlowGraph(iList);
 	//G_show(stdout, G_nodes(g), show_instr);
 	//show_graph(g);
 	struct L_graph lg = L_liveness(g);
 	show_graph(lg.graph);
-	//fprintf(out, "BEGIN %s\n", Temp_labelstring(F_name(frame)));
+	fprintf(out, "BEGIN %s\n", Temp_labelstring(F_name(frame)));
 	AS_printInstrList (out, iList, Temp_layerMap(F_tempMap,Temp_name()));
-	//fprintf(out, "END %s\n\n", Temp_labelstring(F_name(frame)));
+	fprintf(out, "END %s\n\n", Temp_labelstring(F_name(frame)));
 }
 
 int main(int argc, string *argv)
