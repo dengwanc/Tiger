@@ -55,8 +55,8 @@ struct stmExp {T_stm s; T_exp e;};
 
 static T_stm reorder(expRefList rlist) 
 {
-	/* return stm that in sub-exp */
-
+	/* return the {stms, exps} struct (do up ESEQ & CALL in top) in any sub-exp */
+        /* such as => [e1, e2, ESEQ(s,e3)] TO (s; [e1, e2, e3]) */
     if (!rlist) return T_Exp(T_Const(0)); /* nop */
     else if ((*rlist->head)->kind==T_CALL) {
         Temp_temp t = Temp_newtemp();
