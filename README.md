@@ -1,5 +1,5 @@
 # Tiger is a toy language
-> This Project Just A practice-item, My Other Item is also Nice, check it !!! muhaha :) 
+> This Project Just A practice-item, My Other Item is also Nice, check it, muhaha :) 
 
 # About:
     * blog:[Tiger](https://github.com/whps/whps.github.io/issues/5)
