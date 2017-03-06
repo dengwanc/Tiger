@@ -1,39 +1,45 @@
 # Tiger is a toy language
+
 > This Project Just A practice-item, My Other Item is also Nice, check it, muhaha :) 
 
-# About:
+# About
+
     * blog:[Tiger](https://github.com/whps/whps.github.io/issues/5)
     * book: <Modern Compiler Implement in C>
 
-# Include:
+# Include
+
     * nesting function
     * hidden pointer as record
     * array
     * int, string
     * kinds of control struct
 
-### Lexical:
+### Lexical
+
     * include: [Identifiers, Comments, Integer literal, String literal]
     * reserved words: [while, break, let, in, end, function, var, type, array, if, then, else, do, of, nil]
     * interpunction: , : ; ( ) { } [ ] . + - * / = <> >= <= < > & | :=
     * comment(can be nested): /* here  /* is */ content */
 
-### Provision:
+### Provision
+
     * `xxx` means strong reserved words xxx
     *  {x}  means probility empty
     *   E   means empty string
     *  //   means about note
     *   $   means such that
     
-### Declare:
-#### declare sequence:
+### Declare
+
+#### declare sequence
 
     decs -> {dec}
     dec  -> tydec
 	     -> vardec
 	     -> fundec
 	     
-#### type declare:
+#### type declare
     
        typedec -> `type` type_id = ty
             ty -> type_id
@@ -47,28 +53,29 @@
         //record type: type Node = {key: int, next: Node}
         //array type: type intArray = array of int
 
-#### variable:
+#### variable
     
     vardec -> `var` id := expr
            -> `var` id: type_id := expr
            
        //if short type_id then id's type decided by invalid expr's type
        
-#### function:
+#### function
     
     funcdec -> function id(params) = expr
             -> function id(params): type_id = expr
     
     //if short type_id then return void
 
-### Scope Rules:
+### Scope Rules
+
     * `let ...vardec | typedec | funcdec... in expr end` begin vardec end in `end`
     * function params only live in function-body
     * nest scope: Tiger allow visit outer scope var if def
     * namespace: 1. Type's($ Node.int) 2. Var | Function ($ Node(), Node+1)
     * rename: the lastest def always worked
     
-### Var & Left Value:
+### Var & Left Value
 
     lvalue -> id
            -> lvalue.id
@@ -76,7 +83,8 @@
     // lvalue is a memory addr
     // var, params, record-filed, array-index can be lvalue
 
-### Exression:
+### Exression
+
     * lvalue:
       when a lvalue in a expr, eval is the value in the mem-addr
     * void:
@@ -117,7 +125,8 @@
       when record or array assign they are equally point a same mem.
       $ they are alloc in heap. alive all the program
 
-### Lib:
+### Lib
+
     * function print(s: string) //print s to the stdout
     * function flush() //empty the stdout cache
     * function getchar(): string //from stdin read a char, if EOF return '\0'
@@ -129,6 +138,7 @@
     * function not(i: int): int // eval logic reverse
     * function exit(i: int) // exit the program by status code i
 
-### TEST:
-    * in the test/ dir there are 50s tig file you can test and refer
+### TEST
+
+    in the test/ dir there are 50s tig file you can test and refer
 
