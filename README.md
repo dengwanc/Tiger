@@ -135,7 +135,7 @@ $ they are alloc in heap. alive all the program
 
 ### TEST
 
-    in the test/ dir there are 50s tig file you can test and refer
+in the test/ dir there are 50s tig file you can test and refer
     
 ### About
 
