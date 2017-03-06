@@ -2,11 +2,6 @@
 
 > This Project Just A practice-item, My Other Item is also Nice, check it, muhaha :) 
 
-# About
-
-* blog:[Tiger](https://github.com/whps/whps.github.io/issues/5)
-* book: <Modern Compiler Implement in C>
-
 # Include
 
 * nesting function
@@ -141,4 +136,8 @@ $ they are alloc in heap. alive all the program
 ### TEST
 
     in the test/ dir there are 50s tig file you can test and refer
+    
+### About
 
+* blog: https://github.com/whps/whps.github.io/issues/5
+* book: <Modern Compiler Implement in C>
