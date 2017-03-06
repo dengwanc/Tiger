@@ -140,4 +140,4 @@ $ they are alloc in heap. alive all the program
 ### About
 
 * blog: https://github.com/whps/whps.github.io/issues/5
-* book: <Modern Compiler Implement in C>
+* book: Modern Compiler Implement in C
