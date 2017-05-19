@@ -139,5 +139,5 @@ in the test/ dir there are 50s tig file you can test and refer
     
 ### About
 
-* blog: https://github.com/whps/whps.github.io/issues/5
+* blog: https://github.com/dengwanc/dengwanc.github.io/issues/5
 * book: Modern Compiler Implement in C
