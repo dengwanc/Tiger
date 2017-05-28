@@ -1,12 +1,15 @@
 # holy fucking shit  linker on sucking Mac
 # https://stackoverflow.com/questions/16352833/linking-with-clang-on-os-x-generates-lots-of-symbol-not-found-errors
-CC = clang++ -std=c++11 -stdlib=libc++
+CC = clang++ -std=c++11
 
-output: main.o framework.spec.o
-	$(CC) -o output main.o framework.spec.o
+output: main.o utils.o utils.spec.o
+	$(CC) main.o  utils.o utils.spec.o -o output
 
-framework.spec.o:
-	$(CC) -c framework.spec.cc
+utils.o:
+	$(CC) -c ../src/utils/index.cc -o utils.o
+
+utils.spec.o:
+	$(CC) -c utils.spec.cc
 
 main.o:
 	$(CC) -c main.cc

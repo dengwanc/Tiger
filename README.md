@@ -14,6 +14,13 @@ Then the coding work.
 - a function at least own one unit test
 - all *.tig files must passed in every module
 
+# Develop Scripts
+
+- run unit test
+```
+cd test; make test
+```
+
 # Refrence
 
 - [Modern Compiler Implementation in C](https://www.cs.princeton.edu/~appel/modern/c/)

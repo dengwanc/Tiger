@@ -13,9 +13,9 @@ void run() {
 
 int main()
 {
-        cout << "---Running Tests" << endl;
+        cout << "\n---Running Tests\n" << endl;
         run();
-        cout << "---" <<  tests.size() << " passing" << endl;
+        cout << "\n---" <<  tests.size() << " passing\n" << endl;
 
         return 0;
 }
