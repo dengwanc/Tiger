@@ -5,7 +5,8 @@ using namespace std;
 
 vector<function<void()>> tests;
 
-void run() {
+void run()
+{
         for (auto f: tests) {
                 f();
         }

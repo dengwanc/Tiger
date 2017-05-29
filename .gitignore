@@ -1,2 +1,5 @@
 reference/
-.vscode
+.idea/
+.vscode/
+build/
+.DS_Store
