@@ -17,7 +17,22 @@ Then the coding work.
 - a function at least own one unit test
 - all *.tig files must passed in every module
 
-# Develop Scripts
+# Develop Guide
+
+- commit prefix usage
+```
+* ${description} // means modified/fixed/refactor
++ ${description} // means new feature/function
+- ${description} // means remove feature/unsupport sth
+# ${description} // means polish meta info(ReadME/History)
+/* 
+ * ----------------
+ * --- examples ---
+ * ----------------
+ */
+$ git co '+ support template String complie to AST'
+$ git co '# add dev scripts to readMe'
+```
 
 - run unit test
 ```
@@ -32,3 +47,4 @@ make ex
 # Refrence
 
 - [Modern Compiler Implementation in C](https://www.cs.princeton.edu/~appel/modern/c/)
+- [old C version source code on branch c-version](https://github.com/dengwanc/Tiger/tree/c-version)
