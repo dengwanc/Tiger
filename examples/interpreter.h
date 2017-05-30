@@ -1,5 +1,5 @@
-enum binop { plus, minus, times, divi };
-enum type {
+enum Binop { plus, minus, times, divi };
+enum Type {
 
     // Stm -> Stm; Stm
 	CompoundStm,
@@ -16,7 +16,7 @@ enum type {
     // Expr -> num
 	NumExp,
 
-    // Expr -> Expr binop Expr
+    // Expr -> Expr Binop Expr
 	OpExp,
 
     // Expr -> (Stm, Expr)
@@ -45,7 +45,7 @@ class Expression;
 class ExprList;
 
 class Statement {
-    enum type kind;
+    enum Type kind;
     union U {
 		struct {Statement* stm1; Statement* stm2;} compound;
 		struct {char* id; Expression* expr;} assign;
@@ -64,7 +64,7 @@ public: friend class Expression;
 };
 
 class ExprList {
-    enum type kind;
+    enum Type kind;
 	union {
 		struct {Expression* head; ExprList* tail;} pair;
 		Expression* last;
@@ -77,11 +77,11 @@ public: friend class Statement;
 };
 
 class Expression {
-    enum type kind;
+    enum Type kind;
 	union {
 		char* id;
 		int num;
-		struct {Expression* left; binop oper; Expression* right;} op;
+		struct {Expression* left; Binop oper; Expression* right;} op;
 		struct {Statement* stm; Expression* expr;} eseq;
 	} u;
 
@@ -90,7 +90,7 @@ class Expression {
 public: friend class Statement;
 	Expression(const char* id);
 	Expression(int num);
-	Expression(Expression* left, binop oper, Expression* right);
+	Expression(Expression* left, Binop oper, Expression* right);
 	Expression(Statement* stm, Expression* expr);
 };
 

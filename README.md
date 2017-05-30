@@ -1,12 +1,15 @@
 # Code Conventions
 
-
+### named
+* `#define` MUST upper join by '_'
+* method must Beginning of verb & CamelCase
+* Type must Capital letter begins
 
 # Contribution Guide
 
-> The behind list is ordered as importance. <br/>
-Before coding, __discuss__ is better. <br/>
-If feasible by discuss, __design__ is better. <br/>
+> The behind list is ordered as importance.
+Before coding, __discuss__ is better.
+If feasible by discuss, __design__ is better.
 Then the coding work.
 
 - issue template
@@ -18,7 +21,12 @@ Then the coding work.
 
 - run unit test
 ```
-cd test; make test
+make test
+```
+
+- run examples
+```
+make ex
 ```
 
 # Refrence

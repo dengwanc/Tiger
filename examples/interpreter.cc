@@ -56,7 +56,7 @@ int Statement::maxargs()
     std::vector<std::function<void(struct Q&)>> table;
 
     // map kind->function avoid many switch case
-    // for distinguish different type Design Pattern
+    // for distinguish different Type Design Pattern
     table.push_back([&](struct Q& q) {
         auto e = q.ptr.expr;
         switch (e->kind) {
@@ -178,7 +178,7 @@ Expression::Expression(int num) {
     u.num = num;
 }
 
-Expression::Expression(Expression* left, binop oper, Expression* right)
+Expression::Expression(Expression* left, Binop oper, Expression* right)
 {
     if (left == nullptr) throw NULLPTR;
     if (right == nullptr) throw NULLPTR;
