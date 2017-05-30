@@ -1,9 +1,8 @@
 # Code Conventions
 
-### named
-* `#define` MUST upper join by '_'
-* method must Beginning of verb & CamelCase
-* Type must Capital letter begins
+* `#define` must upper & join by '_'
+* Method name must beginning of verb & CamelCase
+* Type define must capital letter begins
 
 # Contribution Guide
 
@@ -12,14 +11,14 @@ Before coding, __discuss__ is better.
 If feasible by discuss, __design__ is better.
 Then the coding work.
 
-- issue template
-- pull request template
-- a function at least own one unit test
-- all *.tig files must passed in every module
+- Issue template
+- Pull request template
+- A function at least own one unit test
+- All *.tig files must passed in every module
 
 # Develop Guide
 
-- commit prefix usage
+- Commit prefix usage
 ```
 * ${description} // means modified/fixed/refactor
 + ${description} // means new feature/function
@@ -34,12 +33,12 @@ $ git co '+ support template String complie to AST'
 $ git co '# add dev scripts to readMe'
 ```
 
-- run unit test
+- Run unit test
 ```
 make test
 ```
 
-- run examples
+- Run examples
 ```
 make ex
 ```
