@@ -18,3 +18,11 @@
 * Add make scripts for dev
 * Chap 1 practice __symbol table/ast__
 
+# Tiger Language Issues 2017.6.6
+
+* Hoisting
+* Pattern Match
+* Function as first class
+* Module System
+* Const keyword
+

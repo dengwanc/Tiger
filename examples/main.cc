@@ -68,7 +68,5 @@ int main()
     assert(s2->maxargs() == 3);
 
     s1->interpret();
-//    s2->interpret();
-
-    return 0;
+    s2->interpret();
 }

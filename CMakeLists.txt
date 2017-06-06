@@ -12,3 +12,7 @@ ADD_EXECUTABLE(test_output ${TEST} ${UTILS})
 # Generate Examples Execute File
 AUX_SOURCE_DIRECTORY(./examples EXAMPLES)
 ADD_EXECUTABLE(ex_output ${EXAMPLES} ${UTILS})
+
+# Generate Tiger Compiler Execute File
+AUX_SOURCE_DIRECTORY(./src SOURCE)
+ADD_EXECUTABLE(compiler_output ${SOURCE})

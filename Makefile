@@ -9,5 +9,8 @@ test:
 ex:
 	make build; cd build; make; ./ex_output;
 
+compiler:
+	make build; cd build; make; ./compiler_output;
+
 clean/force:
 	rm -r build;
