@@ -1,3 +1,4 @@
+#include <iostream>
 #include<string>
 #include <cstdlib>
 #include "../errormsg.h"
@@ -18,4 +19,17 @@ char* String(const char *s)
 	char* p = (char *)checked_malloc(strlen(s) + 1);
 	strcpy(p, s);
 	return p;
+}
+
+void it(const char *s, std::function<void()> f)
+{
+	f();
+	std::cout << "        " << s << " ✅" << std::endl;
+}
+
+int describe(const char *s, std::function<void()> f)
+{
+	std::cout << s << std::endl;
+	f();
+	return 1;
 }

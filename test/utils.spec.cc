@@ -1,15 +1,13 @@
 #include <iostream>
-#include <vector>
 #include <cassert>
 #include "../src/utils/index.h"
 #include "../src/errormsg.h"
 
 using namespace std;
 
-extern vector<function<void()>> tests;
 
-static int __ = [] {
-	tests.push_back([] {
+static int __ = describe("utils", [] {
+	it("String cannot constructor nullptr", [] {
 		try {
 			String(nullptr);
 		} catch(const char* msg) {
@@ -17,24 +15,20 @@ static int __ = [] {
 		}
 	});
 
-	tests.push_back([] {
+	it("String constructor should be correct", [] {
 		auto tpl = "XML";
 		auto s = String(tpl);
 		assert(strcmp(s, tpl) == 0);
 	});
 
-    tests.push_back([] {
-        try {
-            while (1) {
-                checked_malloc(1073741824);
-            }
-            assert(0);
-        } catch(const char* msg) {
-            assert(strcmp(msg, OUT_OF_MEMORY) == 0);
-        }
-    });
-
-	return 0;
-}();
-
-
+	it("if malloc cannot alloc throw error", [] {
+		try {
+			while (1) {
+				checked_malloc(1073741824);
+			}
+			assert(0);
+		} catch(const char* msg) {
+			assert(strcmp(msg, OUT_OF_MEMORY) == 0);
+		}
+	});
+});

@@ -3,5 +3,7 @@
 
 char* String(const char *s);
 void *checked_malloc(int len);
+void it(const char *s, std::function<void()> f);
+int describe(const char *s, std::function<void()> f);
 
 #endif
