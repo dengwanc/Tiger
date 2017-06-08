@@ -25,4 +25,5 @@
 * Function as first class
 * Module System
 * Const keyword
+* For Sugar
 
