@@ -3,3 +3,4 @@ reference/
 .vscode/
 build/
 .DS_Store
+lex.yy.cc

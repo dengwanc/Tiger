@@ -6,7 +6,7 @@
 using namespace std;
 
 
-static int __ = describe("utils", [] {
+static int __TIGER_UNIT_TEST = describe("utils", [] {
 	it("String cannot constructor nullptr", [] {
 		try {
 			String(nullptr);
