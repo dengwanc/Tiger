@@ -64,9 +64,6 @@ static int __TIGER_UNIT_TEST = describe("lexical", [] {
     it("should parse token correct", [] {
         for (auto i: TIGS) {
             parse(i.c_str());
-
-
-
             assert(!hasErrors());
         }
 

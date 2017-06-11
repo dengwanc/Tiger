@@ -1,6 +1,6 @@
 # Code Conventions
 
-* `#define` must upper & join by '_'
+* `#define` must upper & join by `_`
 * Method name must beginning of verb & CamelCase
 * Type define must capital letter begins
 
