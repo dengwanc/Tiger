@@ -1,53 +1,76 @@
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
 #include <cassert>
+#include <iostream>
 #include "../src/utils/index.h"
-#include "../src/lexical/error.h"
+#include "../src/lexical/index.h"
 #include "../src/lexical/tokens.h"
+#include "global.h"
 
 using namespace std;
 
-const char* toknames[] = {
+/**
+ * lex native interface
+ * https://www.ibm.com/support/knowledgecenter/en/SSLTBW_1.13.0/com.ibm.zos.r13.bpxa600/rtine.htm
+ */
+extern int yylex();
+extern FILE* yyin;
+
+static const char* tokens[] = {
         "ID", "STRING", "INT", "COMMA", "COLON", "SEMICOLON", "LPAREN",
         "RPAREN", "LBRACK", "RBRACK", "LBRACE", "RBRACE", "DOT", "PLUS",
         "MINUS", "TIMES", "DIVIDE", "EQ", "NEQ", "LT", "LE", "GT", "GE",
         "AND", "OR", "ASSIGN", "ARRAY", "IF", "THEN", "ELSE", "WHILE", "FOR",
         "TO", "DO", "LET", "IN", "END", "OF", "BREAK", "NIL", "FUNCTION",
-        "VAR", "TYPE"
+        "VAR", "TYPE", "REAL"
 };
-const char* tokname(int tok) {return tok < 257 || tok > 299 ? "BAD_TOKEN" : toknames[tok-257];}
 
+static const char* getName(int tok)
+{
+    return tok < 257 || tok > 300 ? "BAD_TOKEN" : tokens[tok-257];
+}
 
-YYSTYPE yylval; /* the yylval ... record current token some info */
+void debug(const char* path)
+{
+    int token;
+    path = path ? path : "../mocks/editable.tig";
 
-int yylex(void); /* prototype for the lexing function */
+    resetLex(path);
+
+    while ((token = yylex(), token)) {
+
+        if(streq("BAD_TOKEN", getName(token))) {
+            /* do something with BDA_TOKEN */
+        }
+
+        switch (token) {
+            case ID: case STRING:
+                printf("%10s %s\n", getName(token), yylval.sval);
+                break;
+            case INT:
+                printf("%10s %d\n", getName(token), yylval.ival);
+                break;
+            case REAL:
+                printf("%10s %f\n", getName(token), yylval.dval);
+                break;
+            default:
+                printf("%10s \n", getName(token));
+        }
+    }
+
+    fclose(yyin);
+}
 
 static int __TIGER_UNIT_TEST = describe("lexical", [] {
+    it("should parse token correct", [] {
+        for (auto i: TIGS) {
+            parse(i.c_str());
 
-    it("should get token correct", [] {
-        int tok;
-        EM_reset(String("../mocks/merge.tig"));
-        for(;;) {
-            tok=yylex();
-            if (tok==0) break;
 
-            if(strcmp("BAD_TOKEN", tokname(tok)) == 0) assert("Invalid Token");
 
-            // here is unit-test i'm lazy --
-            if(strcmp("WHILE", tokname(tok)) != 0) assert("Program failed");
-
-            switch (tok) {
-                case ID: case STRING:
-                    printf("%10s %4d %s\n",tokname(tok),EM_tokPos,yylval.sval);
-                    break;
-                case INT:
-                    printf("%10s %4d %d\n",tokname(tok),EM_tokPos,yylval.ival);
-                    break;
-                default:
-                    printf("%10s %4d\n",tokname(tok),EM_tokPos);
-            }
+            assert(!hasErrors());
         }
+
+         // debug(nullptr); /* if want observe */
     });
 
 });

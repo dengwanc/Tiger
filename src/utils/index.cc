@@ -1,7 +1,8 @@
 #include <iostream>
-#include<string>
+#include <cassert>
+#include <cstring>
 #include <cstdlib>
-#include "../errormsg.h"
+#include "index.h"
 
 void *checked_malloc(int len)
 {
@@ -21,10 +22,15 @@ char* String(const char *s)
 	return p;
 }
 
+bool streq(const char* s1, const char* s2)
+{
+	return strcmp(s1, s2) == 0;
+}
+
 void it(const char *s, std::function<void()> f)
 {
 	f();
-	std::cout << "        " << s << " ✅" << std::endl;
+	std::cout << "         ✅  " << s << std::endl;
 }
 
 int describe(const char *s, std::function<void()> f)
@@ -32,4 +38,10 @@ int describe(const char *s, std::function<void()> f)
 	std::cout << s << std::endl;
 	f();
 	return 1;
+}
+
+const char* error(const char* s)
+{
+	std::cerr << s << std::endl;
+	assert(false);
 }

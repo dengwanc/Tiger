@@ -13,4 +13,4 @@ compiler:
 	make build; cd build; make; ./compiler_output;
 
 clean/force:
-	rm -r build;
+	rm -r build; rm src/lexical/lex.yy.cc;

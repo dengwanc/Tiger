@@ -5,10 +5,12 @@ ADD_COMPILE_OPTIONS(-std=c++11)
 ADD_COMPILE_OPTIONS(-Wno-deprecated-register)
 
 # lex dep
+SET(_LEX_DEP ${CMAKE_SOURCE_DIR}/src/lexical/tiger.lex)
 SET(YYLEX ${CMAKE_SOURCE_DIR}/src/lexical/lex.yy.cc)
 ADD_CUSTOM_COMMAND(
-    OUTPUT ${YYLEX}
-    COMMAND lex --outfile=${YYLEX} ${LEXDIR}/tiger.lex
+        MAIN_DEPENDENCY ${_LEX_DEP}
+        OUTPUT ${YYLEX}
+        COMMAND lex --outfile=${YYLEX} ${_LEX_DEP}
 )
 
 # yacc dep
@@ -23,9 +25,9 @@ AUX_SOURCE_DIRECTORY(./src SOURCE)
 
 # Generate Unit Test Execute File
 ADD_EXECUTABLE(test_output
-    ${TEST}
-    ${UTILS} ${LEXICAL}
-    ${YYLEX}
+        ${TEST}
+        ${UTILS} ${LEXICAL}
+        ${YYLEX}
 )
 
 # Generate Examples Execute File

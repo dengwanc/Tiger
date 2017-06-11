@@ -3,7 +3,6 @@
 #include <vector>
 #include "interpreter.h"
 #include "../src/utils/index.h"
-#include "../src/errormsg.h"
 
 Statement::Statement(Statement* stm1, Statement* stm2)
 {
