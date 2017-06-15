@@ -1,6 +1,7 @@
 #ifndef TIGER_LEXICAL
 #define TIGER_LEXICAL
 
+namespace lexical {
 int getLine();
 int getOffset();
 const char* getFilename();
@@ -22,15 +23,8 @@ void recordId();
 void recordInt();
 void recordReal();
 
-void resetLex(const char *path);
+void reset(const char *path);
 void parse(const char* path/*, std::function<void()> reject*/);
-
-typedef union  {
-    int ival; 	 // record int token value
-    char* sval;  // record string token value
-    double dval; // record real token value
-} YYSTYPE;
-
-extern YYSTYPE yylval;
+}
 
 #endif

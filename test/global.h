@@ -3,7 +3,7 @@
 #include <vector>
 
 using namespace std;
-
+static const char* TIGER_DEFAULT_INPUT = "../mocks/editable.tig";
 static vector<string> TIGS;
 
 static int __init__ = [] {

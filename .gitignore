@@ -4,4 +4,6 @@ reference/
 build/
 .DS_Store
 lex.yy.cc
+y.tab.*
+y.output
 editable.tig

@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../src/utils/index.h"
 #include "../src/lexical/index.h"
-#include "../src/lexical/tokens.h"
+#include "../src/syntax/y.tab.hh"
 #include "../src/error/index.h"
 #include "global.h"
 
@@ -14,28 +14,22 @@
 extern int yylex();
 extern FILE* yyin;
 
-static const char* tokens[] = {
-        "ID", "STRING", "INT", "COMMA", "COLON", "SEMICOLON", "LPAREN",
-        "RPAREN", "LBRACK", "RBRACK", "LBRACE", "RBRACE", "DOT", "PLUS",
-        "MINUS", "TIMES", "DIVIDE", "EQ", "NEQ", "LT", "LE", "GT", "GE",
-        "AND", "OR", "ASSIGN", "ARRAY", "IF", "THEN", "ELSE", "WHILE", "FOR",
-        "TO", "DO", "LET", "IN", "END", "OF", "BREAK", "NIL", "FUNCTION",
-        "VAR", "TYPE", "REAL"
-};
+static const char* tokens[] = {"ID", "STRING", "INT", "ASSIGN", "OR", "AND", "GE", "GT", "LE", "LT", "NEQ", "EQ", "MINUS", "PLUS", "DIVIDE", "TIMES", "ELSE", "OF", "DO", "UMINUS", "COMMA", "COLON", "SEMICOLON", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "LBRACE", "RBRACE", "DOT", "ARRAY", "IF", "THEN", "WHILE", "FOR", "TO", "LET", "IN", "END", "BREAK", "NIL", "FUNCTION", "VAR", "TYPE", "REAL"};
 
 static const char* getName(int tok)
 {
-    return tok < 257 || tok > 300 ? "BAD_TOKEN" : tokens[tok-257];
+    return tok < 258 || tok > 302 ? "BAD_TOKEN" : tokens[tok - 258];
 }
 
 void debug(const char* path)
 {
     int token;
-    path = path ? path : "../mocks/editable.tig";
+    path = path ? path : TIGER_DEFAULT_INPUT;
 
-    resetLex(path);
+    lexical::reset(path);
 
     while ((token = yylex(), token)) {
+        /*cout << token << endl;*/
 
         if(streq("BAD_TOKEN", getName(token))) {
             /* do something with BDA_TOKEN */
@@ -62,7 +56,7 @@ void debug(const char* path)
 static int __TIGER_UNIT_TEST = describe("lexical", [] {
     it("should parse token correct", [] {
         for (auto i: TIGS) {
-            parse(i.c_str());
+            lexical::parse(i.c_str());
             assert(!hasErrors());
         }
 

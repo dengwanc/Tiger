@@ -9,8 +9,12 @@
  */
 
 #include "index.h"
-#include "tokens.h"
+#include "../syntax/y.tab.hh"
 #include "../error/index.h"
+
+using namespace lexical;
+
+extern "C" int yywrap() { return 1; }
 
 %}
 

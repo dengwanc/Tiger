@@ -19,12 +19,14 @@ void reportError(const char *message)
 {
     anyerrors = true;
 
+    using namespace lexical;
+
     const char* filename = getFilename();
     int linecount = getLine();
     int token_pos = getOffset();
 
     if (!empty(filename)) fprintf(stderr, "IN FILE %s ", filename);
-    if (linecount - 1) {
+    if (linecount) {
         fprintf(stderr, " LINE %d.%d: \n", linecount, token_pos);
         fprintf(stderr, "%s\n", yytext);
     }

@@ -4,6 +4,7 @@
 #include "index.h"
 #include "../utils/index.h"
 #include "../error/index.h"
+#include "../syntax/y.tab.hh"
 
 /**
  * the max string size is 4Kb
@@ -17,12 +18,6 @@ extern FILE* yyin;
 extern int yylex();
 
 /**
- * the value of yylex so named `yylval`
- * for record current token info in a `yylex()` circle
- */
-YYSTYPE yylval;
-
-/**
  * the index of token in the line
  * ex: `3 > 4@`
  * the error msg will be: "error in line 1:6"
@@ -34,61 +29,51 @@ static char str[MAX_LENGTH]; /* string token cache */
 static int remain;
 static int comment_nest = 0;
 
-int getLine()
+int lexical::getLine()
 {
     return linecount;
 }
 
-int getOffset()
+int lexical::getOffset()
 {
     return token_pos;
 }
-/**
- * flex native interface
- * if return 1
- * lex stop parse
- */
-extern "C" int yywrap()
-{
-    token_pos = 0;
-    return 1;
-}
 
 
-void adjust()
+void lexical::adjust()
 {
     token_pos += yyleng;
 }
 
-void newline(void)
+void lexical::newline(void)
 {
     linecount++;
     token_pos = 0;
 }
 
 
-void inc()
+void lexical::inc()
 {
     comment_nest++;
 }
 
-void dec()
+void lexical::dec()
 {
     comment_nest--;
 }
 
-bool hasComment()
+bool lexical::hasComment()
 {
     return comment_nest != 0;
 }
 
 
-void initString() {
+void lexical::initString() {
     remain = MAX_LENGTH - 1;
     strptr = str;
 }
 
-void appendChar(int ch)
+void lexical::appendChar(int ch)
 {
     if (!remain) throw COMPILER_STRING_OVER;
 
@@ -96,7 +81,7 @@ void appendChar(int ch)
     remain--;
 }
 
-void appendStr(char *s)
+void lexical::appendStr(char *s)
 {
     int t = strlen(s);
 
@@ -106,31 +91,31 @@ void appendStr(char *s)
     remain -= t;
 }
 
-void endString()
+void lexical::endString()
 {
     if (!remain) throw COMPILER_STRING_OVER;
 
     *strptr++ = '\0';
 }
 
-void recordString()
+void lexical::recordString()
 {
     yylval.sval = String(str);
 }
 
 
 
-void recordId()
+void lexical::recordId()
 {
     yylval.sval = yytext;
 }
 
-void recordInt()
+void lexical::recordInt()
 {
     yylval.ival = atoi(yytext);
 }
 
-void recordReal()
+void lexical::recordReal()
 {
     yylval.dval = atof(yytext);
 }
@@ -138,12 +123,12 @@ void recordReal()
 
 static const char* filename = "";
 
-const char* getFilename()
+const char* lexical::getFilename()
 {
     return filename;
 }
 
-void resetLex(const char* path)
+void lexical::reset(const char *path)
 {
     refresh();
 
@@ -159,11 +144,11 @@ void resetLex(const char* path)
     }
 }
 
-void parse(const char* path/*, std::function<void()> reject*/)
+void lexical::parse(const char* path/*, std::function<void()> reject*/)
 {
     int token;
 
-    resetLex(path);
+    reset(path);
 
     while ((token = yylex(), token)) {
         if (token < 257 || token > 300) {
