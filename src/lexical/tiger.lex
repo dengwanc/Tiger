@@ -10,6 +10,7 @@
 
 #include "index.h"
 #include "tokens.h"
+#include "../error/index.h"
 
 %}
 

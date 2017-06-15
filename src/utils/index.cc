@@ -1,7 +1,7 @@
 #include <iostream>
-#include <cassert>
-#include <cstring>
-#include <cstdlib>
+#include <assert.h>
+#include <string.h>
+#include <stdlib.h>
 #include "index.h"
 
 void *checked_malloc(int len)
@@ -44,4 +44,8 @@ const char* error(const char* s)
 {
 	std::cerr << s << std::endl;
 	assert(false);
+}
+
+bool empty(const char* s) {
+	return s[0] == '\0';
 }

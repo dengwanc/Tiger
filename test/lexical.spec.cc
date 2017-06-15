@@ -1,12 +1,11 @@
-#include <cstdio>
-#include <cassert>
+#include <stdio.h>
+#include <assert.h>
 #include <iostream>
 #include "../src/utils/index.h"
 #include "../src/lexical/index.h"
 #include "../src/lexical/tokens.h"
+#include "../src/error/index.h"
 #include "global.h"
-
-using namespace std;
 
 /**
  * lex native interface
@@ -67,7 +66,7 @@ static int __TIGER_UNIT_TEST = describe("lexical", [] {
             assert(!hasErrors());
         }
 
-         // debug(nullptr); /* if want observe */
+        // debug(nullptr); /* if want observe */
     });
 
 });

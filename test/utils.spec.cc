@@ -1,11 +1,10 @@
 #include <iostream>
-#include <cassert>
-#include <cstring>
-#include <cstdlib>
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 #include "../src/utils/index.h"
 
 using namespace std;
-
 
 static int __TIGER_UNIT_TEST = describe("utils", [] {
 
