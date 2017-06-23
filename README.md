@@ -3,6 +3,16 @@
 * `#define` must upper & join by `_`
 * Method name must beginning of verb & CamelCase
 * Type define must capital letter begins
+* Before you actually figure out what happended DO NOT USE those below
+	* disable STL
+	* disable std::string
+
+* Recommendatory Features
+	* Lambda
+	* `auto` keyword
+	* `decltype`
+	* `nullptr`
+	* `virtual` as interface
 
 # Contribution Guide
 
@@ -15,6 +25,8 @@ Then the coding work.
 - Pull request template
 - A function at least own one unit test
 - All *.tig files must passed in every module
+
+
 
 # Develop Guide
 

@@ -1,4 +1,4 @@
-# Practice Version working in 2015
+# Practice version working in 2015
 
 * Only finished chap1-chap9
 * After chap10 delayed
@@ -28,4 +28,12 @@
 * For Sugar
 
 # Lexical Scanner 2017.6.11
+
+# TODO
+
+* refactor syntax by book
+* figure out conflict/reduce & fix it
+* read chap4 & finish AST
+* polish indent
+
 
