@@ -13,7 +13,7 @@
 	* `decltype`
 	* `nullptr`
 	* `virtual` as interface
-	* function overload
+	* Function Overloading
 
 # Contribution Guide
 
@@ -53,7 +53,7 @@ make test
 
 - Run examples
 ```
-make ex
+make examples
 ```
 
 # Refrence
