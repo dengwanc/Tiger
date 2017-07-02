@@ -54,17 +54,10 @@ ws [ \t]+
 array    {adjust(); return ARRAY;}
 break    {adjust(); return BREAK;}
 do       {adjust(); return DO;}
-end      {adjust(); return END;}
-else     {adjust(); return ELSE;}
 function {adjust(); return FUNCTION;}
-for      {adjust(); return FOR;}
-if       {adjust(); return IF;}
-in       {adjust(); return IN;}
 let      {adjust(); return LET;}
 of       {adjust(); return OF;}
 nil      {adjust(); return NIL;}
-then     {adjust(); return THEN;}
-to       {adjust(); return TO;}
 type     {adjust(); return TYPE;}
 var      {adjust(); return VAR;}
 while    {adjust(); return WHILE;}

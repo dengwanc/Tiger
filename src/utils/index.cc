@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "index.h"
 
-void *checked_malloc(int len)
+void *checkedMalloc(int len)
 {
 	void *p = malloc(len);
 
@@ -17,7 +17,7 @@ char* String(const char *s)
 {
 	if (s == nullptr) throw CONST_STRING;
 
-	char* p = (char *)checked_malloc(strlen(s) + 1);
+	char* p = (char *) checkedMalloc(strlen(s) + 1);
 	strcpy(p, s);
 	return p;
 }

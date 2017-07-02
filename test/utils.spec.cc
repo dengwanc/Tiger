@@ -15,7 +15,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
 	});
 
 	it("alloc memory should be correct", [] {
-		free(checked_malloc(1024));
+		free(checkedMalloc(1024));
 	});
 
 	it("streq shoud compare two strings correct", [] {

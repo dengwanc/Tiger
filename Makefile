@@ -1,4 +1,4 @@
-.PHONY: test build
+.PHONY: test build examples
 
 build:
 	cmake . -Bbuild
@@ -6,7 +6,7 @@ build:
 test:
 	make build && cd build && make && ./test_output
 
-ex:
+examples:
 	make build && cd build && make && ./ex_output
 
 clean/force:

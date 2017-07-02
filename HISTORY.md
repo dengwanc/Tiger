@@ -29,11 +29,16 @@
 
 # Lexical Scanner 2017.6.11
 
+# Absyn Syntax Huge Break(with tough debugging)
+
 # TODO
 
-* refactor syntax by book
-* figure out conflict/reduce & fix it
-* read chap4 & finish AST
-* polish indent
+* remove unused token in tiger.lex
+* remove unused constructor in syntax/index.cc
+* write unit test for absyn module
+* make syntax.spec.cc debug
+* check lexical.spec.cc debug
+* unused header file solution
+
 
 

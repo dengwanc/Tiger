@@ -3,7 +3,7 @@
 
 char* String(const char *s);
 const char* error(const char* s);
-void* checked_malloc(int len);
+void* checkedMalloc(int len);
 bool streq(const char* s1, const char* s2);
 bool empty(const char* s);
 

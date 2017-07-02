@@ -13,6 +13,7 @@
 	* `decltype`
 	* `nullptr`
 	* `virtual` as interface
+	* function overload
 
 # Contribution Guide
 
