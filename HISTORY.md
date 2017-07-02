@@ -29,7 +29,10 @@
 
 # Lexical Scanner 2017.6.11
 
-# Absyn Syntax Huge Break(with tough debugging) 2017.7.2
+# Absyn Syntax 2017.7.2
+
+* huge break but __with tough debugging__
+* make sure add source dir to cmake
 
 # TODO
 
