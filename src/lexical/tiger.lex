@@ -29,7 +29,7 @@ ws [ \t]+
 %%
 
 ","      {adjust(); return COMMA;}
-":="     {adjust(); return ASSIGN;}
+"="      {adjust(); return ASSIGN;}
 ":"      {adjust(); return COLON;}
 ";"      {adjust(); return SEMICOLON;}
 "("      {adjust(); return LPAREN;}
@@ -43,7 +43,7 @@ ws [ \t]+
 "-"      {adjust(); return MINUS;}
 "*"      {adjust(); return TIMES;}
 "/"      {adjust(); return DIVIDE;}
-"="      {adjust(); return EQ;}
+"=="      {adjust(); return EQ;}
 "<>"     {adjust(); return NEQ;}
 "<="     {adjust(); return LE;}
 "<"      {adjust(); return LT;}
@@ -51,11 +51,13 @@ ws [ \t]+
 ">"      {adjust(); return GT;}
 "&"      {adjust(); return AND;}
 "|"      {adjust(); return OR;}
+"?"      {adjust(); return QUESTION;}
 array    {adjust(); return ARRAY;}
 break    {adjust(); return BREAK;}
-do       {adjust(); return DO;}
 function {adjust(); return FUNCTION;}
 let      {adjust(); return LET;}
+in       {adjust(); return IN;}
+end      {adjust(); return END;}
 of       {adjust(); return OF;}
 nil      {adjust(); return NIL;}
 type     {adjust(); return TYPE;}
@@ -71,7 +73,8 @@ while    {adjust(); return WHILE;}
 "/*"                    {adjust(); inc(); BEGIN comment;}
 <comment>"/*"           {adjust(); inc(); BEGIN comment;}
 <comment>"*/"           {adjust(); dec(); if(!hasComment()) {BEGIN 0;}}
-<comment>(.|\n)         {adjust(); continue;}
+<comment>(.)            {adjust(); continue;}
+<comment>\n             {adjust(); newline(); continue;}
 
 \"                      {adjust(); initString(); BEGIN string;}
 <string>\\              {adjust(); appendChar(0x5c);}
@@ -80,7 +83,7 @@ while    {adjust(); return WHILE;}
 <string>\\t             {adjust(); appendChar(0x09);}
 <string>\\[0-9]{3}      {adjust(); appendChar(atoi(yytext));}
 <string>\"              {adjust(); endString(); recordString(); BEGIN 0; return STRING;}
-<string>\n              {adjust(); appendChar(0x0A);}
+<string>\n              {adjust(); newline(); appendChar(0x0A);}
 <string>{ws}            {adjust(); appendStr(yytext);}
 <string>[^\\" \t\n]+    {adjust(); appendStr(yytext);}
 

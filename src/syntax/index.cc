@@ -5,6 +5,7 @@
 
 void yyerror(const char* msg)
 {
+    printf("@ line %d\n", lexical::getLine());
     error(msg);
 }
 
@@ -217,11 +218,11 @@ namespace syntax {
         return p;
     }
 
-    struct Declare *Declare4(Symbol name, struct Type *origin) {
+    struct Declare *Declare4(Symbol name, struct Type *def) {
         struct Declare *p = DeclareBase();
         p->kind = Type;
         p->u.type.name = name;
-        p->u.type.origin = origin;
+        p->u.type.def = def;
         return p;
     }
 

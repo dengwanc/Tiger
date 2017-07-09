@@ -107,7 +107,7 @@ void lexical::recordString()
 
 void lexical::recordId()
 {
-    yylval.sval = yytext;
+    yylval.sval = String(yytext);
 }
 
 void lexical::recordInt()

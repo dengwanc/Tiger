@@ -1,9 +1,23 @@
 /* arr1 is valid since expression 0 is int = myint */
-let
+/*let
 	type myint = int
 	type  arrtype = array of myint
 
 	var arr1:arrtype := arrtype [10] of 0
 in
 	arr1
+end
+*/
+
+let
+	type Int32 = int
+	type IntArray = array of Int32
+	var a1 = [10]IntArray
+in
+	a1;
+
+	"sfasdaf
+	fasdfasdfsf
+	fsdfs
+	fsdfs"
 end

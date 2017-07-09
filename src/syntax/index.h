@@ -118,7 +118,7 @@ namespace syntax {
 
             struct {
                 Symbol name;
-                struct Type* origin;
+                struct Type* def;
             } type;
         } u;
     };

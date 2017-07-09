@@ -32,7 +32,7 @@
 %token
   COMMA COLON SEMICOLON LPAREN RPAREN LBRACK RBRACK
   LBRACE RBRACE DOT PLUS MINUS TIMES DIVIDE EQ NEQ LT LE GT GE
-  AND OR ASSIGN ARRAY WHILE DO LET OF
+  AND OR ASSIGN ARRAY WHILE LET IN END OF
   BREAK NIL FUNCTION VAR TYPE QUESTION
 
 %type <expr> expr program record
@@ -103,6 +103,7 @@ arguments:
 
 expr:
       lvalue                              {$$ = Expr4($1);}
+    | LBRACE exprlist RBRACE              {$$ = Expr4($2);}
 	| INT                                 {$$ = Expr4($1);}
 	| REAL                                {$$ = Expr4($1);}
 	| STRING                              {$$ = Expr4($1);}
@@ -127,7 +128,7 @@ expr:
 	| expr QUESTION expr %prec IFTHEN     {$$ = Expr4($1, $3, nullptr);}
 	| WHILE expr LBRACE expr RBRACE       {$$ = Expr4($2, $4);}
 	| BREAK                               {$$ = BreakExpr();}
-	| LET declares LBRACE exprlist RBRACE {$$ = Expr4($2, $4);}
+	| LET declares IN exprlist END {$$ = Expr4($2, $4);}
 	| LPAREN expr RPAREN                  {$$ = $2;}
 	| NIL                                 {$$ = NilExpr();}
 
