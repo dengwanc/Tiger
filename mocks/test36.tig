@@ -1,6 +1,18 @@
 /* error : formals are fewer then actuals */
+/*
 let
 	function g (a:int , b:string):int = a
 in
 	g(3,"one",5)
+end
+*/
+
+let
+
+function g(a: int, b: string) { a }
+
+in
+
+g(4, "b", 45)
+
 end

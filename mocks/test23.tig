@@ -2,8 +2,8 @@
 
 let 
 	type rectype = {name:string , id:int}
-	var rec1 := rectype {name="aname", id=0}
+	var rec1 =  {name:"aname", id:0}rectype
 in
-	rec1.name := 3;
-	rec1.id := "" 
+	rec1.name = 3;
+	rec1.id = ""
 end

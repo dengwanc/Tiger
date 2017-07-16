@@ -1,5 +1,6 @@
 /* error : compare rec with array */
 
+/*
 let
 
 	type arrtype = array of int
@@ -10,4 +11,15 @@ let
 
 in
 	if rec <> arr then 3 else 4
+end
+*/
+
+let
+	type IntArray = array of int
+	type Record = {name: string, id: int}
+	var r = {name: "a name", id: 0}Record
+	var a = [3]int
+	var b: IntArray
+in
+	if r <> a then 3 else 4 end
 end

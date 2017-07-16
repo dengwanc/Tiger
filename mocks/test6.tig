@@ -1,4 +1,5 @@
 /* define valid mutually recursive procedures */
+/*
 let
 
 function do_nothing1(a: int, b: string)=
@@ -10,4 +11,18 @@ function do_nothing2(d: int) =
 in
 	do_nothing1(0, "str2")
 end
+*/
 
+let
+
+function doNothing(a: int, b: string) {
+	doNothing2(a + 1)
+}
+
+function doNothing2(d: int) {
+	doNothing(d, "str")
+}
+
+in
+	doNothing(0, "str2")
+end

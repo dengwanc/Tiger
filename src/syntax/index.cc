@@ -3,10 +3,13 @@
 #include "../lexical/index.h"
 #include "index.h"
 
+extern char* yytext;
+
 void yyerror(const char* msg)
 {
-    printf("@ line %d\n", lexical::getLine());
-    error(msg);
+    char last[512];
+    sprintf(last, "`%s` @ line %d: %s", yytext, lexical::getLine(), msg);
+    error(last);
 }
 
 namespace syntax {
@@ -108,7 +111,7 @@ namespace syntax {
 
     struct Expr *Expr4(struct ExprList *seq) {
         struct Expr *p = ExprBase();
-        p->kind = seqE;
+        p->kind = SeqE;
         p->u.seq = seq;
         return p;
     }
@@ -121,16 +124,17 @@ namespace syntax {
         return p;
     }
 
-    struct Expr *Expr4(struct Expr *test, struct Expr *then, struct Expr *otherwise) {
+    struct Expr *Expr4(struct Expr *test, struct ExprList *then, struct ExprList *otherwise)
+    {
         struct Expr *p = ExprBase();
-        p->kind = QuestionE;
-        p->u.question.test = test;
-        p->u.question.then = then;
-        p->u.question.otherwise = otherwise;
+        p->kind = IfE;
+        p->u.ife.test = test;
+        p->u.ife.then = then;
+        p->u.ife.otherwise = otherwise;
         return p;
     }
 
-    struct Expr *Expr4(struct Expr *test, struct Expr *body) {
+    struct Expr *Expr4(struct Expr *test, struct ExprList *body) {
         struct Expr *p = ExprBase();
         p->kind = WhileE;
         p->u.whilee.test = test;
@@ -156,19 +160,19 @@ namespace syntax {
 
     struct Expr *OrExpr(struct Expr *left, struct Expr *right) {
         struct Expr *p = ExprBase();
-        p->kind = QuestionE;
-        p->u.question.test = left;
-        p->u.question.then = Expr4(1);
-        p->u.question.otherwise = right;
+        p->kind = IfE;
+        p->u.ife.test = left;
+        p->u.ife.then = ExprList4(Expr4(1), nullptr);
+        p->u.ife.otherwise = ExprList4(right, nullptr);
         return p;
     }
 
     struct Expr *AndExpr(struct Expr *left, struct Expr *right) {
         struct Expr *p = ExprBase();
-        p->kind = QuestionE;
-        p->u.question.test = left;
-        p->u.question.then = right;
-        p->u.question.otherwise = Expr4(0);
+        p->kind = IfE;
+        p->u.ife.test = left;
+        p->u.ife.then = ExprList4(right, nullptr);
+        p->u.ife.otherwise = ExprList4(Expr4(0), nullptr);
         return p;
     }
 

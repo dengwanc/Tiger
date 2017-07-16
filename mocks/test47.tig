@@ -4,7 +4,7 @@
    See also test38 */
 let
 	type a = int
-	var b := 4
+	var b = 4
 	type a = string
 in
 	0

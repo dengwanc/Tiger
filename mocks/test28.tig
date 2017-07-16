@@ -1,5 +1,5 @@
 /* error : different record types */
-
+/*
 let
 	type rectype1 = {name:string , id:int}
 	type rectype2 = {name:string , id:int}
@@ -7,4 +7,14 @@ let
 	var rec1: rectype1 := rectype2 {name="Name", id=0}
 in
 	rec1
+end
+*/
+
+let
+	type R1 = {name: string, id: int}
+	type R2 = {name: string, id: int}
+	var r1 = {name: "Name", id: 0}R2
+	var r2: R2
+in
+	r2 = r1
 end

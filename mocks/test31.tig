@@ -1,6 +1,14 @@
 /* error : type constraint and init value differ */
-let 
+/*
+let
 	var a:int := " "
+in
+	a
+end
+*/
+
+let
+	var a = " "
 in
 	a
 end

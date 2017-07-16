@@ -1,5 +1,5 @@
 /* synonyms are fine */
-
+/*
 let 
 		type a = array of int
 		type b = a
@@ -7,4 +7,12 @@ let
 		var arr1:a := b [10] of 0
 in
 		arr1[2]
+end
+*/
+
+let
+	type int32 = int
+	var a = [10]int32
+in
+	a[2]
 end

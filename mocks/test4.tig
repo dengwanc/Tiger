@@ -1,7 +1,8 @@
 /* define a recursive function */
-let
+/*let*/
 
 /* calculate n! */
+/*
 function nfactor(n: int): int =
 		if  n = 0 
 			then 1
@@ -10,4 +11,18 @@ function nfactor(n: int): int =
 in
 	nfactor(10)
 end
+*/
 
+let
+
+function factor(n: int) {
+	/*n == 0 ? 1 : n * factor(n - 1)*/
+	if n == 0 then 1 else 2 end;
+	if n == 0 then 1 else n * factor(n - 1) end
+}
+
+function factor5 = factor(5)
+
+in
+	1
+end

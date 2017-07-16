@@ -51,7 +51,6 @@ ws [ \t]+
 ">"      {adjust(); return GT;}
 "&"      {adjust(); return AND;}
 "|"      {adjust(); return OR;}
-"?"      {adjust(); return QUESTION;}
 array    {adjust(); return ARRAY;}
 break    {adjust(); return BREAK;}
 function {adjust(); return FUNCTION;}
@@ -63,6 +62,9 @@ nil      {adjust(); return NIL;}
 type     {adjust(); return TYPE;}
 var      {adjust(); return VAR;}
 while    {adjust(); return WHILE;}
+if       {adjust(); return IF;}
+then     {adjust(); return THEN;}
+else     {adjust(); return ELSE;}
 
 {id}     {adjust();  recordId(); return ID;}
 {int}    {adjust();  recordInt(); return INT;}

@@ -1,6 +1,7 @@
 /* define valid mutually recursive functions */
 let
 
+/*
 function do_nothing1(a: int, b: string):int=
 		(do_nothing2(a+1);0)
 
@@ -9,5 +10,21 @@ function do_nothing2(d: int):string =
 
 in
 	do_nothing1(0, "str2")
+end
+
+*/
+
+function f1(a: int, b: string) {
+	f2(a+1);
+	0
+}
+
+function f2(d: int) {
+	f1(d, "str");
+	" "
+}
+
+in
+	f1(0, "str2")
 end
 

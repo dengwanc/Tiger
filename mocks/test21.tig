@@ -2,10 +2,9 @@
 let
 
 /* calculate n! */
-function nfactor(n: int) =
-		if  n = 0 
-			then 1
-			else n * nfactor(n-1)
+function nfactor(n: int) {
+	if n == 0 then 1 else n * nfactor(n-1) end
+}
 
 in
 	nfactor(10)

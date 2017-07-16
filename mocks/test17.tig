@@ -2,8 +2,18 @@
 let
 /* define a tree */
 type tree ={key: int, children: treelist}
-var d:int :=0
+var d = 0
 type treelist = {hd: tree, tl: treelist}
+
+var a: tree
+var b: treelist
+var c: tree
+
+function f = {
+	a = {key: 1, children: nil}tree;
+	b = {hd: a, tl: nil}treelist;
+	c = {key: 2, children: b}tree
+}
 
 in
 	d

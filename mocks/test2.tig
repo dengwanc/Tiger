@@ -11,8 +11,7 @@ end
 
 let
 	type Int32 = int
-	type IntArray = array of Int32
-	var a1 = [10]IntArray
+	var a1 = [10]Int32
 in
 	a1;
 

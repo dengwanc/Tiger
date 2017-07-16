@@ -1,4 +1,5 @@
 /* correct declarations */
+/*
 let 
 
 type arrtype1 = array of int
@@ -27,4 +28,26 @@ rec1.name := "sdf";
 rec2.dates[0] := 2323;
 rec2.dates[2] := 2323
 
+end
+*/
+
+let
+	type IntArray = array of int
+	type R1 = {name: string, address: string, id: int, age: int}
+	type R2 = {name: string, dates: IntArray}
+
+	var a1 = [10]int
+	var a2 = [5]R1
+	var a3 = [100]string
+	var r1 = {name: "kap", address: "pou", id: 2432, age: 44}R1
+	var r2 = {name: "Allos", dates: [3]int}R2
+in
+	a1[0] = 1;
+	a1[9] = 3;
+	a2[3].name = "kati";
+	a2[1].age = 23;
+	a3[34] = "sfd";
+	r1.name = "sdf";
+	r2.dates[0] = 2323;
+	r2.dates[2] = 2333
 end

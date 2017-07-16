@@ -2,6 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 # clang flags
 ADD_COMPILE_OPTIONS(-std=c++11)
+ADD_COMPILE_OPTIONS(-g)
 ADD_COMPILE_OPTIONS(-Wno-deprecated-register)
 
 # lex dep

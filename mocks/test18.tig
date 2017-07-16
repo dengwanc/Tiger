@@ -1,4 +1,5 @@
 /* error : definition of recursive functions is interrupted */
+/*
 let
 
 function do_nothing1(a: int, b: string):int=
@@ -11,5 +12,22 @@ function do_nothing2(d: int):string =
 
 in
 	do_nothing1(0, "str2")
+end
+*/
+
+let
+
+function d1(a: int, b: string) {
+	d2(a+1)
+}
+
+var d = 0
+
+function d2(d: int) {
+	d1(d, "str")
+}
+
+in
+	d1(0 ,"str2")
 end
 

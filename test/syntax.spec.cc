@@ -5,6 +5,7 @@
 #include "../src/utils/index.h"
 #include "../src/lexical/index.h"
 #include "../src/syntax/index.h"
+#include "../src/syntax/dump.h"
 #include "global.h"
 
 extern int yyparse(void);
@@ -24,6 +25,9 @@ static int __TIGER_UNIT_TEST = describe("syntax tree", [] {
 
     it("should parse sentence correct", [] {
         assert(bug949::parse(TIGER_DEFAULT_INPUT) == 0);
-        // printf("%d", syntax::ABSYN_ROOT->kind);
+        using namespace syntax;
+        printf("\n~~~~~~ DEBUGGING AST STARTED ~~~~~~\n\n");
+        printExpr(ABSYN_ROOT);
+        printf("\n\n~~~~~~ DEBUGGING AST ENDED ~~~~~~\n");
     });
 });

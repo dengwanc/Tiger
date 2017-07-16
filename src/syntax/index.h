@@ -11,8 +11,8 @@ namespace syntax {
     typedef enum { Plus, Minus, Times, Divide, Eq, Neq, Lt, Le, Gt, Ge } Oper;
     typedef enum { Simple, Field, Subscript } LvalueK;
     typedef enum {
-        LvalueE, NilE, IntE, DoubleE, StringE,
-        OpE, RecordE, seqE, AssignE, QuestionE, CallE,
+        LvalueE, NilE, IntE, StringE,
+        OpE, RecordE, SeqE, AssignE, IfE, CallE,
         WhileE, BreakE, LetE, ArrayE, RealE
     } ExprK;
     typedef enum { Function, Var, Type } DeclareK;
@@ -82,13 +82,13 @@ namespace syntax {
 
             struct {
                 struct Expr* test;
-                struct Expr* then;
-                struct Expr* otherwise;
-            } question;
+                struct ExprList* then;
+                struct ExprList* otherwise;
+            } ife;
 
             struct {
                 struct Expr* test;
-                struct Expr* body;
+                struct ExprList* body;
             } whilee;
 
             struct {
@@ -183,8 +183,8 @@ namespace syntax {
     struct Expr* Expr4(Symbol type, struct ValfieldList* valfields);
     struct Expr* Expr4(struct ExprList* seq);
     struct Expr* Expr4(struct Lvalue* lv, struct Expr* expr);
-    struct Expr* Expr4(struct Expr* test, struct Expr* then, struct Expr* otherwise);
-    struct Expr* Expr4(struct Expr* test, struct Expr* body);
+    struct Expr *Expr4(struct Expr *test, struct ExprList *then, struct ExprList *otherwise);
+    struct Expr* Expr4(struct Expr* test, struct ExprList* body);
     struct Expr* Expr4(struct DeclareList* declares, struct ExprList* body);
     struct Expr* Expr4(Symbol type, struct Expr* size);
     struct Expr* OrExpr(struct Expr* left, struct Expr* right);

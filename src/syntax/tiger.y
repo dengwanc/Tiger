@@ -7,7 +7,7 @@
 	extern int yylex();
 %}
 
-
+%error-verbose
 
 %union {
 	int ival;
@@ -33,7 +33,7 @@
   COMMA COLON SEMICOLON LPAREN RPAREN LBRACK RBRACK
   LBRACE RBRACE DOT PLUS MINUS TIMES DIVIDE EQ NEQ LT LE GT GE
   AND OR ASSIGN ARRAY WHILE LET IN END OF
-  BREAK NIL FUNCTION VAR TYPE QUESTION
+  BREAK NIL FUNCTION VAR TYPE IF THEN ELSE
 
 %type <expr> expr program record
 %type <lv> lvalue
@@ -51,11 +51,7 @@
 %nonassoc EQ NEQ LT LE GT GE
 %left PLUS MINUS
 %left TIMES DIVIDE
-%left COLON
-%right QUESTION
-%nonassoc IFTHEN
 %nonassoc NEGTIVE
-
 
 %start program
 
@@ -102,35 +98,35 @@ arguments:
 	|                      {$$ = nullptr;}
 
 expr:
-      lvalue                              {$$ = Expr4($1);}
-    | LBRACE exprlist RBRACE              {$$ = Expr4($2);}
-	| INT                                 {$$ = Expr4($1);}
-	| REAL                                {$$ = Expr4($1);}
-	| STRING                              {$$ = Expr4($1);}
-	| MINUS expr %prec NEGTIVE            {$$ = MinusExpr($2);}
-	| id LPAREN arguments RPAREN          {$$ = Expr4($1, $3);}
-	| expr PLUS expr                      {$$ = Expr4(Plus, $1, $3);}
-	| expr MINUS expr                     {$$ = Expr4(Minus, $1, $3);}
-	| expr TIMES expr                     {$$ = Expr4(Times, $1, $3);}
-	| expr DIVIDE expr                    {$$ = Expr4(Divide, $1, $3);}
-	| expr EQ expr                        {$$ = Expr4(Eq, $1, $3);}
-	| expr NEQ expr                       {$$ = Expr4(Neq, $1, $3);}
-	| expr GT expr                        {$$ = Expr4(Gt, $1, $3);}
-	| expr LT expr                        {$$ = Expr4(Lt, $1, $3);}
-	| expr GE expr                        {$$ = Expr4(Ge, $1, $3);}
-	| expr LE expr                        {$$ = Expr4(Le, $1, $3);}
-	| expr AND expr                       {$$ = AndExpr($1, $3);}
-	| expr OR expr						  {$$ = OrExpr($1, $3);}
-	| record                              {$$ = $1;}
-	| LBRACK expr RBRACK id               {$$ = Expr4($4, $2);}
-	| lvalue ASSIGN expr                  {$$ = Expr4($1, $3);}
-	| expr QUESTION expr COLON expr       {$$ = Expr4($1, $3, $5);}
-	| expr QUESTION expr %prec IFTHEN     {$$ = Expr4($1, $3, nullptr);}
-	| WHILE expr LBRACE expr RBRACE       {$$ = Expr4($2, $4);}
-	| BREAK                               {$$ = BreakExpr();}
-	| LET declares IN exprlist END {$$ = Expr4($2, $4);}
-	| LPAREN expr RPAREN                  {$$ = $2;}
-	| NIL                                 {$$ = NilExpr();}
+      lvalue                                  {$$ = Expr4($1);}
+    | LBRACE exprlist RBRACE                  {$$ = Expr4($2);}
+	| INT                                     {$$ = Expr4($1);}
+	| REAL                                    {$$ = Expr4($1);}
+	| STRING                                  {$$ = Expr4($1);}
+	| MINUS expr %prec NEGTIVE                {$$ = MinusExpr($2);}
+	| id LPAREN arguments RPAREN              {$$ = Expr4($1, $3);}
+	| expr PLUS expr                          {$$ = Expr4(Plus, $1, $3);}
+	| expr MINUS expr                         {$$ = Expr4(Minus, $1, $3);}
+	| expr TIMES expr                         {$$ = Expr4(Times, $1, $3);}
+	| expr DIVIDE expr                        {$$ = Expr4(Divide, $1, $3);}
+	| expr EQ expr                            {$$ = Expr4(Eq, $1, $3);}
+	| expr NEQ expr                           {$$ = Expr4(Neq, $1, $3);}
+	| expr GT expr                            {$$ = Expr4(Gt, $1, $3);}
+	| expr LT expr                            {$$ = Expr4(Lt, $1, $3);}
+	| expr GE expr                            {$$ = Expr4(Ge, $1, $3);}
+	| expr LE expr                            {$$ = Expr4(Le, $1, $3);}
+	| expr AND expr                           {$$ = AndExpr($1, $3);}
+	| expr OR expr						      {$$ = OrExpr($1, $3);}
+	| record                                  {$$ = $1;}
+	| LBRACK expr RBRACK id                   {$$ = Expr4($4, $2);}
+	| lvalue ASSIGN expr                      {$$ = Expr4($1, $3);}
+	| IF expr THEN exprlist ELSE exprlist END {$$ = Expr4($2, $4, $6);}
+	| IF expr THEN exprlist END               {$$ = Expr4($2, $4, nullptr);}
+	| WHILE expr LBRACE exprlist RBRACE       {$$ = Expr4($2, $4);}
+	| BREAK                                   {$$ = BreakExpr();}
+	| LET declares IN exprlist END            {$$ = Expr4($2, $4);}
+	| LPAREN expr RPAREN                      {$$ = $2;}
+	| NIL                                     {$$ = NilExpr();}
 
 exprlist:
 	  expr SEMICOLON exprlist {$$ = ExprList4($1, $3);}

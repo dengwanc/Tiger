@@ -1,4 +1,5 @@
 /* valid nil initialization and assignment */
+/*
 let 
 
 	type rectype = {name:string, id:int}
@@ -9,3 +10,12 @@ in
 	b := nil
 
 end
+*/
+
+let
+	type R = {name: string, id: int}
+	var b = nil
+in
+	b = nil
+end
+

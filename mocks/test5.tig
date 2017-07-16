@@ -1,4 +1,5 @@
 /* define valid recursive types */
+/*
 let
 /* define a list */
 type intlist = {hd: int, tl: intlist} 
@@ -11,4 +12,13 @@ var lis:intlist := intlist { hd=0, tl= nil }
 
 in
 	lis
+end
+*/
+
+let
+	type IntList = {head: int, tail: IntList}
+	type Tree = {key: int, children: Tree}
+	var ls = {head: 0, tail: nil}IntList
+in
+	ls
 end
