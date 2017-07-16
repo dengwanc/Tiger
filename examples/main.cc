@@ -1,6 +1,5 @@
 #include "interpreter.h"
 #include <cassert>
-#include <vector>
 /**
  * a := 5 + 3; b := (print (a, a-1), 10*a); print (b);
  */

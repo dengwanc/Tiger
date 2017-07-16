@@ -1,7 +1,5 @@
 #include <iostream>
 #include <assert.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../src/utils/index.h"
 
 using namespace std;

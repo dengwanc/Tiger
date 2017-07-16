@@ -17,7 +17,7 @@ char* String(const char *s)
 {
 	if (s == nullptr) throw CONST_STRING;
 
-	char* p = (char *) checkedMalloc(strlen(s) + 1);
+	char* p = (char *)checkedMalloc(strlen(s) + 1);
 	strcpy(p, s);
 	return p;
 }

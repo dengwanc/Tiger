@@ -36,12 +36,15 @@
 
 # TODO
 
-* remove unused token in tiger.lex
-* remove unused constructor in syntax/index.cc
 * write unit test for absyn module
-* make syntax.spec.cc debug
-* check lexical.spec.cc debug
-* unused header file solution
+* check lexical.spec.cc token map table
+* yyerror TO error module
+* \+ array literal syntax
+* \+ nil as Type syntax
+* \+ unify function syntax
+* \+ support using semicolon at the last expr in exprlist
+* refactor if-else expr
+* C/C++ Code ode Conventions
 
 
 

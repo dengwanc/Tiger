@@ -2,8 +2,7 @@
 
 /**
  * The Meanings of
- * lex macro `BEGIN`
- * `%x`, `%s`
+ * lex macro `BEGIN` and `%x`, `%s`
  * reference here:
  * ftp://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html#SEC11
  */

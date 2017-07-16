@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "index.h"
-#include "../utils/symbol.h"
 #include "dump.h"
 #include <assert.h>
 #include "../utils/index.h"
