@@ -33,8 +33,8 @@ Then the coding work.
 
 - Commit prefix usage
 ```
-* ${description} // means modified/fixed/refactor
-+ ${description} // means new feature/function
+* ${description} // means modified/fixed
++ ${description} // means new feature/refactor/optimization
 - ${description} // means remove feature/unsupport sth
 # ${description} // means polish meta info(ReadME/History)
 /* 
