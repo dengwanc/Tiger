@@ -7,15 +7,16 @@ class Node {
 private:
     Symbol _key; 
     void* _value;
-    BinaryTree* _left;
-    BinaryTree* _right;
-    Node(Symbol key, void* value, BinaryTree* left, BinaryTree* right);
+    Node* _left;
+    Node* _right;
+    Node(Symbol key, void* value);
+    Node(Node* &node);
 
 public:
     Symbol const &key;
     void* const &value;
-    BinaryTree* const &left;
-    BinaryTree* const &right;
+    Node* const &left;
+    Node* const &right;
 
 friend class BinaryTree;
 };
@@ -26,10 +27,12 @@ private:
 
 public:
     Node* const &root;
+
     BinaryTree();
+    BinaryTree(Node* &node);
     int insert(Symbol key, void* value);
     void* lookup(Symbol key);
-    BinaryTree* insertImmutable(Symbol key, void* key);
+    BinaryTree* insertImmutable(Symbol key, void* value);
 };
 
 #endif

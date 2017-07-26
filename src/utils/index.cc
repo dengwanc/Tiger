@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "index.h"
 
-void *checkedMalloc(int len)
+void *checkedMalloc(size_t len)
 {
 	void *p = malloc(len);
 

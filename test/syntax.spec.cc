@@ -21,7 +21,7 @@ namespace bug949 {
 
 static int __TIGER_UNIT_TEST = describe("syntax tree", [] {
 
-    it("should parse sentence correct", [] {
+    it("should parse ast correct", [] {
         assert(bug949::parse(TIGER_DEFAULT_INPUT) == 0);
         using namespace syntax;
         printf("\n~~~~~~ DEBUGGING AST STARTED ~~~~~~\n\n");

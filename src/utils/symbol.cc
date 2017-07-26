@@ -38,6 +38,10 @@ Symbol Symbol4(char *name) {
     return sym;
 }
 
+Symbol Symbol4(const char* s) {
+    return Symbol4(String(s));
+}
+
 char *S_name(Symbol sym) {
     return sym->name;
 }
@@ -73,8 +77,8 @@ char *S_name(Symbol sym) {
 bool S_greaterthan(Symbol s1, Symbol s2) {
     if (s1 == s2) return false;
 
-    char* n1 = s1.name;
-    char* n2 = s2.name;
+    char* n1 = s1->name;
+    char* n2 = s2->name;
     for (; *n1 && *n2; n1++, n2++) {
         if (*n1 > *n2) return true;
         if (*n1 < *n2) return false;

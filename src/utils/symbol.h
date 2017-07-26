@@ -11,6 +11,7 @@ typedef struct S_symbol_ *Symbol;
  *  Different calls to S_Symbol("foo") will yield the same Symbol
  *  value, even if the "foo" strings are at different locations. */
 Symbol Symbol4(char *s);
+Symbol Symbol4(const char* s);
 
 /* Extract the underlying string from a symbol */
 char *S_name(Symbol);

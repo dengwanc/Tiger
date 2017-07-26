@@ -1,71 +1,90 @@
 #include "./binary-tree.h"
 #include "./symbol.h"
 
-Node::Node(Symbol k, void* v, BinaryTree* l, BinaryTree* r): key(_key), value(_value), left(_left), right(_right)  
+Node::Node(Symbol k, void* v): key(_key), value(_value), left(_left), right(_right)
 {
-    this._key = k;
-    this._value = v;
-    this._left = l;
-    this._right = r;
+    this->_key = k;
+    this->_value = v;
+    this->_left = nullptr;
+    this->_right = nullptr;
 }
 
-BinaryTree::BinaryTree(): root(_root) 
+Node::Node(Node* &node): key(_key), value(_value), left(_left), right(_right)
 {
-    this._root = nullptr;
+    this->_key = node->_key;
+    this->_value = node->_value;
+    this->_left = node->_left;
+    this->_right = node->_right;
+}
+
+BinaryTree::BinaryTree(): root(_root)
+{
+    this->_root = nullptr;
+}
+
+BinaryTree::BinaryTree(Node* &node): root(_root)
+{
+    this->_root = node;
 }
 
 int BinaryTree::insert(Symbol key, void* value)
 {
-    if (key === this.key) {
-        return 1;
-    } else if (S_lessthan(key, this.key)) {
-        if (this.left) {
-            this.left.insert(key, value);
-        } else {
-            this.left = new BinaryTree(key, value);
-        }
+    auto current = &(this->_root);
 
-        return 0;
-    } else {
-        if (this.right) {
-            this.right.insert(key, value);
+    while (*current) {
+        if (key == (*current)->key) {
+            return 1;
+        } else if (S_greaterthan(key, (*current)->key)) {
+            current = &((*current)->_left);
         } else {
-            this.right = new BinaryTree(key, value);
+            current = &((*current)->_right);
         }
-
-        return 0;
     }
+
+    *current = new Node(key, value);
+
+    return 0;
 }
 
 void* BinaryTree::lookup(Symbol key)
 {
-    
+    return nullptr;
 }
 
 BinaryTree* BinaryTree::insertImmutable(Symbol key, void* value)
 {
-    BinaryTree* root = new BinaryTree(this);
-    
-    if (key === root.key) {
+    if (this->root == nullptr) {
+        auto node = new Node(key, value);
+        return new BinaryTree(node);
+    }
+
+    if (key == this->root->key) {
         return nullptr;
-    } else if (S_lessthan(key, root.key)) {
-        if (root.left) {
-            root.left.insertImmutable(key, value);
+    }
+
+    auto current = new Node(this->_root);
+    auto root = current;
+
+    while (true) {
+        if (S_greaterthan(key, current->key)) {
+            if (current->left) {
+                // copy & point correctly
+                current->_left = new Node(current->_left);
+                current = current->_left;
+            } else {
+                current->_left = new Node(key, value);
+                break;
+            }
         } else {
-            root.left = new BinaryTree(key, value);
-        }
-    } else {
-        if (root.right) {
-            root.right.insertImmutable(key, value);
-        } else {
-            root.right = new BinaryTree(key, value);
+            if (current->right) {
+                current->_right = new Node(current->_right);
+                current = current->_right;
+            } else {
+                current->_right = new Node(key, value);
+                break;
+            }
         }
     }
 
-    return root;
+    return new BinaryTree(root);
 }
-
-inline Symbol BinaryTree::getKey() { return this.key; }
-inline void* BinaryTree::getValue() { return this.value; }
-inline BinaryTree* BinaryTree::getLeft() { return this.left; }
-inline BinaryTree* BinaryTree::getRight() { return this.right; }

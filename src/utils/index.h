@@ -1,9 +1,11 @@
 #ifndef TIGER_UTILS
 #define TIGER_UTILS
 
+#include <stddef.h>
+
 char* String(const char *s);
 const char* error(const char* s);
-void* checkedMalloc(int len);
+void* checkedMalloc(size_t len);
 bool streq(const char* s1, const char* s2);
 bool empty(const char* s);
 
