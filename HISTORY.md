@@ -40,7 +40,7 @@
 * check lexical.spec.cc token map table
 * ~~yyerror TO error module~~
 * \+ array literal syntax
-* \+ nil as Type syntax 🌿️
+* ~~\+ nil as Type syntax 🌿️~~
 * \+ unify function syntax
 * \+ support using semicolon at the last expr in exprlist
 * refactor if-else expr

@@ -1,8 +1,10 @@
-/* error: syntax error, nil should not be preceded by type-id.  */
+/* error: semantic error, use nil should have a certain type  */
 let 
 	type rectype = {name:string, id:int}
 
 	var a = nil
+	var b: rectype = nil
+	var c: rectype
 in
 	a
 end

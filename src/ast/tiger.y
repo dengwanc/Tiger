@@ -81,8 +81,9 @@ typefields:
 	| id COLON id                  {$$ = TypefieldList4($1, $3, nullptr);}
 
 vardec:
-	  VAR id ASSIGN expr {$$ = new VarDeclare($2, nullptr, $4);}
-	| VAR id COLON id    {$$ = new VarDeclare($2, $4, nullptr);}
+	  VAR id ASSIGN expr          {$$ = new VarDeclare($2, nullptr, $4);}
+	| VAR id COLON id             {$$ = new VarDeclare($2, $4, nullptr);}
+	| VAR id COLON id ASSIGN expr {$$ = new VarDeclare($2, $4, $6);}
 
 funcdec:
 	  FUNCTION id ASSIGN expr                   {$$ = new FunctionDeclare($2, nullptr, nullptr, $4);}

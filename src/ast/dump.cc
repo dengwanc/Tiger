@@ -72,9 +72,12 @@ namespace ast {
     void VarDeclare::print()
     {
         printf("var %s", S_name(this->id));
+
         if (this->type) {
             printf(": %s", S_name(this->type));
-        } else {
+        }
+
+        if (this->init) {
             printf(" = ");
             this->init->print();
         }

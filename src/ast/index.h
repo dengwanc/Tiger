@@ -197,7 +197,6 @@ namespace ast {
 
     class NilExpr: public Expr {
         struct Location lo;
-        Symbol sym;
 
     public:
         NilExpr();
