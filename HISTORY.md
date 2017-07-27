@@ -18,6 +18,17 @@
 * Add make scripts for dev
 * Chap 1 practice __symbol table/ast__
 
+# Lexical Scanner 2017.6.11
+
+# AST 2017.7.2
+
+* huge break but __with tough debugging__
+* make sure add source dir to cmake
+
+# AST Refactor 2017.7.27
+
+* Class type style construct ast tree  
+
 # Tiger Language Issues 2017.6.6
 
 * Hoisting
@@ -26,13 +37,6 @@
 * Module System
 * Const keyword
 * For Sugar
-
-# Lexical Scanner 2017.6.11
-
-# Absyn Syntax 2017.7.2
-
-* huge break but __with tough debugging__
-* make sure add source dir to cmake
 
 # TODO
 
@@ -45,6 +49,7 @@
 * ~~\+ support using semicolon at the last expr in exprlist~~ maintain
 * ~~refactor if-else expr~~ maintain
 * ~~C/C++ Code ode Conventions~~
+* semantic check module
 
 
 
