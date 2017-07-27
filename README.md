@@ -3,14 +3,13 @@
 * `#define` must upper & join by `_`
 * Method name must beginning of verb & CamelCase
 * Type define must capital letter begins
-* Before you actually figure out what happended DO NOT USE those below
+* Before you actually figure out what happened DO NOT USE:
 	* disable STL
 	* disable std::string
 
 * Recommendatory Features
 	* Lambda
-	* `auto` keyword
-	* `decltype`
+	* `auto`, `decltype`
 	* `nullptr`
 	* `virtual` as interface
 	* Function Overloading
@@ -24,8 +23,9 @@ Then the coding work.
 
 - Issue template
 - Pull request template
-- A function at least own one unit test
-- All *.tig files must passed in every module
+- Assume architecture is basing on black-box
+- A Interface at least own one unit test
+- All *.tig files must test passed in every module
 
 
 
@@ -37,11 +37,9 @@ Then the coding work.
 + ${description} // means new feature/refactor/optimization
 - ${description} // means remove feature/unsupport sth
 # ${description} // means polish meta info(ReadME/History)
-/* 
- * ----------------
- * --- examples ---
- * ----------------
- */
+ 
+// Examples
+ 
 $ git co '+ support template String complie to AST'
 $ git co '# add dev scripts to readMe'
 ```
