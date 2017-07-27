@@ -37,13 +37,13 @@
 # TODO
 
 * ~~write unit test for absyn module~~
-* check lexical.spec.cc token map table
+* check lexical.spec.cc token map table (after done semantic do this)
 * ~~yyerror TO error module~~
-* \+ array literal syntax
+* ~~\+ array literal syntax~~ maintain & default init int with 0
 * ~~\+ nil as Type syntax 🌿️~~
-* \+ unify function syntax
-* \+ support using semicolon at the last expr in exprlist
-* refactor if-else expr
+* ~~\+ unify function syntax~~ maintain
+* ~~\+ support using semicolon at the last expr in exprlist~~ maintain
+* ~~refactor if-else expr~~ maintain
 * ~~C/C++ Code ode Conventions~~
 
 
