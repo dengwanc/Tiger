@@ -36,9 +36,9 @@
 
 # TODO
 
-* write unit test for absyn module
+* ~~write unit test for absyn module~~
 * check lexical.spec.cc token map table
-* yyerror TO error module
+* ~~yyerror TO error module~~
 * \+ array literal syntax
 * \+ nil as Type syntax 🌿️
 * \+ unify function syntax

@@ -3,7 +3,9 @@
 #include <iostream>
 #include "../src/utils/index.h"
 #include "../src/lexical/index.h"
-#include "../src/syntax/y.tab.hh"
+#include "../src/ast/index.h"
+using namespace ast;
+#include "../src/ast/y.tab.hh"
 #include "../src/error/index.h"
 #include "global.h"
 

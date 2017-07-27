@@ -5,6 +5,15 @@ extern char* yytext;
 
 static bool anyerrors = false;
 
+void yyerror(const char* msg)
+{
+    char last[512];
+    auto line = lexical::getLine();
+    auto file = lexical::getFilename();
+    sprintf(last,"`%s` %s (%s:%d)", yytext, msg, file, line);
+    error(last);
+}
+
 void refresh()
 {
   anyerrors = false;

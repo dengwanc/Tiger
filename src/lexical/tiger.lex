@@ -8,7 +8,9 @@
  */
 
 #include "index.h"
-#include "../syntax/y.tab.hh"
+#include "../ast/index.h"
+using namespace ast;
+#include "../ast/y.tab.hh"
 #include "../error/index.h"
 
 using namespace lexical;

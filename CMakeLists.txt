@@ -15,8 +15,8 @@ ADD_CUSTOM_COMMAND(
 )
 
 # yacc dep
-SET(TIGER_Y ${CMAKE_SOURCE_DIR}/src/syntax/tiger.y)
-SET(YYTAB ${CMAKE_SOURCE_DIR}/src/syntax/y.tab.cc)
+SET(TIGER_Y ${CMAKE_SOURCE_DIR}/src/ast/tiger.y)
+SET(YYTAB ${CMAKE_SOURCE_DIR}/src/ast/y.tab.cc)
 ADD_CUSTOM_COMMAND(
         MAIN_DEPENDENCY ${TIGER_Y}
         OUTPUT ${YYTAB}
@@ -28,14 +28,14 @@ AUX_SOURCE_DIRECTORY(./src/error ERROR)
 AUX_SOURCE_DIRECTORY(./src/utils UTILS)
 AUX_SOURCE_DIRECTORY(./src/lexical LEXICAL)
 AUX_SOURCE_DIRECTORY(./src/lexical LEXICAL)
-AUX_SOURCE_DIRECTORY(./src/syntax SYNTAX)
+AUX_SOURCE_DIRECTORY(src/ast AST)
 AUX_SOURCE_DIRECTORY(./examples EXAMPLES)
 AUX_SOURCE_DIRECTORY(./src SOURCE)
 
 # Generate Unit Test Execute File
 ADD_EXECUTABLE(test_output
         ${YYTAB} ${YYLEX}
-        ${UTILS} ${LEXICAL} ${SYNTAX} ${ERROR}
+        ${UTILS} ${LEXICAL} ${AST} ${ERROR}
         ${TEST}
 )
 

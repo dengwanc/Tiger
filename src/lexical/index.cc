@@ -4,7 +4,9 @@
 #include "index.h"
 #include "../utils/index.h"
 #include "../error/index.h"
-#include "../syntax/y.tab.hh"
+#include "../ast/index.h"
+using namespace ast;
+#include "../ast/y.tab.hh"
 
 /**
  * the max string size is 4Kb
