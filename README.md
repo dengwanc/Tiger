@@ -60,3 +60,4 @@ make examples
 
 - [Modern Compiler Implementation in C](https://www.cs.princeton.edu/~appel/modern/c/)
 - [Old C Version Source Code](https://github.com/dengwanc/Tiger/tree/c-version)
+- [LLVM Tutorial: Table of Contents](http://llvm.org/docs/tutorial/index.html)
