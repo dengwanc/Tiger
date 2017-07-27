@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "index.h"
 #include "symbol.h"
-#include "table.h"
 
 struct S_symbol_ {
     char *name;
@@ -45,34 +44,6 @@ Symbol Symbol4(const char* s) {
 char *S_name(Symbol sym) {
     return sym->name;
 }
-
-// S_table S_empty(void) {
-//     return TAB_empty();
-// }
-
-// void S_enter(S_table t, Symbol sym, void *value) {
-//     TAB_enter(t, sym, value);
-// }
-
-// void *S_look(S_table t, Symbol sym) {
-//     return TAB_look(t, sym);
-// }
-
-// static struct S_symbol_ marksym = {String("<mark>"), 0};
-
-// void S_beginScope(S_table t) {
-//     S_enter(t, &marksym, NULL);
-// }
-
-// void S_endScope(S_table t) {
-//     Symbol s;
-//     do s = (Symbol)TAB_pop(t);
-//     while (s != &marksym);
-// }
-
-// void S_dump(S_table t, void *show(Symbol sym, void *binding)) {
-//     TAB_dump(t, (void (*)(void *, void *))show);
-// }
 
 bool S_greaterthan(Symbol s1, Symbol s2) {
     if (s1 == s2) return false;

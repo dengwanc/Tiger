@@ -9,25 +9,25 @@ namespace ast {
     class Lvalue {
     public:
 //        virtual void semantic() = 0;
-//        virtual void print() = 0;
+        virtual void print() = 0;
     };
 
     class Expr {
     public:
 //        virtual void semantic() = 0;
-//        virtual void print() = 0;
+        virtual void print() = 0;
     };
 
     class Declare {
     public:
 //        virtual void semantic() = 0;
-//        virtual void print() = 0;
+        virtual void print() = 0;
     };
 
     class Type {
     public:
 //        virtual void semantic() = 0;
-//        virtual void print() = 0;
+        virtual void print() = 0;
     };
 
     struct Location {

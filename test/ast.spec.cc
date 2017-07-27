@@ -17,11 +17,21 @@ namespace ast {
         }
     }
 
-    void debug() {
+    void debug(const char* file) {
         printf("\n~~~~~~ DEBUGGING AST STARTED ~~~~~~\n\n");
-        assert(ast::parse(TIGER_DEFAULT_INPUT) == 0);
-        // ast::AST_ROOT->print();
-        printf("\n\n~~~~~~ DEBUGGING AST ENDED ~~~~~~\n");
+        assert(ast::parse(file) == 0);
+        if (ast::AST_ROOT == nullptr) {
+            printf("⚠️  %s has no content", TIGER_DEFAULT_INPUT);
+        } else {
+            ast::AST_ROOT->print();
+        }
+
+        printf("\n\n~~~~~~ DEBUGGING AST ENDED ~~~~~~\n\n");
+    }
+
+    void debug()
+    {
+        debug(TIGER_DEFAULT_INPUT);
     }
 }
 
