@@ -16,7 +16,7 @@
 
 # Contribution Guide
 
-> The behind list is ordered as importance
+> This list is ordered as importance
 
 - Issue template
 - Pull request template
