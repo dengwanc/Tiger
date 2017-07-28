@@ -16,7 +16,7 @@
 
 # Contribution Guide
 
-> This list is ordered as importance
+> This list is ordered by importance
 
 - Issue template
 - Pull request template
