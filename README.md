@@ -16,10 +16,7 @@
 
 # Contribution Guide
 
-> The behind list is ordered as importance.
-Before coding, __discuss__ is better.
-If feasible by discuss, __design__ is better.
-Then the coding work.
+> The behind list is ordered as importance
 
 - Issue template
 - Pull request template
