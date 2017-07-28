@@ -1,5 +1,5 @@
 /* A program to solve the 8-queens problem */
-
+/*
 let
     var N := 8
 
@@ -30,5 +30,50 @@ let
 
 )
  in try(0)
+end
+*/
+let
+    var N = 8
+    var row = [N]int
+    var col = [N]int
+    var diag1 = [N + N - 1]int
+    var diag1 = [N + N - 1]int
+
+    var i = 0
+    var j = 0
+    function printboard = {
+        while i < N - 1 {
+            while j < N -1 {
+                print(if col[i] == j then " 0" else " ." end);
+                j = j + 1
+            };
+            print("\n");
+            i = i + 1
+        };
+        print("\n")
+    }
+
+    var r = 0
+    function try(c: int) {
+        if c == N then {
+            printboard()
+        } else {
+            while r < N -1 {
+                if (row[r] == 0 & diag1[r + c] == 0 & diag[r + 7 - c] == 0) then {
+                    row[r] = 1;
+                    diag1[r + c] = 1;
+                    diag2[r + 7 - c] = 1;
+                    col[c] = r;
+                    try(c + 1);
+                    row[r] = 0;
+                    diag1[r + c] = 0;
+                    diag2[r + 7 -c] = 0
+                } end;
+                r = r + 1
+            }
+        } end
+    }
+in
+    try(0)
 end
 	

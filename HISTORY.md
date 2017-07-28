@@ -37,6 +37,7 @@
 * Module System
 * Const keyword
 * For Sugar
+* JavaScript Like Syntax
 
 # TODO
 
@@ -47,9 +48,10 @@
 * ~~\+ nil as Type syntax 🌿️~~
 * ~~\+ unify function syntax~~ maintain
 * ~~\+ support using semicolon at the last expr in exprlist~~ maintain
-* ~~refactor if-else expr~~ maintain
+* refactor if-else expr
 * ~~C/C++ Code ode Conventions~~
 * semantic check module
+* ~~write merge.tig & queens.tig~~ (Actually using tig syntax write some code FOUND Syntax was Ugly)
 
 
 

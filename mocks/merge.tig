@@ -1,4 +1,5 @@
-let 
+/*
+let
 
  type any = {any : int}
  var buffer := getchar()
@@ -53,4 +54,91 @@ function readint(any: any) : int =
   /* BODY OF MAIN PROGRAM */
  in printlist(merge(list1,list2))
 end
+*/
+
+let type Any = {any: int}
+	type List = {first: int, rest: List}
+
+	var buffer = getchar()
+	function readInt(any: Any) {
+		let var i = 0
+			function isdigit(s: string) ord(buffer) > ord("0") & ord(buffer) <= ord("9")
+			function skip = while buffer == " " | buffer == "\n" { buffer = getchar() }
+		in	skip();
+			any.any = isdigit(buffer);
+			while isdigit(buffer) {
+				i = i * 10 + ord(buffer) - ord("0");
+				buffer = getchar()
+			}
+		end
+	}
+
+	function readList = {
+		let var any = {any: 0}Any
+			var i = readInt(any)
+		in if any.any
+		   then {first: i, rest: readList()}List
+		   else nil end
+		end
+	}
+
+	function merge(a: list, b: list) {
+		if a == nil then b
+		else if b == nil then a
+			else if a.first < b.first
+				then {first: a.first, rest: merge(a.rest, b)}List
+				else {first: b.first, rest: merge(a, b.rest)}List
+				end
+			end
+		end
+	}
+
+	function printInt(i: int) {
+		let function f(i: int) {
+				if i > 0 then {
+					f(i / 10);
+					print(char(i - i / 10 * 10 + ord("0")))
+				} end
+			}
+		in  if i < 0 then {
+				print("-");
+				f(-i)
+			} else {
+				if i > 0 then f(i) else print("0") end
+			} end
+		end
+	}
+
+	function printList(l: List) {
+		if l == nil then {
+			print("\n")
+		} else {
+			printInt(l.first);
+			print(" ");
+			printList(l.rest)
+		} end
+	}
+
+	var list1 = readList()
+	var list2 = { buffer = getchar(); readList() }
+in  printList(merge(list1, list2)) end
+
+/*
+type Any = {any: int};
+type List = {first: int, rest: List};
+
+function readInt(any: Any) {
+	var buffer = getchar();
+	var i = 0;
+	function isdigit() {
+		return ord(buffer) > ord("0") & ord(buffer) <= ord("9")
+	}
+	function skip() {
+		while buffer == " " | buffer == "\n" {
+
+		}
+	}
+}
+*/
+
 

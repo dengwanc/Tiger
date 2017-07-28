@@ -39,8 +39,6 @@ static int __TIGER_UNIT_TEST = describe("ast tree", [] {
 
     it("should parse ast correct", [] {
         for (auto i: TIGS) {
-            if (i == "../mocks/merge.tig") continue;
-            if (i == "../mocks/queens.tig") continue;
             assert(ast::parse(i.c_str()) == 0);
         }
 
