@@ -1,4 +1,4 @@
-# Code Conventions
+## Code Conventions
 
 * `#define` must upper & join by `_`
 * Method name must beginning of verb & CamelCase
@@ -14,7 +14,7 @@
 	* `virtual` as interface
 	* Function Overloading
 
-# Contribution Guide
+## Contribution Guide
 
 > This list is ordered by importance
 
@@ -26,7 +26,7 @@
 
 
 
-# Develop Guide
+## Develop Guide
 
 - Commit prefix usage
 ```
@@ -51,7 +51,7 @@ make test
 make examples
 ```
 
-# Refrence
+## Refrence
 
 - [Modern Compiler Implementation in C](https://www.cs.princeton.edu/~appel/modern/c/)
 - [Old C Version Source Code](https://github.com/dengwanc/Tiger/tree/c-version)
