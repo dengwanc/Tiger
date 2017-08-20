@@ -56,8 +56,7 @@ namespace ast {
         setLocation(&this->lo);
     }
 
-    RecordExpr::RecordExpr(Symbol t, struct ValfieldList *v):
-    type(t), valfields(v)
+    RecordExpr::RecordExpr(Symbol t, struct ValfieldList *v): type(t), valfields(v)
     {
         setLocation(&this->lo);
     }
@@ -135,9 +134,10 @@ namespace ast {
         setLocation(&this->lo);
     }
 
-    TypeDeclare::TypeDeclare(Symbol n, struct Type *d):
-    name(n), def(d)
+    TypeDeclare::TypeDeclare(Symbol n, struct Type *d):name(_name), def(_def)
     {
+        this->_name = n;
+        this->_def = d;
         setLocation(&this->lo);
     }
 

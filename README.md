@@ -6,6 +6,7 @@
 * Before you actually figure out what happened DO NOT USE:
 	* disable STL
 	* disable std::string
+	* like __why it is OK return vector from function__?
 
 * Recommendatory Features
 	* Lambda

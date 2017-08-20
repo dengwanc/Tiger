@@ -29,13 +29,14 @@ AUX_SOURCE_DIRECTORY(./src/utils UTILS)
 AUX_SOURCE_DIRECTORY(./src/lexical LEXICAL)
 AUX_SOURCE_DIRECTORY(./src/lexical LEXICAL)
 AUX_SOURCE_DIRECTORY(src/ast AST)
+AUX_SOURCE_DIRECTORY(src/semantic SEMANTIC)
 AUX_SOURCE_DIRECTORY(./examples EXAMPLES)
 AUX_SOURCE_DIRECTORY(./src SOURCE)
 
 # Generate Unit Test Execute File
 ADD_EXECUTABLE(test_output
         ${YYTAB} ${YYLEX}
-        ${UTILS} ${LEXICAL} ${AST} ${ERROR}
+        ${UTILS} ${LEXICAL} ${AST} ${SEMANTIC} ${ERROR}
         ${TEST}
 )
 

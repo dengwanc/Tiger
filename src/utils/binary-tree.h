@@ -30,9 +30,9 @@ public:
 
     BinaryTree();
     BinaryTree(Node* &node);
-    int insert(Symbol key, void* value);
+    int update(Symbol key, void *value);
     void* lookup(Symbol key);
-    BinaryTree* insertImmutable(Symbol key, void* value);
+    BinaryTree* updateImmutable(Symbol key, void *value);
 };
 
 #endif

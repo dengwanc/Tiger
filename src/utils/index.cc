@@ -40,7 +40,7 @@ int describe(const char *s, std::function<void()> f)
 	return 1;
 }
 
-const char* error(const char* s)
+int crash(const char* s)
 {
 	std::cerr << s << std::endl;
 	assert(false);

@@ -1,38 +1,43 @@
-#ifndef TIGER_SYNTAX
-#define TIGER_SYNTAX
+#ifndef TIGER_AST_H
+#define TIGER_AST_H
 
 #include "../utils/symbol.h"
+#include "../semantic/type.h"
+#include "../semantic/index.h"
+#include "../error/index.h"
 
 namespace ast {
     typedef enum { Plus, Minus, Times, Divide, Eq, Neq, Lt, Le, Gt, Ge } Oper;
+    typedef enum { FunctionDK, VarDK, TypeDK, NotDK } DeclareKind;
 
     class Lvalue {
     public:
-//        virtual void semantic() = 0;
         virtual void print() = 0;
+        // todo
+        virtual char* stringify() { return nullptr; };
+        virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
 
     class Expr {
     public:
-//        virtual void semantic() = 0;
         virtual void print() = 0;
+        // todo
+        virtual char* stringify() { return nullptr; };
+        virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
 
     class Declare {
     public:
-//        virtual void semantic() = 0;
         virtual void print() = 0;
+        virtual DeclareKind getKind() = 0;
+        virtual SemanticResult* preprocess(SemanticResult* &env) = 0;
+        virtual SemanticResult* semantic(SemanticResult* &env, struct DeclareList* decs) = 0;
     };
 
     class Type {
     public:
-//        virtual void semantic() = 0;
         virtual void print() = 0;
-    };
-
-    struct Location {
-        int line;
-        int offset;
+        virtual ActualType* pure(SemanticResult*& env, struct DeclareList* decs) = 0;
     };
 
     class SimpleLvalue: public Lvalue {
@@ -42,6 +47,7 @@ namespace ast {
     public:
         SimpleLvalue(Symbol sym);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class FieldLvalue: public Lvalue {
@@ -52,6 +58,7 @@ namespace ast {
     public:
         FieldLvalue(Lvalue* lv, Symbol sym);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class SubscriptLvalue: public Lvalue {
@@ -62,6 +69,7 @@ namespace ast {
     public:
         SubscriptLvalue(Lvalue* lv, Expr* expr);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class LvalueExpr: public Expr {
@@ -71,6 +79,7 @@ namespace ast {
     public:
         LvalueExpr(Lvalue* lv);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class IntExpr: public Expr {
@@ -80,6 +89,7 @@ namespace ast {
     public:
         IntExpr(int ival);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class RealExpr: public Expr {
@@ -89,6 +99,7 @@ namespace ast {
     public:
         RealExpr(double dval);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class StringExpr: public Expr {
@@ -98,6 +109,7 @@ namespace ast {
     public:
         StringExpr(char* sval);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class CallExpr: public Expr {
@@ -108,6 +120,7 @@ namespace ast {
     public:
         CallExpr(Symbol func, struct ExprList* args);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class OpExpr: public Expr {
@@ -115,20 +128,24 @@ namespace ast {
         Oper oper;
         Expr* left;
         Expr* right;
-
+        ActualType* getOperatedType(ActualType* &type);
     public:
         OpExpr(Oper oper, Expr* left, Expr* right);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class RecordExpr: public Expr {
         struct Location lo;
         Symbol type;
         struct ValfieldList* valfields;
-
     public:
+        // todo re-design
         RecordExpr(Symbol type, struct ValfieldList* valfields);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
+        bool has(Symbol s);
+        ActualType* getFieldType(Symbol s, SemanticResult *&env);
     };
 
     class ArrayExpr: public Expr {
@@ -139,6 +156,7 @@ namespace ast {
     public:
         ArrayExpr(Symbol t, Expr* s);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class SeqExpr: public Expr {
@@ -148,6 +166,7 @@ namespace ast {
     public:
         SeqExpr(struct ExprList* seq);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class AssignExpr: public Expr {
@@ -158,6 +177,7 @@ namespace ast {
     public:
         AssignExpr(Lvalue *lv, Expr *expr);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class IfExpr: public Expr {
@@ -169,6 +189,7 @@ namespace ast {
     public:
         IfExpr(Expr *test, struct ExprList *then, struct ExprList *otherwise);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class WhileExpr: public Expr {
@@ -179,6 +200,7 @@ namespace ast {
     public:
         WhileExpr(Expr *test, struct ExprList *body);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class LetExpr: public Expr {
@@ -189,6 +211,7 @@ namespace ast {
     public:
         LetExpr(struct DeclareList* declares, struct ExprList* body);
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     Expr* OrExpr(Expr* left, Expr* right);
@@ -201,6 +224,7 @@ namespace ast {
     public:
         NilExpr();
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class BreakExpr: public Expr {
@@ -209,6 +233,7 @@ namespace ast {
     public:
         BreakExpr();
         void print();
+        SemanticResult* semantic(SemanticResult* &env);
     };
 
     class FunctionDeclare: public Declare {
@@ -221,6 +246,9 @@ namespace ast {
     public:
         FunctionDeclare(Symbol name, struct TypefieldList* params, Symbol result, Expr* body);
         void print();
+        DeclareKind getKind();
+        SemanticResult* preprocess(SemanticResult* &env);
+        SemanticResult* semantic(SemanticResult *&env, struct DeclareList *decs);
     };
 
     class VarDeclare: public Declare {
@@ -232,16 +260,24 @@ namespace ast {
     public:
         VarDeclare(Symbol id, Symbol type, Expr* init);
         void print();
+        DeclareKind getKind();
+        SemanticResult* preprocess(SemanticResult* &env);
+        SemanticResult* semantic(SemanticResult *&env, struct DeclareList *decs);
     };
 
     class TypeDeclare: public Declare {
         struct Location lo;
-        Symbol name;
-        Type* def;
+        Symbol _name;
+        Type* _def;
 
     public:
+        Symbol const &name;
+        Type* const &def;
         TypeDeclare(Symbol name, struct Type* def);
         void print();
+        DeclareKind getKind();
+        SemanticResult* semantic(SemanticResult* &env, struct DeclareList* decs);
+        SemanticResult* preprocess(SemanticResult* &env);
     };
 
     class NameType: public Type {
@@ -251,6 +287,7 @@ namespace ast {
     public:
         NameType(Symbol name);
         void print();
+        ActualType* pure(SemanticResult*& env, struct DeclareList* decs);
     };
 
     class RecordType: public Type {
@@ -260,6 +297,7 @@ namespace ast {
     public:
         RecordType(struct TypefieldList *record);
         void print();
+        ActualType* pure(SemanticResult*& env, struct DeclareList* decs);
     };
 
     class ArrayType: public Type {
@@ -269,9 +307,8 @@ namespace ast {
     public:
         ArrayType(Symbol array);
         void print();
+        ActualType* pure(SemanticResult*& env, struct DeclareList* decs);
     };
-
-    extern Expr* AST_ROOT;
 
     struct Typefield {
         Symbol name;
@@ -306,6 +343,8 @@ namespace ast {
     struct DeclareList* DeclareList4(Declare* head, struct DeclareList* tail);
     struct TypefieldList* TypefieldList4(Symbol name, Symbol type, struct TypefieldList* tail);
     struct ValfieldList* ValfieldList4(Symbol name, Expr* expr, struct ValfieldList* tail);
+
+    extern Expr* AST_ROOT;
 }
 
 #endif

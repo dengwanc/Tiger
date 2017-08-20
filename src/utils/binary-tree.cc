@@ -27,13 +27,13 @@ BinaryTree::BinaryTree(Node* &node): root(_root)
     this->_root = node;
 }
 
-int BinaryTree::insert(Symbol key, void* value)
+int BinaryTree::update(Symbol key, void* value)
 {
     auto current = &(this->_root);
 
     while (*current) {
         if (key == (*current)->key) {
-            return 1;
+            (*current)->_value = value;
         } else if (S_greaterthan(key, (*current)->key)) {
             current = &((*current)->_left);
         } else {
@@ -51,7 +51,7 @@ void* BinaryTree::lookup(Symbol key)
     return nullptr;
 }
 
-BinaryTree* BinaryTree::insertImmutable(Symbol key, void* value)
+BinaryTree* BinaryTree::updateImmutable(Symbol key, void *value)
 {
     if (this->root == nullptr) {
         auto node = new Node(key, value);
@@ -59,14 +59,18 @@ BinaryTree* BinaryTree::insertImmutable(Symbol key, void* value)
     }
 
     if (key == this->root->key) {
-        return nullptr;
+        this->root->_value = value;
+        return this;
     }
 
     auto current = new Node(this->_root);
     auto root = current;
 
     while (true) {
-        if (S_greaterthan(key, current->key)) {
+        if (key == current->key) {
+            current->_value = value;
+            break;
+        } else if (S_greaterthan(key, current->key)) {
             if (current->left) {
                 // copy & point correctly
                 current->_left = new Node(current->_left);

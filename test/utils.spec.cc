@@ -49,7 +49,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
 		auto tree = new BinaryTree();
         assert(tree->root == nullptr);
 
-		auto status = tree->insert(s_a, &a);
+		auto status = tree->update(s_a, &a);
 		auto root = tree->root;
         assert(status == 0);
 		assert(root->key == s_a);
@@ -57,7 +57,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
 		assert(root->left == nullptr);
 		assert(root->right == nullptr);
 
-		status = tree->insert(s_b, &b);
+		status = tree->update(s_b, &b);
 		auto left = root->left;
 		assert(status == 0);
 		assert(left->key == s_b);
@@ -65,7 +65,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
 		assert(left->left == nullptr);
 		assert(left->right == nullptr);
 
-		status = tree->insert(s_A, &A);
+		status = tree->update(s_A, &A);
 		auto right = root->right;
 		assert(status == 0);
 		assert(right->key == s_A);
@@ -73,7 +73,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
 		assert(right->left == nullptr);
 		assert(right->right == nullptr);
 
-		status = tree->insert(s_c, &c);
+		status = tree->update(s_c, &c);
 		auto grandson = left->left;
 		assert(status == 0);
 		assert(grandson->key == s_c);
@@ -81,7 +81,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
 		assert(grandson->left == nullptr);
 		assert(grandson->right == nullptr);
 
-		status = tree->insert(s_a, &a);
+		status = tree->update(s_a, &a);
 		assert(status == 1);
 	});
 
@@ -98,7 +98,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
         auto s_AT = Symbol4("@");
 
 		auto tree = new BinaryTree();
-        auto copy = tree->insertImmutable(s_a, &a);
+        auto copy = tree->updateImmutable(s_a, &a);
         auto root = copy->root;
         assert(tree->root == nullptr);
         assert(copy != tree);
@@ -108,10 +108,10 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
         assert(root->left == nullptr);
         assert(root->right == nullptr);
 
-        tree->insert(s_a, &a);
-        tree->insert(s_b, &b);
+        tree->update(s_a, &a);
+        tree->update(s_b, &b);
 
-		copy = tree->insertImmutable(s_A, &A);
+		copy = tree->updateImmutable(s_A, &A);
         root = copy->root;
 		auto right = root->right;
         assert(copy);
@@ -122,7 +122,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
 		assert(right->right == nullptr);
         assert(root->left == tree->root->left);
 
-        auto copy2 = copy->insertImmutable(s_c, &c);
+        auto copy2 = copy->updateImmutable(s_c, &c);
         root = copy2->root;
         auto left = root->left->left;
         assert(copy2);
@@ -134,7 +134,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
         assert(root->left != copy->root->left);
         assert(root->right == copy->root->right);
 
-        auto copy3 = copy2->insertImmutable(s_AT, &AT);
+        auto copy3 = copy2->updateImmutable(s_AT, &AT);
         root = copy3->root;
         right = root->right->right;
         assert(copy3);

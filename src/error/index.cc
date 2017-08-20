@@ -1,5 +1,6 @@
 #include "../lexical/index.h"
 #include "../utils/index.h"
+#include "index.h"
 
 extern char* yytext;
 
@@ -11,7 +12,7 @@ void yyerror(const char* msg)
     auto line = lexical::getLine();
     auto file = lexical::getFilename();
     sprintf(last,"`%s` %s (%s:%d)", yytext, msg, file, line);
-    error(last);
+    crash(last);
 }
 
 void refresh()
@@ -49,7 +50,9 @@ void reportBadToken()
     reportError("ILLEGAL TOKEN");
 }
 
-void reportBadSyntax()
+void reportSemanticError(char* msg, struct Location &lo)
 {
-
+    anyerrors = true;
+    fprintf(stderr, " LINE %d.%d: \n", lo.line, lo.offset);
+    fprintf(stderr, "%s\n", msg);
 }

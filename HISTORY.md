@@ -41,6 +41,10 @@
 
 # TODO
 
+* implements value-table module
+* implements stringify
+* refactor RecordExpr match
+* binary tree update/lookup unit test
 * ~~write unit test for absyn module~~
 * check lexical.spec.cc token map table (after done semantic do this)
 * ~~yyerror TO error module~~
@@ -48,10 +52,12 @@
 * ~~\+ nil as Type syntax 🌿️~~
 * ~~\+ unify function syntax~~ maintain
 * ~~\+ support using semicolon at the last expr in exprlist~~ maintain
-* refactor if-else expr
+* refactor if-else expr(cause too much syntax noise)
+	* support single if
+	* support no `end` key word
 * ~~C/C++ Code ode Conventions~~
-* semantic check module
-* ~~write merge.tig & queens.tig~~ (Actually using tig syntax write some code FOUND Syntax was Ugly)
+* implements semantic check module
+* ~~write merge.tig & queens.tig~~
 
 
 
