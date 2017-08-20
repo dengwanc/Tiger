@@ -59,5 +59,10 @@
 * implements semantic check module
 * ~~write merge.tig & queens.tig~~
 
+# Code Experience
+
+* depart module is very important(< 300 lines)
+* private member need to measure not so necessary
+
 
 

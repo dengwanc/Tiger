@@ -9,7 +9,10 @@
 namespace ast {
     typedef enum { Plus, Minus, Times, Divide, Eq, Neq, Lt, Le, Gt, Ge } Oper;
     typedef enum { FunctionDK, VarDK, TypeDK, NotDK } DeclareKind;
+}
 
+/** base define solve circular reference */
+namespace ast {
     class Lvalue {
     public:
         virtual void print() = 0;
@@ -26,6 +29,12 @@ namespace ast {
         virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
 
+    class Type {
+    public:
+        virtual void print() = 0;
+        virtual ActualType* pure(SemanticResult*& env, struct DeclareList* decs) = 0;
+    };
+
     class Declare {
     public:
         virtual void print() = 0;
@@ -33,109 +42,110 @@ namespace ast {
         virtual SemanticResult* preprocess(SemanticResult* &env) = 0;
         virtual SemanticResult* semantic(SemanticResult* &env, struct DeclareList* decs) = 0;
     };
+}
 
-    class Type {
-    public:
-        virtual void print() = 0;
-        virtual ActualType* pure(SemanticResult*& env, struct DeclareList* decs) = 0;
-    };
-
-    class SimpleLvalue: public Lvalue {
+/** left value */
+namespace ast {
+    class SimpleLvalue : public Lvalue {
         struct Location lo;
         Symbol simple;
 
     public:
         SimpleLvalue(Symbol sym);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class FieldLvalue: public Lvalue {
+    class FieldLvalue : public Lvalue {
         struct Location lo;
-        struct Lvalue* lv;
+        struct Lvalue *lv;
         Symbol x;
 
     public:
-        FieldLvalue(Lvalue* lv, Symbol sym);
+        FieldLvalue(Lvalue *lv, Symbol sym);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class SubscriptLvalue: public Lvalue {
+    class SubscriptLvalue : public Lvalue {
         struct Location lo;
-        struct Lvalue* lv;
-        struct Expr* expr;
+        struct Lvalue *lv;
+        Expr *expr;
 
     public:
-        SubscriptLvalue(Lvalue* lv, Expr* expr);
+        SubscriptLvalue(Lvalue *lv, Expr *expr);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
+}
 
-    class LvalueExpr: public Expr {
+/** expressions */
+namespace ast {
+    class LvalueExpr : public Expr {
         struct Location lo;
-        struct Lvalue* lv;
+        struct Lvalue *lv;
 
     public:
-        LvalueExpr(Lvalue* lv);
+        LvalueExpr(Lvalue *lv);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class IntExpr: public Expr {
+    class IntExpr : public Expr {
         struct Location lo;
         int ival;
 
     public:
         IntExpr(int ival);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class RealExpr: public Expr {
+    class RealExpr : public Expr {
         struct Location lo;
         double dval;
 
     public:
         RealExpr(double dval);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class StringExpr: public Expr {
+    class StringExpr : public Expr {
         struct Location lo;
-        char* sval;
+        char *sval;
 
     public:
-        StringExpr(char* sval);
+        StringExpr(char *sval);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class CallExpr: public Expr {
+    class CallExpr : public Expr {
         struct Location lo;
         Symbol func;
-        struct ExprList* args;
+        struct ExprList *args;
 
     public:
-        CallExpr(Symbol func, struct ExprList* args);
+        CallExpr(Symbol func, struct ExprList *args);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class OpExpr: public Expr {
+    class OpExpr : public Expr {
         struct Location lo;
         Oper oper;
-        Expr* left;
-        Expr* right;
-        ActualType* getOperatedType(ActualType* &type);
+        Expr *left;
+        Expr *right;
+        ActualType *getOperatedType(ActualType *&type);
+
     public:
-        OpExpr(Oper oper, Expr* left, Expr* right);
+        OpExpr(Oper oper, Expr *left, Expr *right);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class RecordExpr: public Expr {
+    class RecordExpr : public Expr {
         struct Location lo;
         Symbol type;
         struct ValfieldList* valfields;
@@ -143,33 +153,33 @@ namespace ast {
         // todo re-design
         RecordExpr(Symbol type, struct ValfieldList* valfields);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
         bool has(Symbol s);
-        ActualType* getFieldType(Symbol s, SemanticResult *&env);
+        ActualType *getFieldType(Symbol s, SemanticResult *&env);
     };
 
-    class ArrayExpr: public Expr {
+    class ArrayExpr : public Expr {
         struct Location lo;
         Symbol type;
-        Expr* size;
+        Expr *size;
 
     public:
-        ArrayExpr(Symbol t, Expr* s);
+        ArrayExpr(Symbol t, Expr *s);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class SeqExpr: public Expr {
+    class SeqExpr : public Expr {
         struct Location lo;
-        struct ExprList* seq;
+        struct ExprList *seq;
 
     public:
-        SeqExpr(struct ExprList* seq);
+        SeqExpr(struct ExprList *seq);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class AssignExpr: public Expr {
+    class AssignExpr : public Expr {
         struct Location lo;
         Lvalue *lv;
         Expr *expr;
@@ -177,10 +187,10 @@ namespace ast {
     public:
         AssignExpr(Lvalue *lv, Expr *expr);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class IfExpr: public Expr {
+    class IfExpr : public Expr {
         struct Location lo;
         Expr *test;
         struct ExprList *then;
@@ -189,146 +199,60 @@ namespace ast {
     public:
         IfExpr(Expr *test, struct ExprList *then, struct ExprList *otherwise);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class WhileExpr: public Expr {
+    class WhileExpr : public Expr {
         struct Location lo;
-        Expr* test;
+        Expr *test;
         struct ExprList *body;
 
     public:
         WhileExpr(Expr *test, struct ExprList *body);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class LetExpr: public Expr {
+    class LetExpr : public Expr {
         struct Location lo;
-        struct DeclareList* declares;
-        struct ExprList* body;
+        struct DeclareList *declares;
+        struct ExprList *body;
 
     public:
-        LetExpr(struct DeclareList* declares, struct ExprList* body);
+        LetExpr(struct DeclareList *declares, struct ExprList *body);
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    Expr* OrExpr(Expr* left, Expr* right);
-    Expr* AndExpr(Expr* left, Expr* right);
-    Expr* MinusExpr(Expr* expr);
-
-    class NilExpr: public Expr {
+    class NilExpr : public Expr {
         struct Location lo;
 
     public:
         NilExpr();
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class BreakExpr: public Expr {
+    class BreakExpr : public Expr {
         struct Location lo;
 
     public:
         BreakExpr();
         void print();
-        SemanticResult* semantic(SemanticResult* &env);
+        SemanticResult *semantic(SemanticResult *&env);
     };
 
-    class FunctionDeclare: public Declare {
-        struct Location lo;
-        Symbol name;
-        struct TypefieldList* params;
-        Symbol result;
-        Expr* body;
+    Expr *OrExpr(Expr *left, Expr *right);
 
-    public:
-        FunctionDeclare(Symbol name, struct TypefieldList* params, Symbol result, Expr* body);
-        void print();
-        DeclareKind getKind();
-        SemanticResult* preprocess(SemanticResult* &env);
-        SemanticResult* semantic(SemanticResult *&env, struct DeclareList *decs);
-    };
+    Expr *AndExpr(Expr *left, Expr *right);
 
-    class VarDeclare: public Declare {
-        struct Location lo;
-        Symbol id;
-        Symbol type;
-        Expr *init;
-
-    public:
-        VarDeclare(Symbol id, Symbol type, Expr* init);
-        void print();
-        DeclareKind getKind();
-        SemanticResult* preprocess(SemanticResult* &env);
-        SemanticResult* semantic(SemanticResult *&env, struct DeclareList *decs);
-    };
-
-    class TypeDeclare: public Declare {
-        struct Location lo;
-        Symbol _name;
-        Type* _def;
-
-    public:
-        Symbol const &name;
-        Type* const &def;
-        TypeDeclare(Symbol name, struct Type* def);
-        void print();
-        DeclareKind getKind();
-        SemanticResult* semantic(SemanticResult* &env, struct DeclareList* decs);
-        SemanticResult* preprocess(SemanticResult* &env);
-    };
-
-    class NameType: public Type {
-        struct Location lo;
-        Symbol name;
-
-    public:
-        NameType(Symbol name);
-        void print();
-        ActualType* pure(SemanticResult*& env, struct DeclareList* decs);
-    };
-
-    class RecordType: public Type {
-        struct Location lo;
-        struct TypefieldList *record;
-
-    public:
-        RecordType(struct TypefieldList *record);
-        void print();
-        ActualType* pure(SemanticResult*& env, struct DeclareList* decs);
-    };
-
-    class ArrayType: public Type {
-        struct Location lo;
-        Symbol array;
-
-    public:
-        ArrayType(Symbol array);
-        void print();
-        ActualType* pure(SemanticResult*& env, struct DeclareList* decs);
-    };
-
-    struct Typefield {
-        Symbol name;
-        Symbol type;
-    };
-
-    struct TypefieldList {
-        struct Typefield* head;
-        struct TypefieldList* tail;
-    };
+    Expr *MinusExpr(Expr *expr);
 
     struct ExprList {
         Expr* head;
         struct ExprList* tail;
     };
-
-    struct DeclareList {
-        Declare* head;
-        struct DeclareList* tail;
-    };
+    struct ExprList* ExprList4(Expr* head, struct ExprList* tail);
 
     struct Valfield {
         Symbol name;
@@ -338,12 +262,104 @@ namespace ast {
         struct Valfield* head;
         struct ValfieldList* tail;
     };
-
-    struct ExprList* ExprList4(Expr* head, struct ExprList* tail);
-    struct DeclareList* DeclareList4(Declare* head, struct DeclareList* tail);
-    struct TypefieldList* TypefieldList4(Symbol name, Symbol type, struct TypefieldList* tail);
     struct ValfieldList* ValfieldList4(Symbol name, Expr* expr, struct ValfieldList* tail);
+}
 
+/** declares */
+namespace ast {
+    class FunctionDeclare : public Declare {
+        struct Location lo;
+        Symbol name;
+        struct TypefieldList *params;
+        Symbol result;
+        Expr *body;
+
+    public:
+        FunctionDeclare(Symbol name, struct TypefieldList *params, Symbol result, Expr *body);
+        void print();
+        DeclareKind getKind();
+        SemanticResult *preprocess(SemanticResult *&env);
+        SemanticResult *semantic(SemanticResult *&env, struct DeclareList *decs);
+    };
+
+    class VarDeclare : public Declare {
+        struct Location lo;
+        Symbol id;
+        Symbol type;
+        Expr *init;
+
+    public:
+        VarDeclare(Symbol id, Symbol type, Expr *init);
+        void print();
+        DeclareKind getKind();
+        SemanticResult *preprocess(SemanticResult *&env);
+        SemanticResult *semantic(SemanticResult *&env, struct DeclareList *decs);
+    };
+
+    class TypeDeclare : public Declare {
+        struct Location lo;
+        Symbol _name;
+        Type *_def;
+
+    public:
+        Symbol const &name;
+        Type *const &def;
+
+        TypeDeclare(Symbol name, struct Type *def);
+        void print();
+        DeclareKind getKind();
+        SemanticResult *semantic(SemanticResult *&env, struct DeclareList *decs);
+        SemanticResult *preprocess(SemanticResult *&env);
+    };
+
+    struct DeclareList {
+        Declare* head;
+        struct DeclareList* tail;
+    };
+    struct DeclareList* DeclareList4(Declare* head, struct DeclareList* tail);
+}
+
+/** types */
+namespace ast {
+    class NameType : public Type {
+        struct Location lo;
+        Symbol name;
+    public:
+        NameType(Symbol name);
+        void print();
+        ActualType *pure(SemanticResult *&env, struct DeclareList *decs);
+    };
+
+    class RecordType : public Type {
+        struct Location lo;
+        struct TypefieldList *record;
+    public:
+        RecordType(struct TypefieldList *record);
+        void print();
+        ActualType *pure(SemanticResult *&env, struct DeclareList *decs);
+    };
+
+    class ArrayType : public Type {
+        struct Location lo;
+        Symbol array;
+    public:
+        ArrayType(Symbol array);
+        void print();
+        ActualType *pure(SemanticResult *&env, struct DeclareList *decs);
+    };
+
+    struct Typefield {
+        Symbol name;
+        Symbol type;
+    };
+    struct TypefieldList {
+        struct Typefield* head;
+        struct TypefieldList* tail;
+    };
+    struct TypefieldList* TypefieldList4(Symbol name, Symbol type, struct TypefieldList* tail);
+}
+
+namespace ast {
     extern Expr* AST_ROOT;
 }
 
