@@ -11,6 +11,7 @@
  */
 static char sem[1024 * 64];
 
+/** inner functions */
 namespace ast {
     static void handleError(struct Location lo) {
         if (empty(sem)) return;
@@ -19,6 +20,90 @@ namespace ast {
         sem[0] = '\0';
     }
 
+    static SemanticResult* semanticExprList(struct ExprList* l, SemanticResult *&env)
+    {
+        SemanticResult* end;
+
+        while (l) {
+            end = l->head->semantic(env);
+            l = l->tail;
+        }
+
+        return end;
+    }
+
+    struct GroupedDeclare {
+        struct DeclareList* func;
+        struct DeclareList* var;
+        struct DeclareList* type;
+    };
+
+    static struct GroupedDeclare& groupDeclares(struct DeclareList* &declares)
+    {
+        DeclareList* func = nullptr;
+        DeclareList* var = nullptr;
+        DeclareList* type = nullptr;
+        struct GroupedDeclare group;
+
+        while(declares) {
+            auto dec = declares->head;
+
+            switch (dec->getKind()) {
+                case FunctionDK:
+                    func = DeclareList4(declares->head, func);
+                    break;
+                case VarDK:
+                    var = DeclareList4(declares->head, var);
+                    break;
+                case TypeDK:
+                    type = DeclareList4(declares->head, type);
+                    break;
+                default:
+                    crash("Declare object must has a certain type");
+            }
+
+            declares = declares->tail;
+        }
+
+        return group = { func, var, type };
+    }
+
+    static Declare* getDeclareByName(struct DeclareList* decs, Symbol name)
+    {
+        while (decs) {
+            auto dec = (TypeDeclare*)decs->head;
+            if (dec->name == name) {
+                return dec;
+            }
+            decs = decs->tail;
+        }
+
+        return nullptr;
+    }
+
+    static ActualType* pure(Symbol s, SemanticResult* &env, struct DeclareList* decs)
+    {
+        auto looked_type = (ActualType*)env->typ_table->lookup(s);
+
+        if (looked_type) {
+            if (looked_type->kind == SittingATK) {
+                auto dec = (TypeDeclare*)getDeclareByName(decs, s);
+
+                assert(dec);
+
+                return dec->def->pure(env, decs);
+            } else {
+                return looked_type;
+            }
+        } else {
+            return nullptr;
+        }
+    }
+}
+
+
+/** SemanticResult  */
+namespace ast {
     SemanticResult::SemanticResult(BinaryTree* v, BinaryTree* t, ActualType* a)
     {
         this->val_table = v;
@@ -35,7 +120,10 @@ namespace ast {
     {
         return new SemanticResult(this->val_table, this->typ_table, this->type);
     }
+}
 
+/** semantic implements */
+namespace ast {
     SemanticResult* IntExpr::semantic(SemanticResult* &env) {
         return env->copy(new ActualInt());
     }
@@ -172,37 +260,6 @@ namespace ast {
         return env->copy(nullptr);
     }
 
-    /**
-     * =====================================
-     * int a
-     * int b
-     * a + b // getOperatedType is ActualInt
-     * =====================================
-     * ! danger callee
-     * ! make sure left type totally equal right type
-     * ! and type must can be operated
-     * @param type left or right ActualType
-     * @return calculated ActualType
-     * @api private
-     */
-    ActualType * OpExpr::getOperatedType(ActualType* &type)
-    {
-        switch (this->oper) {
-            case Plus:
-            case Minus:
-            case Times:
-            case Divide:
-                return type;
-            case Eq:
-            case Neq:
-            case Lt:
-            case Le:
-            case Gt:
-            case Ge:
-                return new ActualInt();
-        }
-    }
-
     SemanticResult* OpExpr::semantic(SemanticResult *&env)
     {
         auto left = this->left->semantic(env);
@@ -235,34 +292,6 @@ namespace ast {
         handleError(this->lo);
 
         return env->copy(nullptr);
-    }
-
-    bool RecordExpr::has(Symbol s)
-    {
-        auto valfields = this->valfields;
-
-        while(valfields) {
-            if (valfields->head->name == s) {
-                return true;
-            }
-            valfields = valfields->tail;
-        }
-
-        return false;
-    }
-
-    ActualType* RecordExpr::getFieldType(Symbol s, SemanticResult *&env)
-    {
-        auto valfields = this->valfields;
-
-        while(valfields) {
-            if (valfields->head->name == s) {
-                return valfields->head->expr->semantic(env)->type;
-            }
-            valfields = valfields->tail;
-        }
-
-        return nullptr;
     }
 
     SemanticResult* RecordExpr::semantic(SemanticResult *&env)
@@ -316,22 +345,9 @@ namespace ast {
         return env->copy();
     }
 
-    static SemanticResult* semanticExprList(struct ExprList* l, SemanticResult *&env)
-    {
-        SemanticResult* end;
-
-        while (l) {
-            end = l->head->semantic(env);
-            l = l->tail;
-        }
-
-        return end;
-    }
-
     SemanticResult* SeqExpr::semantic(SemanticResult *&env)
     {
         auto tmp = semanticExprList(this->seq, env);
-
         return env->copy(tmp->type);
     }
 
@@ -355,8 +371,6 @@ namespace ast {
 
         return env->copy(nullptr);
     }
-
-
 
     SemanticResult* IfExpr::semantic(SemanticResult *&env)
     {
@@ -417,42 +431,6 @@ namespace ast {
         return env->copy(new ActualVoid());
     }
 
-    struct GroupedDeclare {
-        struct DeclareList* func;
-        struct DeclareList* var;
-        struct DeclareList* type;
-    };
-
-    static struct GroupedDeclare& groupDeclares(struct DeclareList* &declares)
-    {
-        DeclareList* func = nullptr;
-        DeclareList* var = nullptr;
-        DeclareList* type = nullptr;
-        struct GroupedDeclare group;
-
-        while(declares) {
-            auto dec = declares->head;
-
-            switch (dec->getKind()) {
-                case FunctionDK:
-                    func = DeclareList4(declares->head, func);
-                    break;
-                case VarDK:
-                    var = DeclareList4(declares->head, var);
-                    break;
-                case TypeDK:
-                    type = DeclareList4(declares->head, type);
-                    break;
-                default:
-                    crash("Declare object must has a certain type");
-            }
-
-            declares = declares->tail;
-        }
-
-        return group = { func, var, type };
-    }
-
     SemanticResult* LetExpr::semantic(SemanticResult *&env)
     {
         auto decs = this->declares;
@@ -470,25 +448,6 @@ namespace ast {
         auto tmp = semanticExprList(this->body, scope);
 
         return env->copy(tmp->type);
-    }
-
-    SemanticResult* TypeDeclare::preprocess(SemanticResult* &env)
-    {
-        auto looked_type = env->typ_table->lookup(this->name);
-
-        if (looked_type) {
-            sprintf(sem, "duplicate identifier `%s`", S_name(this->name));
-        } else {
-            return new SemanticResult(
-                env->val_table,
-                env->typ_table->updateImmutable(this->name, new ActualSitting()),
-                new ActualVoid()
-            );
-        }
-
-        handleError(this->lo);
-
-        return env->copy(nullptr);
     }
 
     SemanticResult* TypeDeclare::semantic(SemanticResult *&env, struct DeclareList* decs)
@@ -514,37 +473,96 @@ namespace ast {
         return env->copy(nullptr);
     }
 
-    static Declare* getDeclareByName(struct DeclareList* decs, Symbol name)
+    SemanticResult* FunctionDeclare::semantic(SemanticResult *&env, struct DeclareList *decs)
     {
-        while (decs) {
-            auto dec = (TypeDeclare*)decs->head;
-            if (dec->name == name) {
-                return dec;
+
+    }
+
+    SemanticResult* VarDeclare::semantic(SemanticResult *&env, struct DeclareList *decs)
+    {
+
+    }
+
+}
+
+/** helpers */
+namespace ast {
+    /**
+ * =====================================
+ * int a
+ * int b
+ * a + b // getOperatedType is ActualInt
+ * =====================================
+ * ! danger callee
+ * ! make sure left type totally equal right type
+ * ! and type must can be operated
+ * @param type left or right ActualType
+ * @return calculated ActualType
+ * @api private
+ */
+    ActualType * OpExpr::getOperatedType(ActualType* &type)
+    {
+        switch (this->oper) {
+            case Plus:
+            case Minus:
+            case Times:
+            case Divide:
+                return type;
+            case Eq:
+            case Neq:
+            case Lt:
+            case Le:
+            case Gt:
+            case Ge:
+                return new ActualInt();
+        }
+    }
+
+    bool RecordExpr::has(Symbol s)
+    {
+        auto valfields = this->valfields;
+
+        while(valfields) {
+            if (valfields->head->name == s) {
+                return true;
             }
-            decs = decs->tail;
+            valfields = valfields->tail;
+        }
+
+        return false;
+    }
+
+    ActualType* RecordExpr::getFieldType(Symbol s, SemanticResult *&env)
+    {
+        auto valfields = this->valfields;
+
+        while(valfields) {
+            if (valfields->head->name == s) {
+                return valfields->head->expr->semantic(env)->type;
+            }
+            valfields = valfields->tail;
         }
 
         return nullptr;
     }
 
-
-    static ActualType* pure(Symbol s, SemanticResult* &env, struct DeclareList* decs)
+    SemanticResult* TypeDeclare::preprocess(SemanticResult* &env)
     {
-        auto looked_type = (ActualType*)env->typ_table->lookup(s);
+        auto looked_type = env->typ_table->lookup(this->name);
 
         if (looked_type) {
-            if (looked_type->kind == SittingATK) {
-                auto dec = (TypeDeclare*)getDeclareByName(decs, s);
-
-                assert(dec);
-
-                return dec->def->pure(env, decs);
-            } else {
-                return looked_type;
-            }
+            sprintf(sem, "duplicate identifier `%s`", S_name(this->name));
         } else {
-            return nullptr;
+            return new SemanticResult(
+                    env->val_table,
+                    env->typ_table->updateImmutable(this->name, new ActualSitting()),
+                    new ActualVoid()
+            );
         }
+
+        handleError(this->lo);
+
+        return env->copy(nullptr);
     }
 
     ActualType* NameType::pure(SemanticResult* &env, struct DeclareList* decs)
@@ -626,27 +644,17 @@ namespace ast {
     {
 
     }
-
-    SemanticResult* FunctionDeclare::semantic(SemanticResult *&env, struct DeclareList *decs)
-    {
-
-    }
-
-    SemanticResult* VarDeclare::semantic(SemanticResult *&env, struct DeclareList *decs)
-    {
-
-    }
-
 }
 
-ast::SemanticResult* makeBaseEnvTable()
-{
-    auto value_table = new BinaryTree();
-    auto type_table = new BinaryTree();
+namespace ast {
+    SemanticResult *makeBaseEnvTable() {
+        auto value_table = new BinaryTree();
+        auto type_table = new BinaryTree();
 
-    type_table->update(Symbol4("int"), new ActualInt());
-    type_table->update(Symbol4("string"), new ActualString());
-    type_table->update(Symbol4("real"), new ActualReal());
+        type_table->update(Symbol4("int"), new ActualInt());
+        type_table->update(Symbol4("string"), new ActualString());
+        type_table->update(Symbol4("real"), new ActualReal());
 
-    return new ast::SemanticResult(value_table, type_table, nullptr);
+        return new ast::SemanticResult(value_table, type_table, nullptr);
+    }
 }

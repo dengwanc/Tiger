@@ -24,6 +24,11 @@ namespace ast {
         SemanticResult* copy();
     };
 
+    /**
+     * init tiger basic env
+     * type: int, string, ...
+     * value: print, ....
+     */
     SemanticResult* makeBaseEnvTable();
 }
 
@@ -32,27 +37,57 @@ namespace ast {
     class Lvalue {
     public:
         virtual void print() = 0;
-        virtual char* stringify() { return nullptr; };
+        virtual char* stringify() = 0;
         virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
 
     class Expr {
     public:
         virtual void print() = 0;
-        virtual char* stringify() { return nullptr; };
+        virtual char* stringify() = 0;
         virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
 
     class Type {
     public:
-        virtual void print() = 0;
+
+        /**
+         * get type's final type
+         * like:
+         * type b = int
+         * type c = b
+         * type d = c
+         * Type('d').pure(); // got Actual Int Type
+         */
         virtual ActualType* pure(SemanticResult*& env, struct DeclareList* decs) = 0;
+        virtual void print() = 0;
     };
 
     class Declare {
     public:
         virtual void print() = 0;
+
+        /**
+         * simple return which declare kind
+         * val declare, func declare
+         * or type declare.
+         */
         virtual DeclareKind getKind() = 0;
+
+        /**
+         * fill just name to env table
+         * like
+         * type b = int
+         * type d = c
+         * type c = b
+         * ================
+         * b     c     d
+         * null  null  null
+         * ================
+         * in case when visiting
+         * `type d = c`
+         * c is just like visited yet.
+         */
         virtual SemanticResult* preprocess(SemanticResult* &env) = 0;
         virtual SemanticResult* semantic(SemanticResult* &env, struct DeclareList* decs) = 0;
     };
