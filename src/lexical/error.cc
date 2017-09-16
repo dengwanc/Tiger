@@ -1,6 +1,7 @@
-#include "../lexical/index.h"
-#include "../utils/index.h"
 #include "index.h"
+#include "../utils/index.h"
+
+using namespace lexical;
 
 extern char* yytext;
 
@@ -28,8 +29,6 @@ bool hasErrors()
 void reportError(const char *message)
 {
     anyerrors = true;
-
-    using namespace lexical;
 
     const char* filename = getFilename();
     int linecount = getLine();

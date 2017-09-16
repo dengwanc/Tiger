@@ -137,8 +137,8 @@ void lexical::reset(const char *path)
     yyin = fopen(path, "r");
 
     if (!yyin) {
-        using namespace std;
-        std::cout << (string("CAN NOT OPEN FILE ") + string(path)) << std::endl;
+        auto msg = std::string("CAN NOT OPEN FILE ") + std::string(path);
+        std::cout << msg << std::endl;
         std::exit(1);
     }
 }

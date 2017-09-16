@@ -3,20 +3,21 @@
 
 #include "../utils/symbol.h"
 #include "../utils/binary-tree.h"
-#include "../semantic/type.h"
 #include "../lexical/index.h"
+#include "../semantic/type.h"
 
 namespace ast {
     typedef enum { Plus, Minus, Times, Divide, Eq, Neq, Lt, Le, Gt, Ge } Oper;
     typedef enum { FunctionDK, VarDK, TypeDK, NotDK } DeclareKind;
 }
 
+/** sementic check result */
 namespace ast {
     class SemanticResult {
     public:
         BinaryTree* val_table;
         BinaryTree* typ_table;
-        ActualType* type;
+        ActualType* type; // the type of expression
         SemanticResult(BinaryTree* v, BinaryTree* t, ActualType* a);
         SemanticResult* copy(ActualType* t);
         SemanticResult* copy();

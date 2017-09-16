@@ -1,6 +1,5 @@
 %{
 	#include "../utils/symbol.h"
-	#include "../lexical/index.h"
 	#include "index.h"
 
 	extern int yylex();
@@ -18,15 +17,18 @@
 	int ival;
 	double dval;
 	char *sval;
-	struct S_symbol_* sym;
+	Symbol sym;
+
+	Expr *expr;
+    Lvalue *lv;
+    Type *type;
+    Declare *declare;
+
 	struct ValfieldList* valfields;
 	struct ExprList* exprs;
-	Expr *expr;
-	Lvalue *lv;
 	struct TypefieldList* typefields;
-	Declare *declare;
 	struct DeclareList* declares;
-	Type *type;
+
 }
 
 %token <sval> ID STRING

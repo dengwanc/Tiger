@@ -4,7 +4,6 @@
 #include "../src/utils/index.h"
 #include "../src/lexical/index.h"
 #include "../src/ast/y.tab.hh"
-#include "../src/error/index.h"
 #include "global.h"
 
 /**
