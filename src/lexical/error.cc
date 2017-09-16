@@ -15,9 +15,9 @@ void yyerror(const char* msg)
     crash(last);
 }
 
-void refresh()
+void clearErrors()
 {
-  anyerrors = false;
+    anyerrors = false;
 }
 
 bool hasErrors()

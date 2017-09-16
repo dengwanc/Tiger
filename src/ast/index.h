@@ -2,13 +2,27 @@
 #define TIGER_AST_H
 
 #include "../utils/symbol.h"
+#include "../utils/binary-tree.h"
 #include "../semantic/type.h"
-#include "../semantic/index.h"
-#include "../error/index.h"
+#include "../lexical/index.h"
 
 namespace ast {
     typedef enum { Plus, Minus, Times, Divide, Eq, Neq, Lt, Le, Gt, Ge } Oper;
     typedef enum { FunctionDK, VarDK, TypeDK, NotDK } DeclareKind;
+}
+
+namespace ast {
+    class SemanticResult {
+    public:
+        BinaryTree* val_table;
+        BinaryTree* typ_table;
+        ActualType* type;
+        SemanticResult(BinaryTree* v, BinaryTree* t, ActualType* a);
+        SemanticResult* copy(ActualType* t);
+        SemanticResult* copy();
+    };
+
+    SemanticResult* makeBaseEnvTable();
 }
 
 /** base define solve circular reference */

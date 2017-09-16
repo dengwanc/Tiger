@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include "../ast/index.h"
-#include "index.h"
 #include "type.h"
 #include "value.h"
-#include "../error/index.h"
 #include "../utils/symbol.h"
 #include "../utils/index.h"
 

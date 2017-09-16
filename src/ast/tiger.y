@@ -1,6 +1,6 @@
 %{
 	#include "../utils/symbol.h"
-	#include "../error/index.h"
+	#include "../lexical/index.h"
 	#include "index.h"
 
 	extern int yylex();

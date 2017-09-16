@@ -9,7 +9,6 @@
 
 #include "index.h"
 #include "../ast/y.tab.hh"
-#include "../error/index.h"
 
 using namespace lexical;
 

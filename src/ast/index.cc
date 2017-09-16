@@ -1,7 +1,7 @@
-#include "../utils/symbol.h"
+#include "index.h"
 #include "../utils/index.h"
 #include "../lexical/index.h"
-#include "index.h"
+
 
 namespace ast {
     Expr* AST_ROOT;

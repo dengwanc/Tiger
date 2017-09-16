@@ -3,7 +3,6 @@
 #include <iostream>
 #include "index.h"
 #include "../utils/index.h"
-#include "../error/index.h"
 #include "../ast/y.tab.hh"
 
 /**
@@ -130,7 +129,7 @@ const char* lexical::getFilename()
 
 void lexical::reset(const char *path)
 {
-    refresh();
+    clearErrors();
 
     filename = path;
     linecount = 1;
