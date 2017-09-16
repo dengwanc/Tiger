@@ -59,7 +59,11 @@ namespace ast {
          * type d = c
          * Type('d').pure(); // got Actual Int Type
          */
-        virtual ActualType* pure(SemanticResult*& env, struct DeclareList* decs) = 0;
+        virtual ActualType* pure(
+            SemanticResult*& env,
+            struct DeclareList* decs
+            /*, Symbol init*/
+        ) = 0;
         virtual void print() = 0;
     };
 

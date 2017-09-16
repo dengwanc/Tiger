@@ -12,7 +12,7 @@ enum ActualTypeKind {
 //    NameATK,
     VoidATK,
     RealATK,
-    SittingATK
+    OccupiedATK
 };
 
 class ActualType {
@@ -24,7 +24,7 @@ public:
     virtual char* stringify() = 0;
     ActualType();
 
-static ActualType* pure();
+//static ActualType* pureByName();
 };
 
 class ActualTypeList {
@@ -34,14 +34,19 @@ public:
     ActualTypeList(ActualType* h, ActualTypeList* t);
 };
 
+/** means null pointer */
 class ActualNil: public ActualType {
 public:
     ActualNil();
 };
 
-class ActualSitting: public ActualType {
+/**
+ * Just for occupy in semantic stage
+ * NOT REAL TYPE !
+ */
+class Actual: public ActualType {
 public:
-    ActualSitting();
+    Actual();
 };
 
 class ActualVoid: public ActualType {

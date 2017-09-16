@@ -81,12 +81,12 @@ namespace ast {
         return nullptr;
     }
 
-    static ActualType* pure(Symbol s, SemanticResult* &env, struct DeclareList* decs)
+    static ActualType* pureByName(Symbol s, SemanticResult *&env, struct DeclareList *decs)
     {
         auto looked_type = (ActualType*)env->typ_table->lookup(s);
 
         if (looked_type) {
-            if (looked_type->kind == SittingATK) {
+            if (looked_type->kind == OccupiedATK) {
                 auto dec = (TypeDeclare*)getDeclareByName(decs, s);
 
                 assert(dec);
@@ -100,7 +100,6 @@ namespace ast {
         }
     }
 }
-
 
 /** SemanticResult  */
 namespace ast {
@@ -455,7 +454,7 @@ namespace ast {
         auto looked_type = (ActualType*)env->typ_table->lookup(this->name);
 
         if (looked_type) {
-            if (looked_type->kind == SittingATK) {
+            if (looked_type->kind == OccupiedATK) {
                 return new SemanticResult(
                     env->val_table,
                     env->typ_table->updateImmutable(this->name, this->def->pure(env, decs)),
@@ -546,28 +545,9 @@ namespace ast {
         return nullptr;
     }
 
-    SemanticResult* TypeDeclare::preprocess(SemanticResult* &env)
-    {
-        auto looked_type = env->typ_table->lookup(this->name);
-
-        if (looked_type) {
-            sprintf(sem, "duplicate identifier `%s`", S_name(this->name));
-        } else {
-            return new SemanticResult(
-                    env->val_table,
-                    env->typ_table->updateImmutable(this->name, new ActualSitting()),
-                    new ActualVoid()
-            );
-        }
-
-        handleError(this->lo);
-
-        return env->copy(nullptr);
-    }
-
     ActualType* NameType::pure(SemanticResult* &env, struct DeclareList* decs)
     {
-        auto type = pure(this->name, env, decs);
+        auto type = pureByName(this->name, env, decs);
 
         if (type) {
             return type;
@@ -586,7 +566,7 @@ namespace ast {
         auto field_list = (FieldTypeList*)nullptr;
 
         while(tmp) {
-            auto type = pure(tmp->head->type, env, decs);
+            auto type = pureByName(tmp->head->type, env, decs);
             if (type) {
                 auto field = new FieldType(tmp->head->name, type);
                 field_list = new FieldTypeList(field, field_list);
@@ -607,7 +587,7 @@ namespace ast {
 
     ActualType* ArrayType::pure(SemanticResult *&env, struct DeclareList *decs)
     {
-        auto type = pure(this->array, env, decs);
+        auto type = pureByName(this->array, env, decs);
 
         if (type) {
             return new ActualArray(type);
@@ -633,6 +613,25 @@ namespace ast {
     DeclareKind TypeDeclare::getKind()
     {
         return TypeDK;
+    }
+
+    SemanticResult* TypeDeclare::preprocess(SemanticResult* &env)
+    {
+        auto looked_type = env->typ_table->lookup(this->name);
+
+        if (looked_type) {
+            sprintf(sem, "duplicate identifier `%s`", S_name(this->name));
+        } else {
+            return new SemanticResult(
+                    env->val_table,
+                    env->typ_table->updateImmutable(this->name, new Actual()),
+                    new ActualVoid()
+            );
+        }
+
+        handleError(this->lo);
+
+        return env->copy(nullptr);
     }
 
     SemanticResult* FunctionDeclare::preprocess(SemanticResult *&env)

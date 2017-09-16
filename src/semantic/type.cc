@@ -2,19 +2,19 @@
 
 ActualType::ActualType():kind(_kind) {}
 
-ActualType* ActualType::pure()
-{
-    return nullptr;
-}
+//ActualType* ActualType::pureByName()
+//{
+//    return nullptr;
+//}
 
 bool ActualType::equal(ActualType* t)
 {
     return this->kind == t->kind;
 }
 
-ActualSitting::ActualSitting()
+Actual::Actual()
 {
-    this->_kind = SittingATK;
+    this->_kind = OccupiedATK;
 }
 
 ActualNil::ActualNil()
