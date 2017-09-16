@@ -1,6 +1,13 @@
-#include <stdio.h>
 #include "index.h"
+#include <stdio.h>
 #include <assert.h>
+
+/**
+ * This module just for
+ * programmer debug.
+ * even want remove it,
+ * doesn't matter
+ */
 
 namespace ast {
     const char* OP_NAME_TABLE[] = {

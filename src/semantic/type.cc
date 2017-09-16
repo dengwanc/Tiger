@@ -1,6 +1,4 @@
-#include <stdio.h>
 #include "type.h"
-#include "index.h"
 
 ActualType::ActualType():kind(_kind) {}
 

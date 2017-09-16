@@ -4,6 +4,7 @@
 #include "../utils/symbol.h"
 #include "../utils/binary-tree.h"
 #include "../lexical/index.h"
+#include "../semantic/value.h"
 #include "../semantic/type.h"
 
 namespace ast {
@@ -31,7 +32,6 @@ namespace ast {
     class Lvalue {
     public:
         virtual void print() = 0;
-        // todo
         virtual char* stringify() { return nullptr; };
         virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
@@ -39,7 +39,6 @@ namespace ast {
     class Expr {
     public:
         virtual void print() = 0;
-        // todo
         virtual char* stringify() { return nullptr; };
         virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
@@ -165,11 +164,10 @@ namespace ast {
         Symbol type;
         struct ValfieldList* valfields;
     public:
-        // todo re-design
         RecordExpr(Symbol type, struct ValfieldList* valfields);
         void print();
         SemanticResult *semantic(SemanticResult *&env);
-        bool has(Symbol s);
+        bool has(Symbol s); // tell user has field x
         ActualType *getFieldType(Symbol s, SemanticResult *&env);
     };
 

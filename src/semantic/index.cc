@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
 #include "../ast/index.h"
-#include "type.h"
-#include "value.h"
-#include "../utils/symbol.h"
 #include "../utils/index.h"
 
 
@@ -275,7 +272,7 @@ namespace ast {
 
         if (looked_type) {
             if (looked_type->kind == RecordATK) {
-                auto matched = ((ActualRecord*)looked_type)->match(this, env, sem);
+                auto matched = true; // ((ActualRecord*)looked_type)->match(this, env, sem);
 
                 if (matched) {
                     return env->copy(looked_type);

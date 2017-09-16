@@ -14,31 +14,27 @@
 
 #include "type.h"
 
-enum ValueIdentifyKind{
+enum ValueIdentifyKind {
     VarVIK,
     FunctionVIK
 };
 
 class ValueIdentify {
-protected:
-    ValueIdentify _kind;
 public:
-    ValueIdentify const &kind;
+    ValueIdentifyKind kind;
     ValueIdentify();
 };
 
 class VarIdentify: public ValueIdentify {
-    ActualType* type;
 public:
+    ActualType* type;
     VarIdentify(ActualType* t);
 };
 
 class FunctionIdentify: public ValueIdentify {
-    ActualType* _result;
-    ActualTypeList* _formals;
 public:
-    ActualType* const &result;
-    ActualTypeList* const &formals;
+    ActualType* result;
+    ActualTypeList* formals;
     FunctionIdentify(ActualTypeList* f, ActualType* r);
 };
 

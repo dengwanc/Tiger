@@ -104,8 +104,6 @@ public:
     bool equal(ActualType* t);
     bool has(Symbol s);
 
-    // todo
-    // bool match(ast::RecordExpr *expr, ast::SemanticResult *&env, char *msg);
     ActualType* getFieldType(Symbol s);
 };
 
