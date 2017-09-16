@@ -46,7 +46,7 @@ ActualString::ActualString()
 
 ActualName::ActualName(Symbol n, ActualType *t): type(_type)
 {
-    this->_kind = NameATK;
+//    this->_kind = NameATK;
     this->symbol = n;
     this->_type = t;
 }
@@ -131,28 +131,28 @@ ActualType* ActualRecord::getFieldType(Symbol s)
     return nullptr;
 }
 
-bool ActualRecord::match(ast::RecordExpr *expr, ast::SemanticResult *&env, char *msg)
-{
-    auto typfields = this->_fields;
-
-    while(typfields) {
-        auto field = typfields->head->name;
-        if (expr->has(field)) {
-            auto type = expr->getFieldType(field, env);
-            auto deftype = typfields->head->type;
-            if (type && deftype && type->equal(deftype)) {
-                continue;
-            } else {
-                sprintf(msg, "field %s not matched %s", S_name(field), deftype->stringify());
-                break;
-            }
-        } else {
-            sprintf(msg, "record type has no field `%s`", S_name(field));
-            break;
-        }
-
-        typfields = typfields->tail;
-    }
-
-    return typfields == nullptr;
-}
+//bool ActualRecord::match(ast::RecordExpr *expr, ast::SemanticResult *&env, char *msg)
+//{
+//    auto typfields = this->_fields;
+//
+//    while(typfields) {
+//        auto field = typfields->head->name;
+//        if (expr->has(field)) {
+//            auto type = expr->getFieldType(field, env);
+//            auto deftype = typfields->head->type;
+//            if (type && deftype && type->equal(deftype)) {
+//                continue;
+//            } else {
+//                sprintf(msg, "field %s not matched %s", S_name(field), deftype->stringify());
+//                break;
+//            }
+//        } else {
+//            sprintf(msg, "record type has no field `%s`", S_name(field));
+//            break;
+//        }
+//
+//        typfields = typfields->tail;
+//    }
+//
+//    return typfields == nullptr;
+//}

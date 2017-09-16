@@ -1,3 +1,5 @@
+## For Learning Compiler Tech
+
 ## Code Conventions
 
 * `#define` must upper & join by `_`
@@ -28,6 +30,12 @@
 
 
 ## Develop Guide
+
+- Required
+	* flex 2.5.35 Apple(flex-31)
+	* bison bison (GNU Bison) 3.0.4
+	* clang Apple LLVM version 8.1.0 (clang-802.0.42)
+	* cmake 3.8.1
 
 - Commit prefix usage
 ```

@@ -42,5 +42,3 @@ ADD_EXECUTABLE(test_output
 
 # Generate Examples Execute File
 ADD_EXECUTABLE(ex_output ${EXAMPLES} ${UTILS})
-
-# Generate Tiger Compiler Execute File

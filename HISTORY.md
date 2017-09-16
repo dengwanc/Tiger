@@ -39,30 +39,37 @@
 * For Sugar
 * JavaScript Like Syntax
 
-# TODO
+# Goals 2017.9.15
 
-* implements value-table module
-* implements stringify
-* refactor RecordExpr match
-* binary tree update/lookup unit test
-* ~~write unit test for absyn module~~
-* check lexical.spec.cc token map table (after done semantic do this)
-* ~~yyerror TO error module~~
-* ~~\+ array literal syntax~~ maintain & default init int with 0
-* ~~\+ nil as Type syntax 🌿️~~
-* ~~\+ unify function syntax~~ maintain
-* ~~\+ support using semicolon at the last expr in exprlist~~ maintain
-* refactor if-else expr(cause too much syntax noise)
-	* support single if
-	* support no `end` key word
-* ~~C/C++ Code ode Conventions~~
-* implements semantic check module
-* ~~write merge.tig & queens.tig~~
+* Garbage collection
+* Object-oriented
+* Function formula
 
 # Code Experience
 
 * depart module is very important(< 300 lines)
-* private member need to measure not so necessary
+* private data-member not so necessary
+* goal -> design -> coding -> test
+
+# TODO
+* p0 implements semantic check module
+* p0 implements value-table module
+* p0 implements stringify
+* p0 binary tree update/lookup unit test
+* p1 refactor RecordExpr match (module depend mess
+* p1 lexical::reset => error::reset
+* p2 check lexical.spec.cc token map table (after done semantic do this
+* ~~write unit test for absyn module~~
+* ~~yyerror TO error module~~
+* ~~\+ array literal syntax~~ maintain
+* ~~\+ nil as Type syntax 🌿️~~
+* ~~\+ unify function syntax~~ maintain
+* ~~\+ support using semicolon at the last expr in exprlist~~ maintain
+* ~~refactor if-else expr(cause too much syntax noise)~~ droped 
+	* ~~support single if~~
+	* ~~support no `end` key word~~
+* ~~C/C++ Code ode Conventions~~
+* ~~write merge.tig & queens.tig~~
 
 
 

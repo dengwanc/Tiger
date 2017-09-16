@@ -1,8 +1,19 @@
+#ifndef TIGER_TEST_GLOBAL
+#define TIGER_TEST_GLOBAL
+
 #include <iostream>
 #include <string>
 #include <vector>
 
+/**
+ * This module for common
+ * data & function
+ * shared in /test dir.
+ * Just fot Convenient.
+ */
+
 using namespace std;
+
 static const char* TIGER_DEFAULT_INPUT = "../mocks/editable.tig";
 static vector<string> TIGS;
 
@@ -20,3 +31,5 @@ static int __init__ = [] {
 
     return 0;
 }();
+
+#endif

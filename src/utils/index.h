@@ -1,19 +1,26 @@
 #ifndef TIGER_UTILS
 #define TIGER_UTILS
 
-#include <stddef.h>
+#include<stddef.h>
+#include<iostream>
 
 char* String(const char *s);
 int crash(const char* s);
 void* checkedMalloc(size_t len);
 bool streq(const char* s1, const char* s2);
 bool empty(const char* s);
-
-#include<iostream>
-
 void it(const char *s, std::function<void()> f);
 int describe(const char *s, std::function<void()> f);
 
+/**
+ * crash information
+ * usage::
+ * ```
+ * OUT_OF_MEMORY;
+ * // or
+ * throw OUT_OF_MEMORY;
+ * ```
+ */
 #define OUT_OF_MEMORY crash("Out Of Memory")
 #define NULLPTR crash("Catch Illegal Nullptr")
 #define CONST_STRING crash("Const String Required")

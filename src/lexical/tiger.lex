@@ -8,13 +8,15 @@
  */
 
 #include "index.h"
-#include "../ast/index.h"
-using namespace ast;
 #include "../ast/y.tab.hh"
 #include "../error/index.h"
 
 using namespace lexical;
 
+/**
+ * End File Input
+ * http://www.cnblogs.com/xzpp/p/4638071.html
+ */
 extern "C" int yywrap() { return 1; }
 
 %}
@@ -44,7 +46,7 @@ ws [ \t]+
 "-"      {adjust(); return MINUS;}
 "*"      {adjust(); return TIMES;}
 "/"      {adjust(); return DIVIDE;}
-"=="      {adjust(); return EQ;}
+"=="     {adjust(); return EQ;}
 "<>"     {adjust(); return NEQ;}
 "<="     {adjust(); return LE;}
 "<"      {adjust(); return LT;}

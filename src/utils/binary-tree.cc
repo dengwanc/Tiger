@@ -1,5 +1,4 @@
 #include "./binary-tree.h"
-#include "./symbol.h"
 
 Node::Node(Symbol k, void* v): key(_key), value(_value), left(_left), right(_right)
 {

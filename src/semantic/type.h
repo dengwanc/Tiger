@@ -2,7 +2,6 @@
 #define TIGER_SEMANTIC_ACTUAL_TYPE_H
 
 #include "../utils/symbol.h"
-#include "../ast/index.h"
 
 enum ActualTypeKind {
     RecordATK,
@@ -106,7 +105,7 @@ public:
     bool has(Symbol s);
 
     // todo
-    bool match(ast::RecordExpr *expr, ast::SemanticResult *&env, char *msg);
+    // bool match(ast::RecordExpr *expr, ast::SemanticResult *&env, char *msg);
     ActualType* getFieldType(Symbol s);
 };
 

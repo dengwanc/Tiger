@@ -3,8 +3,6 @@
 #include <iostream>
 #include "../src/utils/index.h"
 #include "../src/lexical/index.h"
-#include "../src/ast/index.h"
-using namespace ast;
 #include "../src/ast/y.tab.hh"
 #include "../src/error/index.h"
 #include "global.h"
@@ -16,7 +14,17 @@ using namespace ast;
 extern int yylex();
 extern FILE* yyin;
 
-static const char* tokens[] = {"ID", "STRING", "INT", "ASSIGN", "OR", "AND", "GE", "GT", "LE", "LT", "NEQ", "EQ", "MINUS", "PLUS", "DIVIDE", "TIMES", "ELSE", "OF", "DO", "UMINUS", "COMMA", "COLON", "SEMICOLON", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "LBRACE", "RBRACE", "DOT", "ARRAY", "IF", "THEN", "WHILE", "FOR", "TO", "LET", "IN", "END", "BREAK", "NIL", "FUNCTION", "VAR", "TYPE", "REAL"};
+static const char* tokens[] = {
+    "ID", "STRING", "INT", "ASSIGN", "OR",
+    "AND", "GE", "GT", "LE", "LT", "NEQ",
+    "EQ", "MINUS", "PLUS", "DIVIDE", "TIMES",
+    "ELSE", "OF", "DO", "UMINUS", "COMMA",
+    "COLON", "SEMICOLON", "LPAREN", "RPAREN",
+    "LBRACK", "RBRACK", "LBRACE", "RBRACE",
+    "DOT", "ARRAY", "IF", "THEN", "WHILE",
+    "FOR", "TO", "LET", "IN", "END", "BREAK",
+    "NIL", "FUNCTION", "VAR", "TYPE", "REAL"
+};
 
 static const char* getName(int tok)
 {

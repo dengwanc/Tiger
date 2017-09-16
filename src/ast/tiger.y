@@ -3,10 +3,14 @@
 	#include "../error/index.h"
 	#include "index.h"
 
-	using namespace ast;
-
 	extern int yylex();
 %}
+
+%code requires {
+	#include "../utils/symbol.h"
+	#include "index.h"
+	using namespace ast;
+}
 
 %error-verbose
 

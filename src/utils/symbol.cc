@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "index.h"
 #include "symbol.h"
 

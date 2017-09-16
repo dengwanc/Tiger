@@ -4,8 +4,6 @@
 #include "index.h"
 #include "../utils/index.h"
 #include "../error/index.h"
-#include "../ast/index.h"
-using namespace ast;
 #include "../ast/y.tab.hh"
 
 /**
