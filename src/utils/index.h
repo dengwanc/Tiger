@@ -28,7 +28,7 @@ int describe(const char *s, std::function<void()> f);
 #define UNKNOWN_TYPE crash("Unknown Type")
 #define UNSUPPORT_TYPE crash("Unsupport Type")
 #define MUST_FIND crash("Must find Value in Collected Got Nothing")
-#define MUST_OPEN_FILE crash("Must Open File Got Error")
+//#define MUST_OPEN_FILE crash("Must Open File Got Error")
 #define COMPILER_STRING_OVER crash("String Over The Max Size 4Kb")
 
 #endif

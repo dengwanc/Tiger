@@ -52,13 +52,13 @@
 * goal -> design -> coding -> test
 
 # TODO
-* p0 implements semantic check module
-* p0 implements value-table module
-* p0 implements stringify
 * p0 binary tree update/lookup unit test
+* p0 implements semantic check module
 * p1 refactor RecordExpr match (module depend mess
-* p1 lexical::reset => error::reset
 * p2 check lexical.spec.cc token map table (after done semantic do this
+* p2 implements stringify (not core module
+* ~~p0 implements value-table module~~
+* ~~p1 lexical::reset => error::reset~~
 * ~~write unit test for absyn module~~
 * ~~yyerror TO error module~~
 * ~~\+ array literal syntax~~ maintain

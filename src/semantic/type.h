@@ -12,7 +12,7 @@ enum ActualTypeKind {
 //    NameATK,
     VoidATK,
     RealATK,
-    OccupiedATK
+    NoneATK
 };
 
 class ActualType {
@@ -21,10 +21,8 @@ protected:
 public:
     ActualTypeKind const &kind;
     virtual bool equal(ActualType* t);
-    virtual char* stringify() = 0;
+    virtual char* stringify() { return "ActualType"; };
     ActualType();
-
-//static ActualType* pureByName();
 };
 
 class ActualTypeList {
@@ -44,9 +42,9 @@ public:
  * Just for occupy in semantic stage
  * NOT REAL TYPE !
  */
-class Actual: public ActualType {
+class ActualNone: public ActualType {
 public:
-    Actual();
+    ActualNone();
 };
 
 class ActualVoid: public ActualType {

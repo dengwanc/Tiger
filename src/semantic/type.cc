@@ -9,12 +9,18 @@ ActualType::ActualType():kind(_kind) {}
 
 bool ActualType::equal(ActualType* t)
 {
-    return this->kind == t->kind;
+    return t ? this->kind == t->kind : false;
 }
 
-Actual::Actual()
+ActualTypeList::ActualTypeList(ActualType *h, ActualTypeList *t)
 {
-    this->_kind = OccupiedATK;
+    this->head = h;
+    this->tail = t;
+}
+
+ActualNone::ActualNone()
+{
+    this->_kind = NoneATK;
 }
 
 ActualNil::ActualNil()

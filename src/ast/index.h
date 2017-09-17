@@ -37,14 +37,14 @@ namespace ast {
     class Lvalue {
     public:
         virtual void print() = 0;
-        virtual char* stringify() = 0;
+        virtual char* stringify() { return "Lvaue"; };
         virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
 
     class Expr {
     public:
         virtual void print() = 0;
-        virtual char* stringify() = 0;
+        virtual char* stringify() { return "Expr"; };
         virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
 
@@ -92,7 +92,7 @@ namespace ast {
          * `type d = c`
          * c is just like visited yet.
          */
-        virtual SemanticResult* preprocess(SemanticResult* &env) = 0;
+        virtual SemanticResult* preprocess(SemanticResult* &env) { return nullptr; };
         virtual SemanticResult* semantic(SemanticResult* &env, struct DeclareList* decs) = 0;
     };
 }
@@ -330,7 +330,8 @@ namespace ast {
         FunctionDeclare(Symbol name, struct TypefieldList *params, Symbol result, Expr *body);
         void print();
         DeclareKind getKind();
-        SemanticResult *preprocess(SemanticResult *&env);
+//        FunctionIdentify* makeFunctionIdentify(SemanticResult *&env);
+//        SemanticResult *preprocess(SemanticResult *&env);
         SemanticResult *semantic(SemanticResult *&env, struct DeclareList *decs);
     };
 
@@ -344,7 +345,7 @@ namespace ast {
         VarDeclare(Symbol id, Symbol type, Expr *init);
         void print();
         DeclareKind getKind();
-        SemanticResult *preprocess(SemanticResult *&env);
+//        SemanticResult *preprocess(SemanticResult *&env);
         SemanticResult *semantic(SemanticResult *&env, struct DeclareList *decs);
     };
 

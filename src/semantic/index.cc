@@ -33,15 +33,13 @@ namespace ast {
     }
 
     struct GroupedDeclare {
-        struct DeclareList* func;
-        struct DeclareList* var;
+        struct DeclareList* value;
         struct DeclareList* type;
     };
 
     static struct GroupedDeclare& groupDeclares(struct DeclareList* &declares)
     {
-        DeclareList* func = nullptr;
-        DeclareList* var = nullptr;
+        DeclareList* value = nullptr;
         DeclareList* type = nullptr;
         struct GroupedDeclare group;
 
@@ -50,10 +48,8 @@ namespace ast {
 
             switch (dec->getKind()) {
                 case FunctionDK:
-                    func = DeclareList4(declares->head, func);
-                    break;
                 case VarDK:
-                    var = DeclareList4(declares->head, var);
+                    value = DeclareList4(declares->head, value);
                     break;
                 case TypeDK:
                     type = DeclareList4(declares->head, type);
@@ -65,7 +61,7 @@ namespace ast {
             declares = declares->tail;
         }
 
-        return group = { func, var, type };
+        return group = { value, type };
     }
 
     static Declare* getDeclareByName(struct DeclareList* decs, Symbol name)
@@ -86,7 +82,7 @@ namespace ast {
         auto looked_type = (ActualType*)env->typ_table->lookup(s);
 
         if (looked_type) {
-            if (looked_type->kind == OccupiedATK) {
+            if (looked_type->kind == NoneATK) {
                 auto dec = (TypeDeclare*)getDeclareByName(decs, s);
 
                 assert(dec);
@@ -147,7 +143,7 @@ namespace ast {
             /**
              * let var a = 1 in b end
              */
-            sprintf(sem, "var %s is not defined\0", S_name(this->simple));
+            sprintf(sem, "var %s is not defined", S_name(this->simple));
         }
 
         handleError(this->lo);
@@ -251,7 +247,7 @@ namespace ast {
             }
 
         } else {
-            sprintf(sem, "%s is not defined\0", func_name);
+            sprintf(sem, "%s is not defined", func_name);
         }
 
         handleError(this->lo);
@@ -444,6 +440,14 @@ namespace ast {
             scope = types->head->semantic(scope, types);
         }
 
+//        for (auto values = group.value; values; values = values->tail) {
+//            scope = values->head->preprocess(scope);
+//        }
+
+        for (auto values = group.type; values; values = values->tail) {
+            scope = values->head->semantic(scope, values);
+        }
+
         auto tmp = semanticExprList(this->body, scope);
 
         return env->copy(tmp->type);
@@ -454,7 +458,7 @@ namespace ast {
         auto looked_type = (ActualType*)env->typ_table->lookup(this->name);
 
         if (looked_type) {
-            if (looked_type->kind == OccupiedATK) {
+            if (looked_type->kind == NoneATK) {
                 return new SemanticResult(
                     env->val_table,
                     env->typ_table->updateImmutable(this->name, this->def->pure(env, decs)),
@@ -464,7 +468,7 @@ namespace ast {
                 return env->copy(new ActualVoid());
             }
         } else {
-            crash("type declare must be preprocess before semantic");
+            sprintf(sem, "type %s is not defined", S_name(this->name));
         }
 
         handleError(this->lo);
@@ -474,12 +478,74 @@ namespace ast {
 
     SemanticResult* FunctionDeclare::semantic(SemanticResult *&env, struct DeclareList *decs)
     {
+        sem[0] = '\0';
 
+        auto result_type = (ActualType*)env->typ_table->lookup(this->result);
+
+        if (!result_type) {
+            sprintf(sem, "type %s is not defined", S_name(this->result));
+        }
+
+        auto params = this->params;
+        auto list = (ActualTypeList*)nullptr;
+        auto val_table = env->val_table;
+        auto new_var = (VarIdentify*)nullptr;
+        for (; params; params = params->tail) {
+            auto arg = params->head->type;
+            auto arg_name = params->head->name;
+            auto arg_type = (ActualType*)env->typ_table->lookup(arg);
+
+            if (!arg_type) {
+                sprintf(sem, "type %s is not defined", S_name(this->result));
+            }
+
+            new_var = new VarIdentify(arg_type);
+            list = new ActualTypeList(arg_type, list);
+            val_table = val_table->updateImmutable(arg_name, new_var);
+        };
+
+        if (sem[0] == '\0') {
+            auto func = new FunctionIdentify(list, result_type);
+            auto body_val_table = val_table->updateImmutable(this->name, func);
+            auto func_scope = new SemanticResult(body_val_table, env->typ_table, nullptr);
+
+            // TODO bodyExpr.type == declare.type
+            this->body->semantic(func_scope);
+
+            return new SemanticResult(
+                env->val_table->updateImmutable(this->name, func),
+                env->typ_table,
+                new ActualVoid()
+            );
+        }
+
+        handleError(this->lo);
+
+        return env->copy(nullptr);
     }
 
     SemanticResult* VarDeclare::semantic(SemanticResult *&env, struct DeclareList *decs)
     {
+        auto var_type = (ActualType*)env->typ_table->lookup(this->type);
 
+        if (!var_type) {
+            sprintf(sem, "type %s is not defined", S_name(this->type));
+        } else {
+            auto tmp = this->init->semantic(env);
+
+            if (!var_type->equal(tmp->type)) {
+                auto new_var = new VarIdentify(var_type);
+                return new SemanticResult(
+                    env->val_table->updateImmutable(this->id, new_var),
+                    env->typ_table,
+                    new ActualVoid()
+                );
+            }
+        }
+
+        handleError(this->lo);
+
+        return env->copy(nullptr);
     }
 
 }
@@ -624,7 +690,7 @@ namespace ast {
         } else {
             return new SemanticResult(
                     env->val_table,
-                    env->typ_table->updateImmutable(this->name, new Actual()),
+                    env->typ_table->updateImmutable(this->name, new ActualNone()),
                     new ActualVoid()
             );
         }
@@ -634,17 +700,66 @@ namespace ast {
         return env->copy(nullptr);
     }
 
-    SemanticResult* FunctionDeclare::preprocess(SemanticResult *&env)
-    {
+//    SemanticResult* FunctionDeclare::preprocess(SemanticResult *&env)
+//    {
+//        auto looked_type = env->val_table->lookup(this->name);
+//
+//        if (looked_type) {
+//            sprintf(sem, "duplicate identifier `%s`", S_name(this->name));
+//        } else {
+//            return new SemanticResult(
+//                env->val_table->updateImmutable(this->name, new NoneIdentify()),
+//                env->typ_table,
+//                new ActualVoid()
+//            );
+//        }
+//
+//        handleError(this->lo);
+//
+//        return env->copy(nullptr);
+//    }
 
-    }
+//    SemanticResult* VarDeclare::preprocess(SemanticResult *&env)
+//    {
+//        auto looked_type = env->val_table->lookup(this->id);
+//
+//        if (looked_type) {
+//            sprintf(sem, "duplicate identifier `%s`", S_name(this->id));
+//        } else {
+//            return new SemanticResult(
+//                    env->val_table->updateImmutable(this->id, new NoneIdentify()),
+//                    env->typ_table,
+//                    new ActualVoid()
+//            );
+//        }
+//
+//        handleError(this->lo);
+//
+//        return env->copy(nullptr);
+//    }
 
-    SemanticResult* VarDeclare::preprocess(SemanticResult *&env)
-    {
-
-    }
+//    FunctionIdentify* FunctionDeclare::makeFunctionIdentify(SemanticResult *&env)
+//    {
+//        auto result_type = (ActualType*)env->typ_table->lookup(this->result);
+//
+//        if (!result_type) return nullptr;
+//
+//        auto params = this->params;
+//        auto list = (ActualTypeList*)nullptr;
+//        for (; params; params = params->tail) {
+//            auto arg = params->head->type;
+//            auto arg_type = (ActualType*)env->typ_table->lookup(arg);
+//
+//            if (!arg_type) return nullptr;
+//
+//            list = new ActualTypeList(arg_type, list);
+//        };
+//
+//        return new FunctionIdentify(list, result_type);
+//    }
 }
 
+/** env init bases */
 namespace ast {
     SemanticResult *makeBaseEnvTable() {
         auto value_table = new BinaryTree();

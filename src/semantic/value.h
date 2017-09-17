@@ -16,13 +16,19 @@
 
 enum ValueIdentifyKind {
     VarVIK,
-    FunctionVIK
+    FunctionVIK,
+    NoneVIK,
 };
 
 class ValueIdentify {
 public:
     ValueIdentifyKind kind;
-    ValueIdentify();
+//    virtual bool equal(ValueIdentify* v) = 0;
+};
+
+class NoneIdentify: public ValueIdentify {
+public:
+    NoneIdentify();
 };
 
 class VarIdentify: public ValueIdentify {
@@ -37,7 +43,5 @@ public:
     ActualTypeList* formals;
     FunctionIdentify(ActualTypeList* f, ActualType* r);
 };
-
-
 
 #endif
