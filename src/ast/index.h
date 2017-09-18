@@ -37,14 +37,14 @@ namespace ast {
     class Lvalue {
     public:
         virtual void print() = 0;
-        virtual char* stringify() { return "Lvaue"; };
+        virtual char* stringify();
         virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
 
     class Expr {
     public:
         virtual void print() = 0;
-        virtual char* stringify() { return "Expr"; };
+        virtual char* stringify();
         virtual SemanticResult* semantic(SemanticResult* &env) = 0;
     };
 
@@ -62,7 +62,6 @@ namespace ast {
         virtual ActualType* pure(
             SemanticResult*& env,
             struct DeclareList* decs
-            /*, Symbol init*/
         ) = 0;
         virtual void print() = 0;
     };

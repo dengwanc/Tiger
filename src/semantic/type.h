@@ -1,6 +1,21 @@
 #ifndef TIGER_SEMANTIC_ACTUAL_TYPE_H
 #define TIGER_SEMANTIC_ACTUAL_TYPE_H
 
+/**
+ * This module for manage
+ * expression's type
+ * like
+ * ```
+ * type size_t = int
+ * var a = 5
+ * var b = "ssss"
+ * var c: size_t
+ * ```
+ * type of a is ActualType
+ * type of b is ActualString
+ * type of c is int
+ */
+
 #include "../utils/symbol.h"
 
 enum ActualTypeKind {
@@ -21,7 +36,7 @@ protected:
 public:
     ActualTypeKind const &kind;
     virtual bool equal(ActualType* t);
-    virtual char* stringify() { return "ActualType"; };
+    virtual char* stringify();
     ActualType();
 };
 
@@ -68,14 +83,14 @@ public:
 };
 
 // todo useless
-class ActualName: public ActualType {
-    Symbol symbol;
-    ActualType* _type;
-public:
-    ActualType* const &type;
-    ActualName(Symbol n, ActualType* t);
-    bool equal(ActualType* t);
-};
+//class ActualName: public ActualType {
+//    Symbol symbol;
+//    ActualType* _type;
+//public:
+//    ActualType* const &type;
+//    ActualName(Symbol n, ActualType* t);
+//    bool equal(ActualType* t);
+//};
 
 class ActualArray: public ActualType {
     ActualType* _type;

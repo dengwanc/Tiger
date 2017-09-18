@@ -1,11 +1,12 @@
 #include "type.h"
+#include "../utils/index.h"
 
 ActualType::ActualType():kind(_kind) {}
 
-//ActualType* ActualType::pureByName()
-//{
-//    return nullptr;
-//}
+char* ActualType::stringify()
+{
+    return String("ActualType");
+}
 
 bool ActualType::equal(ActualType* t)
 {
@@ -48,23 +49,23 @@ ActualString::ActualString()
     this->_kind = StringATK;
 }
 
-ActualName::ActualName(Symbol n, ActualType *t): type(_type)
-{
+//ActualName::ActualName(Symbol n, ActualType *t): type(_type)
+//{
 //    this->_kind = NameATK;
-    this->symbol = n;
-    this->_type = t;
-}
+//    this->symbol = n;
+//    this->_type = t;
+//}
 
-bool ActualName::equal(ActualType *t)
-{
-    if (this->kind == t->kind) {
-        auto t1 = this->type;
-        auto t2 = ((ActualName* )t)->type;
-        return t1->equal(t2);
-    } else {
-        return false;
-    }
-}
+//bool ActualName::equal(ActualType *t)
+//{
+//    if (this->kind == t->kind) {
+//        auto t1 = this->type;
+//        auto t2 = ((ActualName* )t)->type;
+//        return t1->equal(t2);
+//    } else {
+//        return false;
+//    }
+//}
 
 ActualArray::ActualArray(ActualType *t): type(_type)
 {
