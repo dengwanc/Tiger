@@ -39,6 +39,7 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
 	it("binary tree should insert correct", [] {
 		auto A = -1;
 		auto a = 1;
+        auto updated_a = 123;
 		auto b = 2;
 		auto c = 3;
 		auto s_A = Symbol4("A");
@@ -81,8 +82,14 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
 		assert(grandson->left == nullptr);
 		assert(grandson->right == nullptr);
 
-		status = tree->update(s_a, &a);
-		assert(status == 1);
+		status = tree->update(s_a, &updated_a);
+        root = tree->root;
+        assert(status == 0);
+        assert(root->key == s_a);
+        assert(root->value == &updated_a);
+        assert(left->key == s_b);
+        assert(right->key == s_A);
+        assert(grandson->key == s_c);
 	});
 
 	it("binary tree should insert immutably correct", [] {

@@ -32,7 +32,7 @@ int BinaryTree::update(Symbol key, void* value)
 
     while (*current) {
         if (key == (*current)->key) {
-            (*current)->_value = value;
+            break;
         } else if (S_greaterthan(key, (*current)->key)) {
             current = &((*current)->_left);
         } else {
