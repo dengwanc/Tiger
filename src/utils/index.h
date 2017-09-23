@@ -4,11 +4,11 @@
 #include<stddef.h>
 #include<iostream>
 
-char* String(const char *s);
-int crash(const char* s);
-void* checkedMalloc(size_t len);
-bool streq(const char* s1, const char* s2);
-bool empty(const char* s);
+char *String(const char *s);
+int crash(const char *s);
+void *checkedMalloc(size_t len);
+bool streq(const char *s1, const char *s2);
+bool empty(const char *s);
 void it(const char *s, std::function<void()> f);
 int describe(const char *s, std::function<void()> f);
 

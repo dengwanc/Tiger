@@ -12,8 +12,8 @@
 #define MAX_LENGTH (1024*4)
 
 extern int yyleng; // simple equals `strlen(yytext)`
-extern char* yytext;
-extern FILE* yyin;
+extern char *yytext;
+extern FILE *yyin;
 extern int yylex();
 
 /**
@@ -23,137 +23,119 @@ extern int yylex();
  */
 static int token_pos = 0;
 static int linecount = 1;
-static char* strptr; /* pointer to behind char array `str` */
+static char *strptr; /* pointer to behind char array `str` */
 static char str[MAX_LENGTH]; /* string token cache */
 static int remain;
 static int comment_nest = 0;
 
-int lexical::getLine()
-{
-    return linecount;
+int lexical::getLine() {
+  return linecount;
 }
 
-int lexical::getOffset()
-{
-    return token_pos;
+int lexical::getOffset() {
+  return token_pos;
 }
 
-
-void lexical::adjust()
-{
-    token_pos += yyleng;
+void lexical::adjust() {
+  token_pos += yyleng;
 }
 
-void lexical::newline(void)
-{
-    linecount++;
-    token_pos = 0;
+void lexical::newline(void) {
+  linecount++;
+  token_pos = 0;
 }
 
-
-void lexical::inc()
-{
-    comment_nest++;
+void lexical::inc() {
+  comment_nest++;
 }
 
-void lexical::dec()
-{
-    comment_nest--;
+void lexical::dec() {
+  comment_nest--;
 }
 
-bool lexical::hasComment()
-{
-    return comment_nest != 0;
+bool lexical::hasComment() {
+  return comment_nest!=0;
 }
-
 
 void lexical::initString() {
-    remain = MAX_LENGTH - 1;
-    strptr = str;
+  remain = MAX_LENGTH - 1;
+  strptr = str;
 }
 
-void lexical::appendChar(int ch)
-{
-    if (!remain) throw COMPILER_STRING_OVER;
+void lexical::appendChar(int ch) {
+  if (!remain)
+    throw COMPILER_STRING_OVER;
 
-    *strptr++ = (char)ch;
-    remain--;
+  *strptr++ = (char) ch;
+  remain--;
 }
 
-void lexical::appendStr(char *s)
-{
-    int t = strlen(s);
+void lexical::appendStr(char *s) {
+  int t = strlen(s);
 
-    if (remain < t) throw COMPILER_STRING_OVER;
+  if (remain < t)
+    throw COMPILER_STRING_OVER;
 
-    do { *strptr++ = *s++; } while(*s);
-    remain -= t;
+  do {
+    *strptr++ = *s++;
+  } while (*s);
+  remain -= t;
 }
 
-void lexical::endString()
-{
-    if (!remain) throw COMPILER_STRING_OVER;
+void lexical::endString() {
+  if (!remain)
+    throw COMPILER_STRING_OVER;
 
-    *strptr++ = '\0';
+  *strptr++ = '\0';
 }
 
-void lexical::recordString()
-{
-    yylval.sval = String(str);
+void lexical::recordString() {
+  yylval.sval = String(str);
 }
 
-
-
-void lexical::recordId()
-{
-    yylval.sval = String(yytext);
+void lexical::recordId() {
+  yylval.sval = String(yytext);
 }
 
-void lexical::recordInt()
-{
-    yylval.ival = atoi(yytext);
+void lexical::recordInt() {
+  yylval.ival = atoi(yytext);
 }
 
-void lexical::recordReal()
-{
-    yylval.dval = atof(yytext);
+void lexical::recordReal() {
+  yylval.dval = atof(yytext);
 }
 
+static const char *filename = "";
 
-static const char* filename = "";
-
-const char* lexical::getFilename()
-{
-    return filename;
+const char *lexical::getFilename() {
+  return filename;
 }
 
-void lexical::reset(const char *path)
-{
-    clearErrors();
+void lexical::reset(const char *path) {
+  clearErrors();
 
-    filename = path;
-    linecount = 1;
+  filename = path;
+  linecount = 1;
 
-    yyin = fopen(path, "r");
+  yyin = fopen(path, "r");
 
-    if (!yyin) {
-        auto msg = std::string("CAN NOT OPEN FILE ") + std::string(path);
-        std::cout << msg << std::endl;
-        std::exit(1);
+  if (!yyin) {
+    auto msg = std::string("CAN NOT OPEN FILE ") + std::string(path);
+    std::cout << msg << std::endl;
+    std::exit(1);
+  }
+}
+
+void lexical::parse(const char *path/*, std::function<void()> reject*/) {
+  int token;
+
+  reset(path);
+
+  while ((token = yylex(), token)) {
+    if (token < 257 || token > 300) {
+      /* reject(); */
     }
-}
+  }
 
-void lexical::parse(const char* path/*, std::function<void()> reject*/)
-{
-    int token;
-
-    reset(path);
-
-    while ((token = yylex(), token)) {
-        if (token < 257 || token > 300) {
-            /* reject(); */
-        }
-    }
-
-    fclose(yyin);
+  fclose(yyin);
 }

@@ -5,34 +5,34 @@
 
 class Node {
 private:
-    Symbol _key; 
-    void* _value;
-    Node* _left;
-    Node* _right;
-    Node(Symbol key, void* value);
-    Node(Node* &node);
+  Symbol _key;
+  void *_value;
+  Node *_left;
+  Node *_right;
+  Node(Symbol key, void *value);
+  Node(Node *&node);
 
 public:
-    Symbol const &key;
-    void* const &value;
-    Node* const &left;
-    Node* const &right;
+  Symbol const &key;
+  void *const &value;
+  Node *const &left;
+  Node *const &right;
 
-friend class BinaryTree;
+  friend class BinaryTree;
 };
 
 class BinaryTree {
 private:
-    Node* _root;
+  Node *_root;
 
 public:
-    Node* const &root;
+  Node *const &root;
 
-    BinaryTree();
-    BinaryTree(Node* &node);
-    int update(Symbol key, void *value);
-    void* lookup(Symbol key);
-    BinaryTree* updateImmutable(Symbol key, void *value);
+  BinaryTree();
+  BinaryTree(Node *&node);
+  int update(Symbol key, void *value);
+  void *lookup(Symbol key);
+  BinaryTree *updateImmutable(Symbol key, void *value);
 };
 
 #endif

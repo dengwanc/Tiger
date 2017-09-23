@@ -2,13 +2,11 @@
 #include "../utils/index.h"
 
 namespace ast {
-    char* Lvalue::stringify()
-    {
-        return String("Lvalue");
-    }
+char *Lvalue::stringify() {
+  return String("Lvalue");
+}
 
-    char* Expr::stringify()
-    {
-        return String("Expr");
-    }
+char *Expr::stringify() {
+  return String("Expr");
+}
 }

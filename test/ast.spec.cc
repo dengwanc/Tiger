@@ -8,42 +8,41 @@
 extern int yyparse(void);
 
 namespace ast {
-    int parse(const char *fname) {
-        lexical::reset(fname);
-        if (yyparse() == 0) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
+int parse(const char *fname) {
+  lexical::reset(fname);
+  if (yyparse()==0) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
 
-    void debug(const char* file) {
-        printf("\n~~~~~~ DEBUGGING AST STARTED ~~~~~~\n\n");
+void debug(const char *file) {
+  printf("\n~~~~~~ DEBUGGING AST STARTED ~~~~~~\n\n");
 
-        assert(ast::parse(file) == 0);
+  assert(ast::parse(file)==0);
 
-        if (ast::AST_ROOT == nullptr) {
-            printf("⚠️  %s has no content", TIGER_DEFAULT_INPUT);
-        } else {
-            ast::AST_ROOT->print();
-        }
+  if (ast::AST_ROOT==nullptr) {
+    printf("⚠️  %s has no content", TIGER_DEFAULT_INPUT);
+  } else {
+    ast::AST_ROOT->print();
+  }
 
-        printf("\n\n~~~~~~ DEBUGGING AST ENDED ~~~~~~\n\n");
-    }
+  printf("\n\n~~~~~~ DEBUGGING AST ENDED ~~~~~~\n\n");
+}
 
-    void debug()
-    {
-        debug(TIGER_DEFAULT_INPUT);
-    }
+void debug() {
+  debug(TIGER_DEFAULT_INPUT);
+}
 }
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
 
-    it("should parse ast correct", [] {
-        for (auto i: TIGS) {
-            assert(ast::parse(i.c_str()) == 0);
-        }
+  it("should parse ast correct", [] {
+    for (auto i: TIGS) {
+      assert(ast::parse(i.c_str())==0);
+    }
 
-        // ast::debug(); /* if want observe */
-    });
+    // ast::debug(); /* if want observe */
+  });
 });

@@ -1,52 +1,43 @@
 #include "type.h"
 #include "../utils/index.h"
 
-ActualType::ActualType():kind(_kind) {}
+ActualType::ActualType() : kind(_kind) {}
 
-char* ActualType::stringify()
-{
-    return String("ActualType");
+char *ActualType::stringify() {
+  return String("ActualType");
 }
 
-bool ActualType::equal(ActualType* t)
-{
-    return t ? this->kind == t->kind : false;
+bool ActualType::equal(ActualType *t) {
+  return t ? this->kind==t->kind : false;
 }
 
-ActualTypeList::ActualTypeList(ActualType *h, ActualTypeList *t)
-{
-    this->head = h;
-    this->tail = t;
+ActualTypeList::ActualTypeList(ActualType *h, ActualTypeList *t) {
+  this->head = h;
+  this->tail = t;
 }
 
-ActualNone::ActualNone()
-{
-    this->_kind = NoneATK;
+ActualNone::ActualNone() {
+  this->_kind = NoneATK;
 }
 
-ActualNil::ActualNil()
-{
-    this->_kind = NilATK;
+ActualNil::ActualNil() {
+  this->_kind = NilATK;
 }
 
-ActualVoid::ActualVoid()
-{
-    this->_kind = VoidATK;
+ActualVoid::ActualVoid() {
+  this->_kind = VoidATK;
 }
 
-ActualInt::ActualInt()
-{
-    this->_kind = IntATK;
+ActualInt::ActualInt() {
+  this->_kind = IntATK;
 }
 
-ActualReal::ActualReal()
-{
-    this->_kind = RealATK;
+ActualReal::ActualReal() {
+  this->_kind = RealATK;
 }
 
-ActualString::ActualString()
-{
-    this->_kind = StringATK;
+ActualString::ActualString() {
+  this->_kind = StringATK;
 }
 
 //ActualName::ActualName(Symbol n, ActualType *t): type(_type)
@@ -67,73 +58,65 @@ ActualString::ActualString()
 //    }
 //}
 
-ActualArray::ActualArray(ActualType *t): type(_type)
-{
-    this->_kind = ArrayATK;
+ActualArray::ActualArray(ActualType *t) : type(_type) {
+  this->_kind = ArrayATK;
 }
 
-bool ActualArray::equal(ActualType *t)
-{
-    if (this->kind == t->kind) {
-        auto t1 = this->type;
-        auto t2 = ((ActualArray* )t)->type;
-        return t1->equal(t2);
-    } else {
-        return false;
-    }
-}
-
-FieldType::FieldType(Symbol n, ActualType* t)
-{
-    this->name = n;
-    this->type = t;
-}
-
-FieldTypeList::FieldTypeList(FieldType *v, FieldTypeList *n)
-{
-    this->head = v;
-    this->tail = n;
-}
-
-ActualRecord::ActualRecord(FieldTypeList *s):fields(_fields)
-{
-    this->_kind = RecordATK;
-    this->_fields = s;
-}
-
-bool ActualRecord::equal(ActualType *t)
-{
-    return this == t;
-}
-
-bool ActualRecord::has(Symbol s)
-{
-    auto fields = this->fields;
-
-    while (fields) {
-        auto v = fields->head;
-        if (v->name == s) {
-            return true;
-        }
-        fields = fields->tail;
-    }
-
+bool ActualArray::equal(ActualType *t) {
+  if (this->kind==t->kind) {
+    auto t1 = this->type;
+    auto t2 = ((ActualArray *) t)->type;
+    return t1->equal(t2);
+  } else {
     return false;
+  }
 }
 
-ActualType* ActualRecord::getFieldType(Symbol s)
-{
-    auto fields = this->fields;
+FieldType::FieldType(Symbol n, ActualType *t) {
+  this->name = n;
+  this->type = t;
+}
 
-    while (fields) {
-        auto v = fields->head;
-        if (v->name == s) {
-            return v->type;
-        }
-        fields = fields->tail;
+FieldTypeList::FieldTypeList(FieldType *v, FieldTypeList *n) {
+  this->head = v;
+  this->tail = n;
+}
+
+ActualRecord::ActualRecord(FieldTypeList *s) : fields(_fields) {
+  this->_kind = RecordATK;
+  this->_fields = s;
+}
+
+bool ActualRecord::equal(ActualType *t) {
+  return this==t;
+}
+
+bool ActualRecord::has(Symbol s) {
+  auto fields = this->fields;
+
+  while (fields) {
+    auto v = fields->head;
+    if (v->name==s) {
+      return true;
     }
+    fields = fields->tail;
+  }
 
-    return nullptr;
+  return false;
+}
+
+ActualType *ActualRecord::getFieldType(Symbol s) {
+  auto fields = this->fields;
+
+  while (fields) {
+    auto v = fields->head;
+    if (v->name==s) {
+      return v->type;
+    }
+    fields = fields->tail;
+  }
+
+  return nullptr;
 }
 
 //bool ActualRecord::match(ast::RecordExpr *expr, ast::SemanticResult *&env, char *msg)

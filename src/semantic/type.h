@@ -19,67 +19,67 @@
 #include "../utils/symbol.h"
 
 enum ActualTypeKind {
-    RecordATK,
-    NilATK,
-    IntATK,
-    StringATK,
-    ArrayATK,
+  RecordATK,
+  NilATK,
+  IntATK,
+  StringATK,
+  ArrayATK,
 //    NameATK,
-    VoidATK,
-    RealATK,
-    NoneATK
+      VoidATK,
+  RealATK,
+  NoneATK
 };
 
 class ActualType {
 protected:
-    ActualTypeKind _kind;
+  ActualTypeKind _kind;
 public:
-    ActualTypeKind const &kind;
-    virtual bool equal(ActualType* t);
-    virtual char* stringify();
-    ActualType();
+  ActualTypeKind const &kind;
+  virtual bool equal(ActualType *t);
+  virtual char *stringify();
+  ActualType();
 };
 
 class ActualTypeList {
 public:
-    ActualType* head;
-    ActualTypeList* tail;
-    ActualTypeList(ActualType* h, ActualTypeList* t);
+  ActualType *head;
+  ActualTypeList *tail;
+  ActualTypeList(ActualType *h, ActualTypeList *t);
 };
 
 /** means null pointer */
-class ActualNil: public ActualType {
+class ActualNil : public ActualType {
 public:
-    ActualNil();
+  ActualNil();
 };
 
 /**
  * Just for occupy in semantic stage
  * NOT REAL TYPE !
  */
-class ActualNone: public ActualType {
+class ActualNone : public ActualType {
 public:
-    ActualNone();
+  ActualNone();
 };
 
-class ActualVoid: public ActualType {
+class ActualVoid : public ActualType {
 public:
-    ActualVoid();
+  ActualVoid();
 };
 
-class ActualInt: public ActualType {
+class ActualInt : public ActualType {
 public:
-    ActualInt();
+  ActualInt();
 };
 
-class ActualString: public ActualType {
+class ActualString : public ActualType {
 public:
-    ActualString();
+  ActualString();
 };
 
-class ActualReal: public ActualType {
+class ActualReal : public ActualType {
 public:
-    ActualReal();
+  ActualReal();
 };
 
 // todo useless
@@ -92,37 +92,37 @@ public:
 //    bool equal(ActualType* t);
 //};
 
-class ActualArray: public ActualType {
-    ActualType* _type;
+class ActualArray : public ActualType {
+  ActualType *_type;
 public:
-    ActualType* const &type;
-    ActualArray(ActualType* t);
-    bool equal(ActualType* t);
+  ActualType *const &type;
+  ActualArray(ActualType *t);
+  bool equal(ActualType *t);
 };
 
 class FieldType {
 public:
-    Symbol name;
-    ActualType* type;
-    FieldType(Symbol n, ActualType* t);
+  Symbol name;
+  ActualType *type;
+  FieldType(Symbol n, ActualType *t);
 };
 
 class FieldTypeList {
 public:
-    FieldType* head;
-    FieldTypeList* tail;
-    FieldTypeList(FieldType* v, FieldTypeList* n);
+  FieldType *head;
+  FieldTypeList *tail;
+  FieldTypeList(FieldType *v, FieldTypeList *n);
 };
 
-class ActualRecord: public ActualType {
-    FieldTypeList* _fields;
+class ActualRecord : public ActualType {
+  FieldTypeList *_fields;
 public:
-    FieldTypeList* const &fields;
-    ActualRecord(FieldTypeList* s);
-    bool equal(ActualType* t);
-    bool has(Symbol s);
+  FieldTypeList *const &fields;
+  ActualRecord(FieldTypeList *s);
+  bool equal(ActualType *t);
+  bool has(Symbol s);
 
-    ActualType* getFieldType(Symbol s);
+  ActualType *getFieldType(Symbol s);
 };
 
 #endif

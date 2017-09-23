@@ -15,33 +15,33 @@
 #include "type.h"
 
 enum ValueIdentifyKind {
-    VarVIK,
-    FunctionVIK,
-    NoneVIK,
+  VarVIK,
+  FunctionVIK,
+  NoneVIK,
 };
 
 class ValueIdentify {
 public:
-    ValueIdentifyKind kind;
+  ValueIdentifyKind kind;
 //    virtual bool equal(ValueIdentify* v) = 0;
 };
 
-class NoneIdentify: public ValueIdentify {
+class NoneIdentify : public ValueIdentify {
 public:
-    NoneIdentify();
+  NoneIdentify();
 };
 
-class VarIdentify: public ValueIdentify {
+class VarIdentify : public ValueIdentify {
 public:
-    ActualType* type;
-    VarIdentify(ActualType* t);
+  ActualType *type;
+  VarIdentify(ActualType *t);
 };
 
-class FunctionIdentify: public ValueIdentify {
+class FunctionIdentify : public ValueIdentify {
 public:
-    ActualType* result;
-    ActualTypeList* formals;
-    FunctionIdentify(ActualTypeList* f, ActualType* r);
+  ActualType *result;
+  ActualTypeList *formals;
+  FunctionIdentify(ActualTypeList *f, ActualType *r);
 };
 
 #endif
