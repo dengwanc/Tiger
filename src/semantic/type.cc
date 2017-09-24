@@ -8,7 +8,7 @@ char *ActualType::stringify() {
 }
 
 bool ActualType::equal(ActualType *t) {
-  return t ? this->kind==t->kind : false;
+  return t ? this->kind == t->kind : false;
 }
 
 ActualTypeList::ActualTypeList(ActualType *h, ActualTypeList *t) {
@@ -60,6 +60,7 @@ ActualString::ActualString() {
 
 ActualArray::ActualArray(ActualType *t) : type(_type) {
   this->_kind = ArrayATK;
+  this->_type = t;
 }
 
 bool ActualArray::equal(ActualType *t) {

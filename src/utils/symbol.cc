@@ -1,5 +1,6 @@
 #include "index.h"
 #include "symbol.h"
+#include <assert.h>
 
 struct S_symbol_ {
   char *name;
@@ -42,6 +43,11 @@ Symbol Symbol4(const char *s) {
 }
 
 char *S_name(Symbol sym) {
+  /** Must Pass A Non-null pointer */
+  if (!sym) {
+    assert(0);
+  }
+
   return sym->name;
 }
 

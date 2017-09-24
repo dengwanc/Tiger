@@ -47,6 +47,6 @@ void reportBadToken() {
 
 void reportSemanticError(char *msg, struct Location &lo) {
   anyerrors = true;
-  fprintf(stderr, " LINE %d.%d: \n", lo.line, lo.offset);
+  fprintf(stderr, "%s LINE %d.%d: \n", getFilename(), lo.line, lo.offset);
   fprintf(stderr, "%s\n", msg);
 }

@@ -41,7 +41,19 @@ int BinaryTree::update(Symbol key, void *value) {
 }
 
 void *BinaryTree::lookup(Symbol key) {
-  return nullptr;
+  auto curret = this->root;
+
+  while (curret) {
+    if (key == curret->key) {
+      break;
+    } else if (S_greaterthan(key, curret->key)) {
+      curret = curret->left;
+    } else {
+      curret = curret->right;
+    }
+  }
+
+  return curret ? curret->value : nullptr;
 }
 
 BinaryTree *BinaryTree::updateImmutable(Symbol key, void *value) {

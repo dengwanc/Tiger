@@ -404,11 +404,7 @@ SemanticResult *LetExpr::semantic(SemanticResult *&env) {
     scope = types->head->semantic(scope, types);
   }
 
-//        for (auto values = group.value; values; values = values->tail) {
-//            scope = values->head->preprocess(scope);
-//        }
-
-  for (auto values = group.type; values; values = values->tail) {
+  for (auto values = group.value; values; values = values->tail) {
     scope = values->head->semantic(scope, values);
   }
 
@@ -487,20 +483,27 @@ SemanticResult *FunctionDeclare::semantic(SemanticResult *&env, struct DeclareLi
 }
 
 SemanticResult *VarDeclare::semantic(SemanticResult *&env, struct DeclareList *decs) {
-  auto var_type = (ActualType *) env->typ_table->lookup(this->type);
+  ActualType *var_type = nullptr;
+  if (!this->type) { // infer var's type from it's init expr
+    var_type = (this->init->semantic(env))->type;
+  } else {
+    var_type = (ActualType *)env->typ_table->lookup(this->type);
+  }
 
   if (!var_type) {
-    sprintf(sem, "type %s is not defined", S_name(this->type));
+    this->type && sprintf(sem, "type %s is not defined", S_name(this->type));
   } else {
     auto tmp = this->init->semantic(env);
 
-    if (!var_type->equal(tmp->type)) {
+    if (var_type->equal(tmp->type)) {
       auto new_var = new VarIdentify(var_type);
       return new SemanticResult(
           env->val_table->updateImmutable(this->id, new_var),
           env->typ_table,
           new ActualVoid()
       );
+    } else {
+      sprintf(sem, "var declare use difference type init");
     }
   }
 

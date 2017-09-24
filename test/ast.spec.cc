@@ -3,6 +3,7 @@
 #include "../src/utils/index.h"
 #include "../src/lexical/index.h"
 #include "../src/ast/index.h"
+#include "../src/semantic/ecode.h"
 #include "global.h"
 
 extern int yyparse(void);
@@ -36,6 +37,11 @@ void debug() {
 }
 }
 
+int CODES[] = {
+    NO_ERROR,
+    NO_ERROR
+};
+
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
 
   it("should parse ast correct", [] {
@@ -45,4 +51,23 @@ static int __TIGER_UNIT_TEST = describe("ast tree", [] {
 
     // ast::debug(); /* if want observe */
   });
+
+  it("should semantic check correct", [] {
+      auto base_env = ast::makeBaseEnvTable();
+      auto index = 0;
+
+      for (auto i: TIGS) {
+        ast::parse(i.c_str());
+
+        if (ast::AST_ROOT) {
+          auto result = ast::AST_ROOT->semantic(base_env);
+          assert(result->code == CODES[index]);
+        }
+
+        if (sizeof(CODES) /sizeof(int) >= index) break;
+
+        index++;
+      }
+  });
+
 });

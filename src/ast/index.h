@@ -19,6 +19,7 @@ public:
   BinaryTree *val_table;
   BinaryTree *typ_table;
   ActualType *type; // the type of expression
+  int code; // the code of error reason
   SemanticResult(BinaryTree *v, BinaryTree *t, ActualType *a);
   SemanticResult *copy(ActualType *t);
   SemanticResult *copy();
