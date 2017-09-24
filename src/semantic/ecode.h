@@ -1,0 +1,6 @@
+#ifndef TIGER_SEMANTIC_ECODE_H
+#define TIGER_SEMANTIC_ECODE_H
+
+#define NO_ERROR 0
+
+#endif
