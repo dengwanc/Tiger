@@ -4,33 +4,25 @@
 #include "./symbol.h"
 
 class Node {
-private:
-  Symbol _key;
-  void *_value;
-  Node *_left;
-  Node *_right;
-  Node(Symbol key, void *value);
-  Node(Node *&node);
-
 public:
-  Symbol const &key;
-  void *const &value;
-  Node *const &left;
-  Node *const &right;
+  Node(Symbol key, void *value);
+  Node(Node *node);
+
+  Symbol key;
+  void *value;
+  Node *left;
+  Node *right;
 
   friend class BinaryTree;
 };
 
 class BinaryTree {
-private:
-  Node *_root;
-
 public:
-  Node *const &root;
+  Node *root;
 
   BinaryTree();
-  BinaryTree(Node *&node);
-  int update(Symbol key, void *value);
+  BinaryTree(Node *node);
+  void update(Symbol key, void *value);
   void *lookup(Symbol key);
   BinaryTree *updateImmutable(Symbol key, void *value);
 };

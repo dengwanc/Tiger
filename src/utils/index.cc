@@ -27,7 +27,7 @@ bool streq(const char *s1, const char *s2) {
 
 void it(const char *s, std::function<void()> f) {
   f();
-  std::cout << "         ✅  " << s << std::endl;
+  std::cout << "         ✓  " << s << std::endl;
 }
 
 int describe(const char *s, std::function<void()> f) {

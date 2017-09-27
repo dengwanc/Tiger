@@ -1,32 +1,14 @@
 enum Binop { plus, minus, times, divi };
 enum Type {
-
-  // Stm -> Stm; Stm
-      CompoundStm,
-
-  // Stm -> id := Expr
-      AssignStm,
-
-  // Stm -> print(ExprList)
-      PrintStm,
-
-  // Expr -> id
-      IdExp,
-
-  // Expr -> num
-      NumExp,
-
-  // Expr -> Expr Binop Expr
-      OpExp,
-
-  // Expr -> (Stm, Expr)
-      EseqExp,
-
-  // ExprList -> Expr, ExprList
-      PairExpList,
-
-  // ExprList -> Expr
-      LastExpList
+  CompoundStm, // Stm -> Stm; Stm
+  AssignStm, // Stm -> id := Expr
+  PrintStm, // Stm -> print(ExprList)
+  IdExp, // Expr -> id
+  NumExp, // Expr -> num
+  OpExp, // Expr -> Expr Binop Expr
+  EseqExp, // Expr -> (Stm, Expr)
+  PairExpList, // ExprList -> Expr, ExprList
+  LastExpList // ExprList -> Expr
 };
 
 class Table {
