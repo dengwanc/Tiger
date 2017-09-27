@@ -3,7 +3,7 @@
 #include <iostream>
 #include "index.h"
 #include "../utils/index.h"
-#include "../ast/y.tab.hh"
+#include "../ast/y.tab.hh" // depend on yylval
 
 /**
  * the max string size is 4Kb

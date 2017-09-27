@@ -1,7 +1,4 @@
 %{
-	#include "../utils/symbol.h"
-	#include "index.h"
-
 	extern int yylex();
 %}
 
