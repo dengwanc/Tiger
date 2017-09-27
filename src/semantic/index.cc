@@ -20,7 +20,7 @@ static void handleError(struct Location lo) {
   sem[0] = '\0';
 }
 
-static SemanticResult *semanticExprList(struct ExprList *l, SemanticResult *&env) {
+static SemanticResult *semanticExprList(struct ExprList *l, SemanticResult *env) {
   SemanticResult *end;
 
   while (l) {
@@ -36,7 +36,7 @@ struct GroupedDeclare {
   struct DeclareList *type;
 };
 
-static struct GroupedDeclare &groupDeclares(struct DeclareList *&declares) {
+static struct GroupedDeclare &groupDeclares(struct DeclareList *declares) {
   DeclareList *value = nullptr;
   DeclareList *type = nullptr;
   struct GroupedDeclare group;
@@ -71,7 +71,7 @@ static Declare *getDeclareByName(struct DeclareList *decs, Symbol name) {
   return nullptr;
 }
 
-static ActualType *pureByName(Symbol s, SemanticResult *&env, struct DeclareList *decs) {
+static ActualType *pureByName(Symbol s, SemanticResult *env, struct DeclareList *decs) {
   auto looked_type = (ActualType *) env->typ_table->lookup(s);
 
   if (looked_type) {
@@ -109,19 +109,19 @@ SemanticResult *SemanticResult::copy() {
 
 /** semantic implements */
 namespace ast {
-SemanticResult *IntExpr::semantic(SemanticResult *&env) {
+SemanticResult *IntExpr::semantic(SemanticResult *env) {
   return env->copy(new ActualInt());
 }
 
-SemanticResult *StringExpr::semantic(SemanticResult *&env) {
+SemanticResult *StringExpr::semantic(SemanticResult *env) {
   return env->copy(new ActualString());
 }
 
-SemanticResult *RealExpr::semantic(SemanticResult *&env) {
+SemanticResult *RealExpr::semantic(SemanticResult *env) {
   return env->copy(new ActualReal());
 }
 
-SemanticResult *SimpleLvalue::semantic(SemanticResult *&env) {
+SemanticResult *SimpleLvalue::semantic(SemanticResult *env) {
   auto looked_type = env->val_table->lookup(this->simple);
 
   if (looked_type) {
@@ -138,7 +138,7 @@ SemanticResult *SimpleLvalue::semantic(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-SemanticResult *FieldLvalue::semantic(SemanticResult *&env) {
+SemanticResult *FieldLvalue::semantic(SemanticResult *env) {
   auto tmp = this->lv->semantic(env);
   auto lvalue_type = tmp->type;
 
@@ -168,7 +168,7 @@ SemanticResult *FieldLvalue::semantic(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-SemanticResult *SubscriptLvalue::semantic(SemanticResult *&env) {
+SemanticResult *SubscriptLvalue::semantic(SemanticResult *env) {
   auto tmp = this->lv->semantic(env);
   auto lvalue_type = tmp->type;
 
@@ -190,11 +190,11 @@ SemanticResult *SubscriptLvalue::semantic(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-SemanticResult *LvalueExpr::semantic(SemanticResult *&env) {
+SemanticResult *LvalueExpr::semantic(SemanticResult *env) {
   return env->copy(this->lv->semantic(env)->type);
 }
 
-SemanticResult *CallExpr::semantic(SemanticResult *&env) {
+SemanticResult *CallExpr::semantic(SemanticResult *env) {
   auto looked_value = (FunctionIdentify *) env->val_table->lookup(this->func);
   auto func_name = S_name(this->func);
 
@@ -236,7 +236,7 @@ SemanticResult *CallExpr::semantic(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-SemanticResult *OpExpr::semantic(SemanticResult *&env) {
+SemanticResult *OpExpr::semantic(SemanticResult *env) {
   auto left = this->left->semantic(env);
   auto right = this->right->semantic(env);
 
@@ -263,7 +263,7 @@ SemanticResult *OpExpr::semantic(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-SemanticResult *RecordExpr::semantic(SemanticResult *&env) {
+SemanticResult *RecordExpr::semantic(SemanticResult *env) {
   auto looked_type = (ActualType *) env->typ_table->lookup(this->type);
   auto record_name = S_name(this->type);
 
@@ -287,7 +287,7 @@ SemanticResult *RecordExpr::semantic(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-SemanticResult *ArrayExpr::semantic(SemanticResult *&env) {
+SemanticResult *ArrayExpr::semantic(SemanticResult *env) {
   auto looked_type = (ActualType *) env->typ_table->lookup(this->type);
   auto array_name = S_name(this->type);
 
@@ -312,12 +312,12 @@ SemanticResult *ArrayExpr::semantic(SemanticResult *&env) {
   return env->copy();
 }
 
-SemanticResult *SeqExpr::semantic(SemanticResult *&env) {
+SemanticResult *SeqExpr::semantic(SemanticResult *env) {
   auto tmp = semanticExprList(this->seq, env);
   return env->copy(tmp->type);
 }
 
-SemanticResult *AssignExpr::semantic(SemanticResult *&env) {
+SemanticResult *AssignExpr::semantic(SemanticResult *env) {
   auto tmp1 = this->lv->semantic(env);
   auto tmp2 = this->expr->semantic(env);
   auto type1 = tmp1->type;
@@ -336,7 +336,7 @@ SemanticResult *AssignExpr::semantic(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-SemanticResult *IfExpr::semantic(SemanticResult *&env) {
+SemanticResult *IfExpr::semantic(SemanticResult *env) {
   auto test = this->test->semantic(env);
 
   if (test->type) {
@@ -364,7 +364,7 @@ SemanticResult *IfExpr::semantic(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-SemanticResult *WhileExpr::semantic(SemanticResult *&env) {
+SemanticResult *WhileExpr::semantic(SemanticResult *env) {
   auto test = this->test->semantic(env);
 
   if (test->type) {
@@ -381,17 +381,17 @@ SemanticResult *WhileExpr::semantic(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-SemanticResult *NilExpr::semantic(SemanticResult *&env) {
+SemanticResult *NilExpr::semantic(SemanticResult *env) {
   return env->copy(new ActualNil());
 }
 
-SemanticResult *BreakExpr::semantic(SemanticResult *&env) {
+SemanticResult *BreakExpr::semantic(SemanticResult *env) {
   // TODO figure out a way slove:: the
   // TODO break must in while body rule
   return env->copy(new ActualVoid());
 }
 
-SemanticResult *LetExpr::semantic(SemanticResult *&env) {
+SemanticResult *LetExpr::semantic(SemanticResult *env) {
   auto decs = this->declares;
   auto scope = env;
   auto group = groupDeclares(decs);
@@ -413,7 +413,7 @@ SemanticResult *LetExpr::semantic(SemanticResult *&env) {
   return env->copy(tmp->type);
 }
 
-SemanticResult *TypeDeclare::semantic(SemanticResult *&env, struct DeclareList *decs) {
+SemanticResult *TypeDeclare::semantic(SemanticResult *env, struct DeclareList *decs) {
   auto looked_type = (ActualType *) env->typ_table->lookup(this->name);
 
   if (looked_type) {
@@ -435,7 +435,7 @@ SemanticResult *TypeDeclare::semantic(SemanticResult *&env, struct DeclareList *
   return env->copy(nullptr);
 }
 
-SemanticResult *FunctionDeclare::semantic(SemanticResult *&env, struct DeclareList *decs) {
+SemanticResult *FunctionDeclare::semantic(SemanticResult *env, struct DeclareList *decs) {
   sem[0] = '\0';
 
   auto result_type = (ActualType *) env->typ_table->lookup(this->result);
@@ -482,7 +482,7 @@ SemanticResult *FunctionDeclare::semantic(SemanticResult *&env, struct DeclareLi
   return env->copy(nullptr);
 }
 
-SemanticResult *VarDeclare::semantic(SemanticResult *&env, struct DeclareList *decs) {
+SemanticResult *VarDeclare::semantic(SemanticResult *env, struct DeclareList *decs) {
   ActualType *var_type = nullptr;
   if (!this->type) { // infer var's type from it's init expr
     var_type = (this->init->semantic(env))->type;
@@ -529,7 +529,7 @@ namespace ast {
 * @return calculated ActualType
 * @api private
 */
-ActualType *OpExpr::getOperatedType(ActualType *&type) {
+ActualType *OpExpr::getOperatedType(ActualType *type) {
   switch (this->oper) {
   case Plus:
   case Minus:
@@ -557,7 +557,7 @@ bool RecordExpr::has(Symbol s) {
   return false;
 }
 
-ActualType *RecordExpr::getFieldType(Symbol s, SemanticResult *&env) {
+ActualType *RecordExpr::getFieldType(Symbol s, SemanticResult *env) {
   auto valfields = this->valfields;
 
   while (valfields) {
@@ -570,7 +570,7 @@ ActualType *RecordExpr::getFieldType(Symbol s, SemanticResult *&env) {
   return nullptr;
 }
 
-ActualType *NameType::pure(SemanticResult *&env, struct DeclareList *decs) {
+ActualType *NameType::pure(SemanticResult *env, struct DeclareList *decs) {
   auto type = pureByName(this->name, env, decs);
 
   if (type) {
@@ -584,7 +584,7 @@ ActualType *NameType::pure(SemanticResult *&env, struct DeclareList *decs) {
   return nullptr;
 }
 
-ActualType *RecordType::pure(SemanticResult *&env, struct DeclareList *decs) {
+ActualType *RecordType::pure(SemanticResult *env, struct DeclareList *decs) {
   auto tmp = this->record;
   auto field_list = (FieldTypeList *) nullptr;
 
@@ -608,7 +608,7 @@ ActualType *RecordType::pure(SemanticResult *&env, struct DeclareList *decs) {
   }
 }
 
-ActualType *ArrayType::pure(SemanticResult *&env, struct DeclareList *decs) {
+ActualType *ArrayType::pure(SemanticResult *env, struct DeclareList *decs) {
   auto type = pureByName(this->array, env, decs);
 
   if (type) {
@@ -634,7 +634,7 @@ DeclareKind TypeDeclare::getKind() {
   return TypeDK;
 }
 
-SemanticResult *TypeDeclare::preprocess(SemanticResult *&env) {
+SemanticResult *TypeDeclare::preprocess(SemanticResult *env) {
   auto looked_type = env->typ_table->lookup(this->name);
 
   if (looked_type) {
@@ -652,7 +652,7 @@ SemanticResult *TypeDeclare::preprocess(SemanticResult *&env) {
   return env->copy(nullptr);
 }
 
-//    SemanticResult* FunctionDeclare::preprocess(SemanticResult *&env)
+//    SemanticResult* FunctionDeclare::preprocess(SemanticResult *env)
 //    {
 //        auto looked_type = env->val_table->lookup(this->name);
 //
@@ -671,7 +671,7 @@ SemanticResult *TypeDeclare::preprocess(SemanticResult *&env) {
 //        return env->copy(nullptr);
 //    }
 
-//    SemanticResult* VarDeclare::preprocess(SemanticResult *&env)
+//    SemanticResult* VarDeclare::preprocess(SemanticResult *env)
 //    {
 //        auto looked_type = env->val_table->lookup(this->id);
 //
@@ -690,7 +690,7 @@ SemanticResult *TypeDeclare::preprocess(SemanticResult *&env) {
 //        return env->copy(nullptr);
 //    }
 
-//    FunctionIdentify* FunctionDeclare::makeFunctionIdentify(SemanticResult *&env)
+//    FunctionIdentify* FunctionDeclare::makeFunctionIdentify(SemanticResult *env)
 //    {
 //        auto result_type = (ActualType*)env->typ_table->lookup(this->result);
 //

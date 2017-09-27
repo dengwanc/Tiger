@@ -39,14 +39,14 @@ class Lvalue {
 public:
   virtual void print() = 0;
   virtual char *stringify();
-  virtual SemanticResult *semantic(SemanticResult *&env) = 0;
+  virtual SemanticResult *semantic(SemanticResult *env) = 0;
 };
 
 class Expr {
 public:
   virtual void print() = 0;
   virtual char *stringify();
-  virtual SemanticResult *semantic(SemanticResult *&env) = 0;
+  virtual SemanticResult *semantic(SemanticResult *env) = 0;
 };
 
 class Type {
@@ -61,7 +61,7 @@ public:
    * Type('d').pure(); // got Actual Int Type
    */
   virtual ActualType *pure(
-      SemanticResult *&env,
+      SemanticResult *env,
       struct DeclareList *decs
   ) = 0;
   virtual void print() = 0;
@@ -92,8 +92,8 @@ public:
    * `type d = c`
    * c is just like visited yet.
    */
-  virtual SemanticResult *preprocess(SemanticResult *&env) { return nullptr; };
-  virtual SemanticResult *semantic(SemanticResult *&env, struct DeclareList *decs) = 0;
+  virtual SemanticResult *preprocess(SemanticResult *env) { return nullptr; };
+  virtual SemanticResult *semantic(SemanticResult *env, struct DeclareList *decs) = 0;
 };
 }
 
@@ -106,7 +106,7 @@ class SimpleLvalue : public Lvalue {
 public:
   SimpleLvalue(Symbol sym);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class FieldLvalue : public Lvalue {
@@ -117,7 +117,7 @@ class FieldLvalue : public Lvalue {
 public:
   FieldLvalue(Lvalue *lv, Symbol sym);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class SubscriptLvalue : public Lvalue {
@@ -128,7 +128,7 @@ class SubscriptLvalue : public Lvalue {
 public:
   SubscriptLvalue(Lvalue *lv, Expr *expr);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 }
 
@@ -141,7 +141,7 @@ class LvalueExpr : public Expr {
 public:
   LvalueExpr(Lvalue *lv);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class IntExpr : public Expr {
@@ -151,7 +151,7 @@ class IntExpr : public Expr {
 public:
   IntExpr(int ival);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class RealExpr : public Expr {
@@ -161,7 +161,7 @@ class RealExpr : public Expr {
 public:
   RealExpr(double dval);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class StringExpr : public Expr {
@@ -171,7 +171,7 @@ class StringExpr : public Expr {
 public:
   StringExpr(char *sval);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class CallExpr : public Expr {
@@ -182,7 +182,7 @@ class CallExpr : public Expr {
 public:
   CallExpr(Symbol func, struct ExprList *args);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class OpExpr : public Expr {
@@ -190,12 +190,12 @@ class OpExpr : public Expr {
   Oper oper;
   Expr *left;
   Expr *right;
-  ActualType *getOperatedType(ActualType *&type);
+  ActualType *getOperatedType(ActualType *type);
 
 public:
   OpExpr(Oper oper, Expr *left, Expr *right);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class RecordExpr : public Expr {
@@ -205,9 +205,9 @@ class RecordExpr : public Expr {
 public:
   RecordExpr(Symbol type, struct ValfieldList *valfields);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
   bool has(Symbol s); // tell user has field x
-  ActualType *getFieldType(Symbol s, SemanticResult *&env);
+  ActualType *getFieldType(Symbol s, SemanticResult *env);
 };
 
 class ArrayExpr : public Expr {
@@ -218,7 +218,7 @@ class ArrayExpr : public Expr {
 public:
   ArrayExpr(Symbol t, Expr *s);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class SeqExpr : public Expr {
@@ -228,7 +228,7 @@ class SeqExpr : public Expr {
 public:
   SeqExpr(struct ExprList *seq);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class AssignExpr : public Expr {
@@ -239,7 +239,7 @@ class AssignExpr : public Expr {
 public:
   AssignExpr(Lvalue *lv, Expr *expr);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class IfExpr : public Expr {
@@ -251,7 +251,7 @@ class IfExpr : public Expr {
 public:
   IfExpr(Expr *test, struct ExprList *then, struct ExprList *otherwise);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class WhileExpr : public Expr {
@@ -262,7 +262,7 @@ class WhileExpr : public Expr {
 public:
   WhileExpr(Expr *test, struct ExprList *body);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class LetExpr : public Expr {
@@ -273,7 +273,7 @@ class LetExpr : public Expr {
 public:
   LetExpr(struct DeclareList *declares, struct ExprList *body);
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class NilExpr : public Expr {
@@ -282,7 +282,7 @@ class NilExpr : public Expr {
 public:
   NilExpr();
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 class BreakExpr : public Expr {
@@ -291,7 +291,7 @@ class BreakExpr : public Expr {
 public:
   BreakExpr();
   void print();
-  SemanticResult *semantic(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env);
 };
 
 Expr *OrExpr(Expr *left, Expr *right);
@@ -330,9 +330,9 @@ public:
   FunctionDeclare(Symbol name, struct TypefieldList *params, Symbol result, Expr *body);
   void print();
   DeclareKind getKind();
-//        FunctionIdentify* makeFunctionIdentify(SemanticResult *&env);
-//        SemanticResult *preprocess(SemanticResult *&env);
-  SemanticResult *semantic(SemanticResult *&env, struct DeclareList *decs);
+//        FunctionIdentify* makeFunctionIdentify(SemanticResult *env);
+//        SemanticResult *preprocess(SemanticResult *env);
+  SemanticResult *semantic(SemanticResult *env, struct DeclareList *decs);
 };
 
 class VarDeclare : public Declare {
@@ -345,8 +345,8 @@ public:
   VarDeclare(Symbol id, Symbol type, Expr *init);
   void print();
   DeclareKind getKind();
-//        SemanticResult *preprocess(SemanticResult *&env);
-  SemanticResult *semantic(SemanticResult *&env, struct DeclareList *decs);
+//        SemanticResult *preprocess(SemanticResult *env);
+  SemanticResult *semantic(SemanticResult *env, struct DeclareList *decs);
 };
 
 class TypeDeclare : public Declare {
@@ -361,8 +361,8 @@ public:
   TypeDeclare(Symbol name, struct Type *def);
   void print();
   DeclareKind getKind();
-  SemanticResult *semantic(SemanticResult *&env, struct DeclareList *decs);
-  SemanticResult *preprocess(SemanticResult *&env);
+  SemanticResult *semantic(SemanticResult *env, struct DeclareList *decs);
+  SemanticResult *preprocess(SemanticResult *env);
 };
 
 struct DeclareList {
@@ -380,7 +380,7 @@ class NameType : public Type {
 public:
   NameType(Symbol name);
   void print();
-  ActualType *pure(SemanticResult *&env, struct DeclareList *decs);
+  ActualType *pure(SemanticResult *env, struct DeclareList *decs);
 };
 
 class RecordType : public Type {
@@ -389,7 +389,7 @@ class RecordType : public Type {
 public:
   RecordType(struct TypefieldList *record);
   void print();
-  ActualType *pure(SemanticResult *&env, struct DeclareList *decs);
+  ActualType *pure(SemanticResult *env, struct DeclareList *decs);
 };
 
 class ArrayType : public Type {
@@ -398,7 +398,7 @@ class ArrayType : public Type {
 public:
   ArrayType(Symbol array);
   void print();
-  ActualType *pure(SemanticResult *&env, struct DeclareList *decs);
+  ActualType *pure(SemanticResult *env, struct DeclareList *decs);
 };
 
 struct Typefield {

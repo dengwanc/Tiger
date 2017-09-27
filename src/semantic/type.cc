@@ -120,7 +120,7 @@ ActualType *ActualRecord::getFieldType(Symbol s) {
   return nullptr;
 }
 
-//bool ActualRecord::match(ast::RecordExpr *expr, ast::SemanticResult *&env, char *msg)
+//bool ActualRecord::match(ast::RecordExpr *expr, ast::SemanticResult *env, char *msg)
 //{
 //    auto typfields = this->_fields;
 //

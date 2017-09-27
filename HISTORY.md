@@ -53,13 +53,14 @@
 
 # TODO
 * P0 remove all ugly-const&-readonly
-* ~~p0 binary tree update/~~lookup unit test
 * p0 nullptr check confused me
-* p0 implements semantic check module
-* p1 depart ast::parse 
+* p0 implements semantic check module 
+* p1 depart ast::parse
 * p1 refactor RecordExpr match (module depend mess
 * p2 check lexical.spec.cc token map table (after done semantic do this
 * p2 implements stringify (not core module
+* p2 `SemanticResult*&` => `SemanticResult*&`
+* ~~p0 binary tree update/lookup unit test~~
 * ~~p0 implements value-table module~~
 * ~~p1 lexical::reset => error::reset~~
 * ~~write unit test for absyn module~~
