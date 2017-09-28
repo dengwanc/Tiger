@@ -31,13 +31,10 @@ enum ActualTypeKind {
 };
 
 class ActualType {
-protected:
-  ActualTypeKind _kind;
 public:
-  ActualTypeKind const &kind;
+  ActualTypeKind kind;
   virtual bool equal(ActualType *t);
   virtual char *stringify();
-  ActualType();
 };
 
 class ActualTypeList {

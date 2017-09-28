@@ -1,8 +1,6 @@
 #include "type.h"
 #include "../utils/index.h"
 
-ActualType::ActualType() : kind(_kind) {}
-
 char *ActualType::stringify() {
   return String("ActualType");
 }
@@ -17,32 +15,32 @@ ActualTypeList::ActualTypeList(ActualType *h, ActualTypeList *t) {
 }
 
 ActualNone::ActualNone() {
-  this->_kind = NoneATK;
+  this->kind = NoneATK;
 }
 
 ActualNil::ActualNil() {
-  this->_kind = NilATK;
+  this->kind = NilATK;
 }
 
 ActualVoid::ActualVoid() {
-  this->_kind = VoidATK;
+  this->kind = VoidATK;
 }
 
 ActualInt::ActualInt() {
-  this->_kind = IntATK;
+  this->kind = IntATK;
 }
 
 ActualReal::ActualReal() {
-  this->_kind = RealATK;
+  this->kind = RealATK;
 }
 
 ActualString::ActualString() {
-  this->_kind = StringATK;
+  this->kind = StringATK;
 }
 
 //ActualName::ActualName(Symbol n, ActualType *t): type(_type)
 //{
-//    this->_kind = NameATK;
+//    this->kind = NameATK;
 //    this->symbol = n;
 //    this->_type = t;
 //}
@@ -59,7 +57,7 @@ ActualString::ActualString() {
 //}
 
 ActualArray::ActualArray(ActualType *t) : type(_type) {
-  this->_kind = ArrayATK;
+  this->kind = ArrayATK;
   this->_type = t;
 }
 
@@ -84,7 +82,7 @@ FieldTypeList::FieldTypeList(FieldType *v, FieldTypeList *n) {
 }
 
 ActualRecord::ActualRecord(FieldTypeList *s) : fields(_fields) {
-  this->_kind = RecordATK;
+  this->kind = RecordATK;
   this->_fields = s;
 }
 
