@@ -90,9 +90,8 @@ public:
 //};
 
 class ActualArray : public ActualType {
-  ActualType *_type;
 public:
-  ActualType *const &type;
+  ActualType *type;
   ActualArray(ActualType *t);
   bool equal(ActualType *t);
 };

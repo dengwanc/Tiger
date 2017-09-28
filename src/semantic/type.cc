@@ -38,11 +38,11 @@ ActualString::ActualString() {
   this->kind = StringATK;
 }
 
-//ActualName::ActualName(Symbol n, ActualType *t): type(_type)
+//ActualName::ActualName(Symbol n, ActualType *t): type(type)
 //{
 //    this->kind = NameATK;
 //    this->symbol = n;
-//    this->_type = t;
+//    this->type = t;
 //}
 
 //bool ActualName::equal(ActualType *t)
@@ -56,9 +56,9 @@ ActualString::ActualString() {
 //    }
 //}
 
-ActualArray::ActualArray(ActualType *t) : type(_type) {
+ActualArray::ActualArray(ActualType *t) {
   this->kind = ArrayATK;
-  this->_type = t;
+  this->type = t;
 }
 
 bool ActualArray::equal(ActualType *t) {
