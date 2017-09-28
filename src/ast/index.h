@@ -350,13 +350,10 @@ public:
 };
 
 class TypeDeclare : public Declare {
-  struct Location lo;
-  Symbol _name;
-  Type *_def;
-
 public:
-  Symbol const &name;
-  Type *const &def;
+  struct Location lo;
+  Symbol name;
+  Type *def;
 
   TypeDeclare(Symbol name, struct Type *def);
   void print();

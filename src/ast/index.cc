@@ -114,9 +114,9 @@ VarDeclare::VarDeclare(Symbol i, Symbol t, Expr *ini) :
   setLocation(&this->lo);
 }
 
-TypeDeclare::TypeDeclare(Symbol n, struct Type *d) : name(_name), def(_def) {
-  this->_name = n;
-  this->_def = d;
+TypeDeclare::TypeDeclare(Symbol n, struct Type *d) {
+  this->name = n;
+  this->def = d;
   setLocation(&this->lo);
 }
 
