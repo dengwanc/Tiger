@@ -27,6 +27,7 @@ void debug(const char *file) {
     printf("⚠️  %s has no content", TIGER_DEFAULT_INPUT);
   } else {
     ast::AST_ROOT->print();
+    ast::AST_ROOT->semantic(ast::makeBaseEnvTable());
   }
 
   printf("\n\n~~~~~~ DEBUGGING AST ENDED ~~~~~~\n\n");
@@ -38,11 +39,13 @@ void debug() {
 }
 
 int CODES[] = {
+    NO_ERROR, // test1.tig
     NO_ERROR,
-    NO_ERROR
+    NO_ERROR,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
+//  ast::debug("../mocks/test3.tig");
 
   it("should parse ast correct", [] {
     for (auto i: TIGS) {
@@ -55,18 +58,20 @@ static int __TIGER_UNIT_TEST = describe("ast tree", [] {
   it("should semantic check correct", [] {
       auto base_env = ast::makeBaseEnvTable();
       auto index = 0;
+      auto length = sizeof(CODES) / sizeof(int);
 
       for (auto i: TIGS) {
         ast::parse(i.c_str());
 
+        printf("parsing %s\n", i.c_str());
         if (ast::AST_ROOT) {
           auto result = ast::AST_ROOT->semantic(base_env);
           assert(result->code == CODES[index]);
         }
 
-        if (sizeof(CODES) /sizeof(int) >= index) break;
-
         index++;
+
+        if (index >= length) break;
       }
   });
 

@@ -9,6 +9,7 @@
 	* disable STL
 	* disable std::string
 	* like __why it is OK return vector from function__?
+	* void* (definitely bad idea
 
 * Recommendatory Features
 	* Lambda

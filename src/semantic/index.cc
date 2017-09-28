@@ -96,6 +96,7 @@ SemanticResult::SemanticResult(BinaryTree *v, BinaryTree *t, ActualType *a) {
   this->val_table = v;
   this->typ_table = t;
   this->type = a;
+  this->code = 0;
 }
 
 SemanticResult *SemanticResult::copy(ActualType *t) {
@@ -122,10 +123,10 @@ SemanticResult *RealExpr::semantic(SemanticResult *env) {
 }
 
 SemanticResult *SimpleLvalue::semantic(SemanticResult *env) {
-  auto looked_type = env->val_table->lookup(this->simple);
+  auto looked_type = (VarIdentify*)env->val_table->lookup(this->simple);
 
   if (looked_type) {
-    return env->copy((ActualType *) looked_type);
+    return env->copy(looked_type->type);
   } else {
     /**
      * let var a = 1 in b end
@@ -483,18 +484,12 @@ SemanticResult *FunctionDeclare::semantic(SemanticResult *env, struct DeclareLis
 }
 
 SemanticResult *VarDeclare::semantic(SemanticResult *env, struct DeclareList *decs) {
-  ActualType *var_type = nullptr;
-  if (!this->type) { // infer var's type from it's init expr
-    var_type = (this->init->semantic(env))->type;
-  } else {
-    var_type = (ActualType *)env->typ_table->lookup(this->type);
-  }
+  auto var_type = this->type
+    ? (ActualType *)env->typ_table->lookup(this->type)
+    : (this->init->semantic(env))->type;
 
-  if (!var_type) {
-    this->type && sprintf(sem, "type %s is not defined", S_name(this->type));
-  } else {
+  if (var_type) {
     auto tmp = this->init->semantic(env);
-
     if (var_type->equal(tmp->type)) {
       auto new_var = new VarIdentify(var_type);
       return new SemanticResult(
@@ -505,6 +500,8 @@ SemanticResult *VarDeclare::semantic(SemanticResult *env, struct DeclareList *de
     } else {
       sprintf(sem, "var declare use difference type init");
     }
+  } else {
+    if (this->type) sprintf(sem, "type %s is not defined", S_name(this->type));
   }
 
   handleError(this->lo);
