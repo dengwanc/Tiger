@@ -111,9 +111,8 @@ public:
 };
 
 class ActualRecord : public ActualType {
-  FieldTypeList *_fields;
 public:
-  FieldTypeList *const &fields;
+  FieldTypeList *fields;
   ActualRecord(FieldTypeList *s);
   bool equal(ActualType *t);
   bool has(Symbol s);

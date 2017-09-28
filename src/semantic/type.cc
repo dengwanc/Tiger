@@ -81,9 +81,9 @@ FieldTypeList::FieldTypeList(FieldType *v, FieldTypeList *n) {
   this->tail = n;
 }
 
-ActualRecord::ActualRecord(FieldTypeList *s) : fields(_fields) {
+ActualRecord::ActualRecord(FieldTypeList *s) {
   this->kind = RecordATK;
-  this->_fields = s;
+  this->fields = s;
 }
 
 bool ActualRecord::equal(ActualType *t) {
