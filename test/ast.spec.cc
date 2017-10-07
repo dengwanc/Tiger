@@ -31,8 +31,6 @@ void debug(const char *file) {
   }
 
   printf("\n\n~~~~~~ DEBUGGING AST ENDED ~~~~~~\n\n");
-
-  exit(0); // force quit process
 }
 
 void debug() {
@@ -48,14 +46,12 @@ int CODES[] = {
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  ast::debug("../mocks/test4.tig");
+//  return ast::debug("../mocks/test4.tig");
 
   it("should parse ast correct", [] {
     for (auto i: TIGS) {
       assert(ast::parse(i.c_str())==0);
     }
-
-    // ast::debug(); /* if want observe */
   });
 
   it("should semantic check correct", [] {

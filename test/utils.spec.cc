@@ -176,4 +176,26 @@ static int __TIGER_UNIT_TEST = describe("utils", [] {
     assert(*finded_A == -1);
     assert(nothing ==nullptr);
   });
+
+  it("reverse list should correct", [] {
+    struct List {
+      int head;
+      struct List* tail;
+    };
+
+    struct List list0 = {0, nullptr};
+    struct List list1 = {1, &list0};
+    struct List list2 = {2, &list1};
+    struct List list3 = {3, &list2};
+
+    assert(!reverse<struct List *>(nullptr));
+    assert(reverse(&list0)->head == 0);
+
+    auto r3 = reverse(&list3);
+    assert(r3->head == 0);
+    assert(r3->tail == &list1);
+    assert(r3->tail->tail == &list2);
+    assert(r3->tail->tail->tail == &list3);
+    assert(r3->tail->tail->tail->tail == nullptr);
+  });
 });

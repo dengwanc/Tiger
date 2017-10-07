@@ -56,7 +56,7 @@ static struct GroupedDeclare &groupDeclares(struct DeclareList *declares) {
     declares = declares->tail;
   }
 
-  return group = {value, type};
+  return group = {reverse(value), reverse(type)};
 }
 
 static Declare *getDeclareByName(struct DeclareList *decs, Symbol name) {
@@ -459,7 +459,7 @@ SemanticResult *FunctionDeclare::semantic(SemanticResult *env, struct DeclareLis
 
   auto result_type = (ActualType*)(this->result
     ? env->typ_table->lookup(this->result)
-    : new ActualNone());
+    : new ActualNone()); // not declare return type
 
   if (!result_type) {
     sprintf(sem, "type %s is not defined", S_name(this->result));
