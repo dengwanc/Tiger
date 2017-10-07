@@ -18,6 +18,11 @@ ActualNone::ActualNone() {
   this->kind = NoneATK;
 }
 
+ActualNone::ActualNone(Symbol name) {
+  this->kind = NoneATK;
+  this->name = name;
+}
+
 ActualNil::ActualNil() {
   this->kind = NilATK;
 }
@@ -37,24 +42,6 @@ ActualReal::ActualReal() {
 ActualString::ActualString() {
   this->kind = StringATK;
 }
-
-//ActualName::ActualName(Symbol n, ActualType *t): type(type)
-//{
-//    this->kind = NameATK;
-//    this->symbol = n;
-//    this->type = t;
-//}
-
-//bool ActualName::equal(ActualType *t)
-//{
-//    if (this->kind == t->kind) {
-//        auto t1 = this->type;
-//        auto t2 = ((ActualName* )t)->type;
-//        return t1->equal(t2);
-//    } else {
-//        return false;
-//    }
-//}
 
 ActualArray::ActualArray(ActualType *t) {
   this->kind = ArrayATK;
@@ -87,7 +74,7 @@ ActualRecord::ActualRecord(FieldTypeList *s) {
 }
 
 bool ActualRecord::equal(ActualType *t) {
-  return this==t;
+  return t->kind == NilATK ? true : this==t;
 }
 
 bool ActualRecord::has(Symbol s) {
@@ -118,28 +105,15 @@ ActualType *ActualRecord::getFieldType(Symbol s) {
   return nullptr;
 }
 
-//bool ActualRecord::match(ast::RecordExpr *expr, ast::SemanticResult *env, char *msg)
-//{
-//    auto typfields = this->_fields;
-//
-//    while(typfields) {
-//        auto field = typfields->head->name;
-//        if (expr->has(field)) {
-//            auto type = expr->getFieldType(field, env);
-//            auto deftype = typfields->head->type;
-//            if (type && deftype && type->equal(deftype)) {
-//                continue;
-//            } else {
-//                sprintf(msg, "field %s not matched %s", S_name(field), deftype->stringify());
-//                break;
-//            }
-//        } else {
-//            sprintf(msg, "record type has no field `%s`", S_name(field));
-//            break;
-//        }
-//
-//        typfields = typfields->tail;
-//    }
-//
-//    return typfields == nullptr;
-//}
+void ActualRecord::update(Symbol s, ActualType *type) {
+  auto fields = this->fields;
+
+  while (fields) {
+    auto v = fields->head;
+    if (v->name==s) {
+      v->type = type;
+      break;
+    }
+    fields = fields->tail;
+  }
+}

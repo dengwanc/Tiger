@@ -71,16 +71,16 @@ static Declare *getDeclareByName(struct DeclareList *decs, Symbol name) {
   return nullptr;
 }
 
-static ActualType *pureByName(Symbol s, SemanticResult *env, struct DeclareList *decs) {
+static ActualType *getActualType(Symbol s, SemanticResult *env, struct DeclareList *decs, bool recursion) {
   auto looked_type = (ActualType *) env->typ_table->lookup(s);
 
   if (looked_type) {
     if (looked_type->kind==NoneATK) {
       auto dec = (TypeDeclare *) getDeclareByName(decs, s);
-
-      assert(dec);
-
-      return dec->def->pure(env, decs);
+      assert(dec); // must get dec or sth wrong
+      return (ActualType*)(recursion
+        ? dec->def->transform(env, decs)
+        : new ActualNone(s));
     } else {
       return looked_type;
     }
@@ -270,10 +270,12 @@ SemanticResult *RecordExpr::semantic(SemanticResult *env) {
 
   if (looked_type) {
     if (looked_type->kind==RecordATK) {
-      auto matched = true; // ((ActualRecord*)looked_type)->match(this, env, sem);
+      auto matched = this->match((ActualRecord*)looked_type, env);
 
       if (matched) {
         return env->copy(looked_type);
+      } else {
+        sprintf(sem, "record expr not matched record type");
       }
 
     } else {
@@ -421,10 +423,10 @@ SemanticResult *TypeDeclare::semantic(SemanticResult *env, struct DeclareList *d
     if (looked_type->kind==NoneATK) {
       return new SemanticResult(
           env->val_table,
-          env->typ_table->updateImmutable(this->name, this->def->pure(env, decs)),
+          env->typ_table->updateImmutable(this->name, this->def->transform(env, decs)),
           new ActualVoid()
       );
-    } else { // already had pure type
+    } else { // already had transform type
       return env->copy(new ActualVoid());
     }
   } else {
@@ -555,6 +557,36 @@ bool RecordExpr::has(Symbol s) {
   return false;
 }
 
+/**
+ * record type is matched record expr
+ * with Side Effect!
+ * may update `ActualRecord *record_type`
+ * runtime based update design
+ */
+bool RecordExpr::match(ActualRecord *record_type, SemanticResult *env) {
+  auto valfields = this->valfields;
+
+  while (valfields) {
+    auto name = valfields->head->name;
+    auto type_val = this->getFieldType(name, env);
+    auto type_def = record_type->getFieldType(name);
+    if (!type_def) return false;
+    if (!type_val) return false;
+    if (type_def->kind == NoneATK) {
+      auto def = (ActualNone*) type_def;
+      auto actual = (ActualType*)env->typ_table->lookup(def->name);
+      assert(actual);
+      type_def = actual;
+      record_type->update(name, actual);
+    }
+    if (!type_def->equal(type_val)) return false;
+
+    valfields = valfields->tail;
+  }
+
+  return true;
+}
+
 ActualType *RecordExpr::getFieldType(Symbol s, SemanticResult *env) {
   auto valfields = this->valfields;
 
@@ -568,8 +600,8 @@ ActualType *RecordExpr::getFieldType(Symbol s, SemanticResult *env) {
   return nullptr;
 }
 
-ActualType *NameType::pure(SemanticResult *env, struct DeclareList *decs) {
-  auto type = pureByName(this->name, env, decs);
+ActualType *NameType::transform(SemanticResult *env, struct DeclareList *decs) {
+  auto type = getActualType(this->name, env, decs, true);
 
   if (type) {
     return type;
@@ -582,12 +614,12 @@ ActualType *NameType::pure(SemanticResult *env, struct DeclareList *decs) {
   return nullptr;
 }
 
-ActualType *RecordType::pure(SemanticResult *env, struct DeclareList *decs) {
+ActualType *RecordType::transform(SemanticResult *env, struct DeclareList *decs) {
   auto tmp = this->record;
   auto field_list = (FieldTypeList *) nullptr;
 
   while (tmp) {
-    auto type = pureByName(tmp->head->type, env, decs);
+    auto type = getActualType(tmp->head->type, env, decs, false);
     if (type) {
       auto field = new FieldType(tmp->head->name, type);
       field_list = new FieldTypeList(field, field_list);
@@ -606,8 +638,8 @@ ActualType *RecordType::pure(SemanticResult *env, struct DeclareList *decs) {
   }
 }
 
-ActualType *ArrayType::pure(SemanticResult *env, struct DeclareList *decs) {
-  auto type = pureByName(this->array, env, decs);
+ActualType *ArrayType::transform(SemanticResult *env, struct DeclareList *decs) {
+  auto type = getActualType(this->array, env, decs, true);
 
   if (type) {
     return new ActualArray(type);
@@ -649,64 +681,6 @@ SemanticResult *TypeDeclare::preprocess(SemanticResult *env) {
 
   return env->copy(nullptr);
 }
-
-//    SemanticResult* FunctionDeclare::preprocess(SemanticResult *env)
-//    {
-//        auto looked_type = env->val_table->lookup(this->name);
-//
-//        if (looked_type) {
-//            sprintf(sem, "duplicate identifier `%s`", S_name(this->name));
-//        } else {
-//            return new SemanticResult(
-//                env->val_table->updateImmutable(this->name, new NoneIdentify()),
-//                env->typ_table,
-//                new ActualVoid()
-//            );
-//        }
-//
-//        handleError(this->lo);
-//
-//        return env->copy(nullptr);
-//    }
-
-//    SemanticResult* VarDeclare::preprocess(SemanticResult *env)
-//    {
-//        auto looked_type = env->val_table->lookup(this->id);
-//
-//        if (looked_type) {
-//            sprintf(sem, "duplicate identifier `%s`", S_name(this->id));
-//        } else {
-//            return new SemanticResult(
-//                    env->val_table->updateImmutable(this->id, new NoneIdentify()),
-//                    env->typ_table,
-//                    new ActualVoid()
-//            );
-//        }
-//
-//        handleError(this->lo);
-//
-//        return env->copy(nullptr);
-//    }
-
-//    FunctionIdentify* FunctionDeclare::makeFunctionIdentify(SemanticResult *env)
-//    {
-//        auto result_type = (ActualType*)env->typ_table->lookup(this->result);
-//
-//        if (!result_type) return nullptr;
-//
-//        auto params = this->params;
-//        auto list = (ActualTypeList*)nullptr;
-//        for (; params; params = params->tail) {
-//            auto arg = params->head->type;
-//            auto arg_type = (ActualType*)env->typ_table->lookup(arg);
-//
-//            if (!arg_type) return nullptr;
-//
-//            list = new ActualTypeList(arg_type, list);
-//        };
-//
-//        return new FunctionIdentify(list, result_type);
-//    }
 }
 
 /** env init bases */

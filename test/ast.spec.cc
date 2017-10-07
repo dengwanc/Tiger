@@ -43,10 +43,11 @@ int CODES[] = {
     NO_ERROR,
     NO_ERROR,
     NO_ERROR,
+    NO_ERROR,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  return ast::debug("../mocks/test4.tig");
+//  return ast::debug("../mocks/test5.tig");
 
   it("should parse ast correct", [] {
     for (auto i: TIGS) {
@@ -62,7 +63,6 @@ static int __TIGER_UNIT_TEST = describe("ast tree", [] {
       for (auto i: TIGS) {
         ast::parse(i.c_str());
 
-        printf("parsing %s\n", i.c_str());
         if (ast::AST_ROOT) {
           auto result = ast::AST_ROOT->semantic(base_env);
           assert(result->code == CODES[index]);

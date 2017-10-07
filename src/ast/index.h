@@ -53,14 +53,14 @@ class Type {
 public:
 
   /**
-   * get type's final type
+   * transform to ActualType
    * like:
    * type b = int
    * type c = b
    * type d = c
-   * Type('d').pure(); // got Actual Int Type
+   * Type('d').transform(); // got Actual Int Type
    */
-  virtual ActualType *pure(
+  virtual ActualType *transform(
       SemanticResult *env,
       struct DeclareList *decs
   ) = 0;
@@ -207,6 +207,7 @@ public:
   void print();
   SemanticResult *semantic(SemanticResult *env);
   bool has(Symbol s); // tell user has field x
+  bool match(ActualRecord* record_type, SemanticResult *env);
   ActualType *getFieldType(Symbol s, SemanticResult *env);
 };
 
@@ -377,7 +378,7 @@ class NameType : public Type {
 public:
   NameType(Symbol name);
   void print();
-  ActualType *pure(SemanticResult *env, struct DeclareList *decs);
+  ActualType *transform(SemanticResult *env, struct DeclareList *decs);
 };
 
 class RecordType : public Type {
@@ -386,7 +387,7 @@ class RecordType : public Type {
 public:
   RecordType(struct TypefieldList *record);
   void print();
-  ActualType *pure(SemanticResult *env, struct DeclareList *decs);
+  ActualType *transform(SemanticResult *env, struct DeclareList *decs);
 };
 
 class ArrayType : public Type {
@@ -395,7 +396,7 @@ class ArrayType : public Type {
 public:
   ArrayType(Symbol array);
   void print();
-  ActualType *pure(SemanticResult *env, struct DeclareList *decs);
+  ActualType *transform(SemanticResult *env, struct DeclareList *decs);
 };
 
 struct Typefield {

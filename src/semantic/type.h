@@ -24,8 +24,7 @@ enum ActualTypeKind {
   IntATK,
   StringATK,
   ArrayATK,
-//    NameATK,
-      VoidATK,
+  VoidATK,
   RealATK,
   NoneATK
 };
@@ -56,7 +55,9 @@ public:
  */
 class ActualNone : public ActualType {
 public:
+  Symbol name;
   ActualNone();
+  ActualNone(Symbol name);
 };
 
 class ActualVoid : public ActualType {
@@ -78,16 +79,6 @@ class ActualReal : public ActualType {
 public:
   ActualReal();
 };
-
-// todo useless
-//class ActualName: public ActualType {
-//    Symbol symbol;
-//    ActualType* _type;
-//public:
-//    ActualType* const &type;
-//    ActualName(Symbol n, ActualType* t);
-//    bool equal(ActualType* t);
-//};
 
 class ActualArray : public ActualType {
 public:
@@ -116,8 +107,8 @@ public:
   ActualRecord(FieldTypeList *s);
   bool equal(ActualType *t);
   bool has(Symbol s);
-
   ActualType *getFieldType(Symbol s);
+  void update(Symbol s, ActualType* type);
 };
 
 #endif
