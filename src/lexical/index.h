@@ -49,5 +49,7 @@ void reportBadToken();
 void clearErrors();
 void yyerror(const char *);
 void reportSemanticError(char *msg, struct Location &lo);
+void slientError();
+void verboseError();
 
 #endif

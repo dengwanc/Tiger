@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "../ast/index.h"
 #include "../utils/index.h"
+#include "errcode.h"
 
 /**
  * Semantic Error Message (Abbreviation `sem`)
@@ -21,7 +22,7 @@ static void handleError(struct Location lo) {
 }
 
 static SemanticResult *semanticExprList(struct ExprList *l, SemanticResult *env) {
-  SemanticResult *end;
+  SemanticResult *end = nullptr;
 
   while (l) {
     end = l->head->semantic(env);
@@ -96,15 +97,26 @@ SemanticResult::SemanticResult(BinaryTree *v, BinaryTree *t, ActualType *a) {
   this->val_table = v;
   this->typ_table = t;
   this->type = a;
-  this->code = 0;
+  this->errcode = 0;
+}
+
+SemanticResult::SemanticResult(BinaryTree *v, BinaryTree *t, ActualType *a, int errcode) {
+  this->val_table = v;
+  this->typ_table = t;
+  this->type = a;
+  this->errcode = errcode;
 }
 
 SemanticResult *SemanticResult::copy(ActualType *t) {
-  return new SemanticResult(this->val_table, this->typ_table, t);
+  return new SemanticResult(this->val_table, this->typ_table, t, this->errcode);
+}
+
+SemanticResult* SemanticResult::copy(ActualType *t, int errcode) {
+  return new SemanticResult(this->val_table, this->typ_table, t, errcode);
 }
 
 SemanticResult *SemanticResult::copy() {
-  return new SemanticResult(this->val_table, this->typ_table, this->type);
+  return new SemanticResult(this->val_table, this->typ_table, this->type, this->errcode);
 }
 }
 
@@ -341,6 +353,7 @@ SemanticResult *AssignExpr::semantic(SemanticResult *env) {
 
 SemanticResult *IfExpr::semantic(SemanticResult *env) {
   auto test = this->test->semantic(env);
+  auto errcode = 0;
 
   if (test->type) {
     if (test->type->equal(new ActualInt())) {
@@ -353,7 +366,8 @@ SemanticResult *IfExpr::semantic(SemanticResult *env) {
         if (type1->equal(type2)) {
           return env->copy(type1);
         } else {
-          sprintf(sem, "type %s must same as type %s", type1->stringify(), type2->stringify());
+          errcode = IF_EXPR_ERROR1;
+          sprintf(sem, "#%d type %s must same as type %s", errcode, type1->stringify(), type2->stringify());
         }
       }
 
@@ -364,7 +378,7 @@ SemanticResult *IfExpr::semantic(SemanticResult *env) {
 
   handleError(this->lo);
 
-  return env->copy(nullptr);
+  return env->copy(nullptr, errcode);
 }
 
 SemanticResult *WhileExpr::semantic(SemanticResult *env) {

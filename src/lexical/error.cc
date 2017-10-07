@@ -6,6 +6,7 @@ using namespace lexical;
 extern char *yytext;
 
 static bool anyerrors = false;
+static bool slient = false;
 
 void yyerror(const char *msg) {
   char last[512];
@@ -46,7 +47,16 @@ void reportBadToken() {
 }
 
 void reportSemanticError(char *msg, struct Location &lo) {
+  if (slient) return;
   anyerrors = true;
   fprintf(stderr, "%s LINE %d.%d: \n", getFilename(), lo.line, lo.offset);
   fprintf(stderr, "%s\n", msg);
+}
+
+void slientError() {
+  slient = true;
+}
+
+void verboseError() {
+  slient = false;
 }

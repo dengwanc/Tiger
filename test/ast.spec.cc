@@ -3,7 +3,7 @@
 #include "../src/utils/index.h"
 #include "../src/lexical/index.h"
 #include "../src/ast/index.h"
-#include "../src/semantic/ecode.h"
+#include "../src/semantic/errcode.h"
 #include "global.h"
 
 extern int yyparse(void);
@@ -19,6 +19,7 @@ int parse(const char *fname) {
 }
 
 void debug(const char *file) {
+  verboseError();
   printf("\n~~~~~~ DEBUGGING AST STARTED ~~~~~~\n\n");
 
   assert(ast::parse(file)==0);
@@ -44,10 +45,15 @@ int CODES[] = {
     NO_ERROR,
     NO_ERROR,
     NO_ERROR,
+    NO_ERROR, // test6.tig
+    NO_ERROR,
+    NO_ERROR,
+    IF_EXPR_ERROR1,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  return ast::debug("../mocks/test5.tig");
+//  return ast::debug("../mocks/test9.tig");
+  slientError();
 
   it("should parse ast correct", [] {
     for (auto i: TIGS) {
@@ -65,7 +71,7 @@ static int __TIGER_UNIT_TEST = describe("ast tree", [] {
 
         if (ast::AST_ROOT) {
           auto result = ast::AST_ROOT->semantic(base_env);
-          assert(result->code == CODES[index]);
+          assert(result->errcode == CODES[index]);
         }
 
         index++;

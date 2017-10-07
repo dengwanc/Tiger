@@ -1,18 +1,7 @@
 /* define valid mutually recursive procedures */
+/* redundancy with test7.tig */
+
 /*
-let
-
-function do_nothing1(a: int, b: string)=
-		do_nothing2(a+1)
-
-function do_nothing2(d: int) =
-		do_nothing1(d, "str")
-
-in
-	do_nothing1(0, "str2")
-end
-*/
-
 let
 
 function doNothing(a: int, b: string) {
@@ -26,3 +15,6 @@ function doNothing2(d: int) {
 in
 	doNothing(0, "str2")
 end
+*/
+
+/* if needed support this feature */
