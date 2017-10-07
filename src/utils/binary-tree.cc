@@ -42,6 +42,8 @@ void BinaryTree::update(Symbol key, void *value) {
 }
 
 void *BinaryTree::lookup(Symbol key) {
+  assert(key); // must not-null or sth wrong
+
   auto curret = this->root;
 
   while (curret) {

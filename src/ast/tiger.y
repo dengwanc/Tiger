@@ -91,6 +91,7 @@ vardec:
 funcdec:
 	  FUNCTION id ASSIGN expr                   {$$ = new FunctionDeclare($2, nullptr, nullptr, $4);}
 	| FUNCTION id LPAREN typefields RPAREN expr {$$ = new FunctionDeclare($2, $4, nullptr, $6);}
+	| id id LPAREN typefields RPAREN expr {$$ = new FunctionDeclare($2, $4, $1, $6);}
 
 lvalue:
 	  id                        {$$ = new SimpleLvalue($1);}

@@ -31,6 +31,8 @@ void debug(const char *file) {
   }
 
   printf("\n\n~~~~~~ DEBUGGING AST ENDED ~~~~~~\n\n");
+
+  exit(0); // force quit process
 }
 
 void debug() {
@@ -42,10 +44,11 @@ int CODES[] = {
     NO_ERROR, // test1.tig
     NO_ERROR,
     NO_ERROR,
+    NO_ERROR,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  ast::debug("../mocks/test3.tig");
+//  ast::debug("../mocks/test4.tig");
 
   it("should parse ast correct", [] {
     for (auto i: TIGS) {
