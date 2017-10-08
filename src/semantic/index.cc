@@ -10,6 +10,7 @@
  * 64K IS ENOUGH FOR ANYONE
  */
 static char sem[1024*64];
+static int sec = 0; // semantic error code
 
 /** inner functions */
 namespace ast {
@@ -117,6 +118,20 @@ SemanticResult* SemanticResult::copy(ActualType *t, int errcode) {
 
 SemanticResult *SemanticResult::copy() {
   return new SemanticResult(this->val_table, this->typ_table, this->type, this->errcode);
+}
+
+/**
+ * Simple Export Single int value
+ * better design is:
+ * `[error_obj_1, error_obj_2, error_obj3, ...]`
+ * here just for Finish Semantic Module :)
+ */
+int getErrorCode() {
+  return sec;
+}
+
+void clearErrorCode() {
+  sec = 0;
 }
 }
 
@@ -268,12 +283,13 @@ SemanticResult *OpExpr::semantic(SemanticResult *env) {
     default:return env->copy(this->getOperatedType(type));
     }
   } else {
-    sprintf(sem, "different type cannot operated");
+    sec = OPERATOR_DIFF_TYPE;
+    sprintf(sem, "%d# different type cannot operated", sec);
   }
 
   handleError(this->lo);
 
-  return env->copy(nullptr);
+  return env->copy(nullptr, sec);
 }
 
 SemanticResult *RecordExpr::semantic(SemanticResult *env) {
@@ -353,7 +369,6 @@ SemanticResult *AssignExpr::semantic(SemanticResult *env) {
 
 SemanticResult *IfExpr::semantic(SemanticResult *env) {
   auto test = this->test->semantic(env);
-  auto errcode = 0;
 
   if (test->type) {
     if (test->type->equal(new ActualInt())) {
@@ -366,8 +381,8 @@ SemanticResult *IfExpr::semantic(SemanticResult *env) {
         if (type1->equal(type2)) {
           return env->copy(type1);
         } else {
-          errcode = IF_EXPR_ERROR1;
-          sprintf(sem, "#%d type %s must same as type %s", errcode, type1->stringify(), type2->stringify());
+          sec = IF_EXPR_ERROR1;
+          sprintf(sem, "%d# type %s must same as type %s", sec, type1->stringify(), type2->stringify());
         }
       }
 
@@ -378,7 +393,7 @@ SemanticResult *IfExpr::semantic(SemanticResult *env) {
 
   handleError(this->lo);
 
-  return env->copy(nullptr, errcode);
+  return env->copy(nullptr, sec);
 }
 
 SemanticResult *WhileExpr::semantic(SemanticResult *env) {
@@ -505,7 +520,7 @@ SemanticResult *VarDeclare::semantic(SemanticResult *env, struct DeclareList *de
     ? (ActualType *)env->typ_table->lookup(this->type)
     : (this->init->semantic(env))->type;
 
-  if (var_type) {
+  if (var_type && this->init) {
     auto tmp = this->init->semantic(env);
     if (var_type->equal(tmp->type)) {
       auto new_var = new VarIdentify(var_type);
@@ -517,7 +532,9 @@ SemanticResult *VarDeclare::semantic(SemanticResult *env, struct DeclareList *de
     } else {
       sprintf(sem, "var declare use difference type init");
     }
-  } else {
+  }
+
+  if (!var_type) {
     if (this->type) sprintf(sem, "type %s is not defined", S_name(this->type));
   }
 

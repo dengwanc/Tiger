@@ -11,6 +11,7 @@ extern int yyparse(void);
 namespace ast {
 int parse(const char *fname) {
   lexical::reset(fname);
+  ast::clearErrorCode();
   if (yyparse()==0) {
     return 0;
   } else {
@@ -49,10 +50,15 @@ int CODES[] = {
     NO_ERROR,
     NO_ERROR,
     IF_EXPR_ERROR1,
+    NO_ERROR,
+    NO_ERROR, // test11.tig
+    NO_ERROR,
+    OPERATOR_DIFF_TYPE,
+    OPERATOR_DIFF_TYPE,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  return ast::debug("../mocks/test9.tig");
+//  return ast::debug("../mocks/test14.tig");
   slientError();
 
   it("should parse ast correct", [] {
@@ -70,8 +76,8 @@ static int __TIGER_UNIT_TEST = describe("ast tree", [] {
         ast::parse(i.c_str());
 
         if (ast::AST_ROOT) {
-          auto result = ast::AST_ROOT->semantic(base_env);
-          assert(result->errcode == CODES[index]);
+          ast::AST_ROOT->semantic(base_env);
+          assert(ast::getErrorCode() == CODES[index]);
         }
 
         index++;
