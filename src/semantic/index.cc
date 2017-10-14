@@ -202,9 +202,10 @@ SemanticResult *SubscriptLvalue::semantic(SemanticResult *env) {
   if (lvalue_type->kind==ArrayATK) {
     auto subscript_type = this->expr->semantic(env);
     auto int_type = new ActualInt();
+    auto array_type = ((ActualArray *)lvalue_type)->type;
+
     if (subscript_type->type->equal(int_type)) {
-      env->type = int_type;
-      return env->copy();
+      return env->copy(array_type);
     } else {
       sprintf(sem, "subscript %s is not int type", this->expr->stringify());
     }

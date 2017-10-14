@@ -1,10 +1,11 @@
-/* error : procedure returns value */
-/*
-let
-	function g(a:int) { a }
-in 
-	g(2)
-end
-*/
+/* local types hide global */
 
-0
+let
+	type a = int
+in
+	let
+		type a = string
+	in
+		0
+	end
+end
