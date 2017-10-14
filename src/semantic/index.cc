@@ -355,7 +355,8 @@ SemanticResult *AssignExpr::semantic(SemanticResult *env) {
     if (type1->equal(type2)) {
       return env->copy(type1);
     } else {
-      sprintf(sem, "type %s is not assignable to type %s", type1->stringify(), type2->stringify());
+      sec = NOT_ASSIGNABLE;
+      sprintf(sem, "%d# type %s is not assignable to type %s", sec, type1->stringify(), type2->stringify());
     }
   }
 
