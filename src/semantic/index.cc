@@ -226,6 +226,8 @@ SemanticResult *CallExpr::semantic(SemanticResult *env) {
   auto looked_value = (FunctionIdentify *) env->val_table->lookup(this->func);
   auto func_name = S_name(this->func);
 
+  sem[0] = '\0';
+
   if (looked_value) {
     auto args = this->args;
     auto formals = looked_value->formals;
@@ -235,16 +237,22 @@ SemanticResult *CallExpr::semantic(SemanticResult *env) {
         return env->copy(nullptr);
       }
 
+      if (formals->head==nullptr) break;
+
       if (!tmp->type->equal(formals->head)) {
-        sprintf(sem, "parameters %s is not %s type", args->head->stringify(), formals->head->stringify());
+        sec = ARG_NOT_MATCH;
+        sprintf(sem, "%d# parameters %s is not %s type", sec, args->head->stringify(), formals->head->stringify());
         break;
       }
       args = args->tail;
       formals = formals->tail;
     }
 
+    if (sem[0] != '\0') goto end;
+
     if (formals) {
-      sprintf(sem, "short parameters in %s call", func_name);
+      sec = SHORT_ARG;
+      sprintf(sem, "%d# short parameters in %s call", sec, func_name);
     }
 
     if (args) {
@@ -259,6 +267,7 @@ SemanticResult *CallExpr::semantic(SemanticResult *env) {
     sprintf(sem, "%s is not defined", func_name);
   }
 
+end:
   handleError(this->lo);
 
   return env->copy(nullptr);
@@ -502,7 +511,7 @@ SemanticResult *FunctionDeclare::semantic(SemanticResult *env, struct DeclareLis
   }
 
   if (sem[0]=='\0') {
-    auto func = new FunctionIdentify(list, result_type);
+    auto func = new FunctionIdentify(reverse(list), result_type);
     auto body_val_table = val_table->updateImmutable(this->name, func);
     auto func_scope = new SemanticResult(body_val_table, env->typ_table, nullptr);
 

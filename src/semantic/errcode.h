@@ -15,5 +15,7 @@
 #define NOT_RECORD 1006
 #define FILED_ERR2 1007
 #define RECORD_EXPR_ERR1 1008
+#define ARG_NOT_MATCH 1009
+#define SHORT_ARG 1010
 
 #endif

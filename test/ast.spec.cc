@@ -40,7 +40,7 @@ void debug() {
 }
 }
 
-int CODES[] = {
+int ERR_CODES[] = {
     NO_ERROR, // test1.tig
     NO_ERROR,
     NO_ERROR,
@@ -74,10 +74,12 @@ int CODES[] = {
     NO_ERROR, // test31.tig
     NOT_ASSIGNABLE,
     RECORD_EXPR_ERR1,
+    ARG_NOT_MATCH,
+    SHORT_ARG,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  return ast::debug("../mocks/test33.tig");
+//  return ast::debug("../mocks/test35.tig");
   slientError();
 
   it("should parse ast correct", [] {
@@ -89,14 +91,14 @@ static int __TIGER_UNIT_TEST = describe("ast tree", [] {
   it("should semantic check correct", [] {
       auto base_env = ast::makeBaseEnvTable();
       auto index = 0;
-      auto length = sizeof(CODES) / sizeof(int);
+      auto length = sizeof(ERR_CODES) / sizeof(int);
 
       for (auto i: TIGS) {
         ast::parse(i.c_str());
 
         if (ast::AST_ROOT) {
           ast::AST_ROOT->semantic(base_env);
-          assert(ast::getErrorCode() == CODES[index]);
+          assert(ast::getErrorCode() == ERR_CODES[index]);
         }
 
         index++;
