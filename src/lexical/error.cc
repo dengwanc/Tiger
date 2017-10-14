@@ -53,10 +53,10 @@ void reportSemanticError(char *msg, struct Location &lo) {
   fprintf(stderr, "%s\n", msg);
 }
 
-void slientError() {
+void slientSemanticError() {
   slient = true;
 }
 
-void verboseError() {
+void verboseSemanticError() {
   slient = false;
 }

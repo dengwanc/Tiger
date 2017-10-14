@@ -126,13 +126,18 @@ SemanticResult *SemanticResult::copy() {
  * `[error_obj_1, error_obj_2, error_obj3, ...]`
  * here just for Finish Semantic Module :)
  */
-int getErrorCode() {
+int getSemanticErrorCode() {
   return sec;
 }
 
-void clearErrorCode() {
+void clearSemanticErrorCode() {
   sec = 0;
 }
+
+/** todo should define */
+//void setErrorCode(int code) {
+//  sec = code;
+//}
 }
 
 /** semantic implements */

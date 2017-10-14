@@ -33,8 +33,8 @@ public:
  * value: print, ....
  */
 SemanticResult *makeBaseEnvTable();
-int getErrorCode();
-void clearErrorCode();
+int getSemanticErrorCode();
+void clearSemanticErrorCode();
 }
 
 /** base define solve circular reference */
@@ -417,6 +417,7 @@ struct TypefieldList *TypefieldList4(Symbol name, Symbol type, struct TypefieldL
 /** export root ast pointer */
 namespace ast {
 extern Expr *AST_ROOT;
+int parse(const char *fname);
 }
 
 #endif

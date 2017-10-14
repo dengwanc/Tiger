@@ -1,6 +1,8 @@
 #include "index.h"
 #include "../utils/index.h"
 
+extern int yyparse(void);
+
 /**
  * This module for
  * AST constructors
@@ -8,6 +10,12 @@
 
 namespace ast {
 Expr *AST_ROOT;
+
+int parse(const char *fname) {
+  lexical::reset(fname);
+  ast::clearSemanticErrorCode();
+  return yyparse() == 0 ? 0 : 1;
+}
 
 static void setLocation(struct Location *lo) {
   lo->line = lexical::getLine();
