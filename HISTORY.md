@@ -57,7 +57,7 @@
 * all declares in ./test should be static
 
 # TODO
-* p2 check lexical.spec.cc token map table (after done semantic do this
+* p2 check lexical.spec.cc token map table(up to anyone
 * ~~p1 describe/it should move to global.h~~
 * ~~p2 implements stringify (by give a default string~~
 * ~~p1 refactor RecordExpr match (module depend mess~~
