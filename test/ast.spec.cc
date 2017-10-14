@@ -65,10 +65,11 @@ int CODES[] = {
     FILED_ERR1,
     NOT_ASSIGNABLE,
     NOT_ARRAY,
+    FILED_ERR2,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  return ast::debug("../mocks/test24.tig");
+//  return ast::debug("../mocks/test25.tig");
   slientError();
 
   it("should parse ast correct", [] {

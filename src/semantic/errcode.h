@@ -13,5 +13,8 @@
 #define FILED_ERR1 1003
 #define NOT_ASSIGNABLE 1004
 #define NOT_ARRAY 1005
+#define NOT_RECORD 1006
+#define FILED_ERR2 1007
+
 
 #endif

@@ -186,7 +186,8 @@ SemanticResult *FieldLvalue::semantic(SemanticResult *env) {
     }
 
   } else {
-    sprintf(sem, "%s is not record type", this->lv->stringify());
+    sec = FILED_ERR2;
+    sprintf(sem, "%d# %s is not record type", sec, this->lv->stringify());
   }
 
   handleError(this->lo);
@@ -305,7 +306,8 @@ SemanticResult *RecordExpr::semantic(SemanticResult *env) {
       }
 
     } else {
-      sprintf(sem, "type %s is not record type", record_name);
+      sec = NOT_RECORD;
+      sprintf(sem, "%d# type %s is not record type", sec, record_name);
     }
   } else {
     sprintf(sem, "type %s is not defined", record_name);
