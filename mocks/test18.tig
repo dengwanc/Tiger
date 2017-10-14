@@ -14,7 +14,8 @@ in
 	do_nothing1(0, "str2")
 end
 */
-
+/* support this if needed */
+/*
 let
 
 function d1(a: int, b: string) {
@@ -30,4 +31,5 @@ function d2(d: int) {
 in
 	d1(0 ,"str2")
 end
+*/
 

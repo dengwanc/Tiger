@@ -155,7 +155,7 @@ SemanticResult *SimpleLvalue::semantic(SemanticResult *env) {
   if (looked_type) {
     return env->copy(looked_type->type);
   } else {
-    sprintf(sem, "var %s is not defined", S_name(this->simple));
+    sprintf(sem, "%d# var %s is not defined", sec = VAR_NOT_DEFINED, S_name(this->simple));
   }
 
   handleError(this->lo);
@@ -280,13 +280,12 @@ SemanticResult *OpExpr::semantic(SemanticResult *env) {
     default:return env->copy(this->getOperatedType(type));
     }
   } else {
-    sec = OPERATOR_DIFF_TYPE;
-    sprintf(sem, "%d# different type cannot operated", sec);
+    sprintf(sem, "%d# different type cannot operated", sec = OPERATOR_DIFF_TYPE);
   }
 
   handleError(this->lo);
 
-  return env->copy(nullptr, sec);
+  return env->copy(nullptr);
 }
 
 SemanticResult *RecordExpr::semantic(SemanticResult *env) {
@@ -393,7 +392,7 @@ SemanticResult *IfExpr::semantic(SemanticResult *env) {
 end:
   handleError(this->lo);
 
-  return env->copy(nullptr, sec);
+  return env->copy(nullptr);
 }
 
 SemanticResult *WhileExpr::semantic(SemanticResult *env) {

@@ -1,17 +1,12 @@
 /* error : second function uses variables local to the first one, undeclared variable */
 let
 
-function do_nothing1(a: int, b: string) {
-	do_nothing2(a+1);
-	0
-}
-
 function do_nothing2(d: int) {
-	do_nothing1(a, "str");
+	do_nothing2(a);
 	" "
 }
 
 in
-	do_nothing1(0, "str2")
+	do_nothing2(0)
 end
 
