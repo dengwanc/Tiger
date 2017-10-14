@@ -208,7 +208,8 @@ SemanticResult *SubscriptLvalue::semantic(SemanticResult *env) {
       sprintf(sem, "subscript %s is not int type", this->expr->stringify());
     }
   } else {
-    sprintf(sem, "%s is not array type", this->lv->stringify());
+    sec = NOT_ARRAY;
+    sprintf(sem, "%d# %s is not array type", sec, this->lv->stringify());
   }
 
   handleError(this->lo);

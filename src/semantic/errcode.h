@@ -12,5 +12,6 @@
 #define VAR_NOT_DEFINED 1002
 #define FILED_ERR1 1003
 #define NOT_ASSIGNABLE 1004
+#define NOT_ARRAY 1005
 
 #endif
