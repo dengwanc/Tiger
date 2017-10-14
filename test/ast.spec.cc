@@ -87,10 +87,16 @@ int ERR_CODES[] = {
     VAR_DECLARE_ERR1,
     VAR_DECLARE_ERR1,
     NO_ERROR, // test46.tig
+    DUPLICATE_TYPE,
+    DUPLICATE_FUNC,
+    VAR_DECLARE_ERR1,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  return ast::debug("../mocks/test46.tig");
+  /** good way to debug, without effect === */
+  // return ast::debug("../mocks/test49.tig");
+  /** debug part ========================== */
+
   slientError();
 
   it("should parse ast correct", [] {

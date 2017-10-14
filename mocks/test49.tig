@@ -6,5 +6,5 @@ let
 	var b: rectype = nil
 	var c: rectype
 in
-	a
+	0
 end
