@@ -17,5 +17,7 @@
 #define RECORD_EXPR_ERR1 1008
 #define ARG_NOT_MATCH 1009
 #define SHORT_ARG 1010
+#define SURPLUS_ARG 1011
+#define DUPLICATE_TYPE 1012
 
 #endif

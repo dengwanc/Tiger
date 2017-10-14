@@ -256,7 +256,8 @@ SemanticResult *CallExpr::semantic(SemanticResult *env) {
     }
 
     if (args) {
-      sprintf(sem, "overflow parameters in %s call", func_name);
+      sec = SURPLUS_ARG;
+      sprintf(sem, "%d# overflow parameters in %s call", sec, func_name);
     }
 
     if (formals==nullptr && args==nullptr) {
@@ -717,7 +718,8 @@ SemanticResult *TypeDeclare::preprocess(SemanticResult *env) {
   auto looked_type = env->typ_table->lookup(this->name);
 
   if (looked_type) {
-    sprintf(sem, "duplicate identifier `%s`", S_name(this->name));
+    sec = DUPLICATE_TYPE;
+    sprintf(sem, "%d# duplicate identifier type `%s`", sec, S_name(this->name));
   } else {
     return new SemanticResult(
         env->val_table,
