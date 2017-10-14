@@ -372,6 +372,8 @@ SemanticResult *IfExpr::semantic(SemanticResult *env) {
 
   if (test->type) {
     if (test->type->equal(new ActualInt())) {
+      if (!this->otherwise) goto end; // no else part
+
       auto tmp1 = semanticExprList(this->then, env);
       auto tmp2 = semanticExprList(this->otherwise, env);
       auto type1 = tmp1->type;
@@ -391,6 +393,7 @@ SemanticResult *IfExpr::semantic(SemanticResult *env) {
     }
   }
 
+end:
   handleError(this->lo);
 
   return env->copy(nullptr, sec);
