@@ -155,9 +155,6 @@ SemanticResult *SimpleLvalue::semantic(SemanticResult *env) {
   if (looked_type) {
     return env->copy(looked_type->type);
   } else {
-    /**
-     * let var a = 1 in b end
-     */
     sprintf(sem, "var %s is not defined", S_name(this->simple));
   }
 
@@ -523,21 +520,25 @@ SemanticResult *VarDeclare::semantic(SemanticResult *env, struct DeclareList *de
     ? (ActualType *)env->typ_table->lookup(this->type)
     : (this->init->semantic(env))->type;
 
-  if (var_type && this->init) {
-    auto tmp = this->init->semantic(env);
-    if (var_type->equal(tmp->type)) {
-      auto new_var = new VarIdentify(var_type);
-      return new SemanticResult(
-          env->val_table->updateImmutable(this->id, new_var),
-          env->typ_table,
-          new ActualVoid()
-      );
-    } else {
-      sprintf(sem, "var declare use difference type init");
-    }
-  }
+  if (var_type) {
+    auto new_var = new VarIdentify(var_type);
+    auto ret = new SemanticResult(
+        env->val_table->updateImmutable(this->id, new_var),
+        env->typ_table,
+        new ActualVoid()
+    );
 
-  if (!var_type) {
+    if (this->init) {
+      auto tmp = this->init->semantic(env);
+      if (var_type->equal(tmp->type)) {
+        return ret;
+      } else {
+        sprintf(sem, "var declare use difference type init");
+      }
+    } else { // ok with just define var's type
+      return ret;
+    }
+  } else {
     if (this->type) sprintf(sem, "type %s is not defined", S_name(this->type));
   }
 
