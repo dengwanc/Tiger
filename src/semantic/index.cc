@@ -483,46 +483,52 @@ SemanticResult *TypeDeclare::semantic(SemanticResult *env, struct DeclareList *d
 }
 
 SemanticResult *FunctionDeclare::semantic(SemanticResult *env, struct DeclareList *decs) {
-  sem[0] = '\0'; // mark no error
+  auto looked_type = (ActualType *) env->val_table->lookup(this->name);
+  if (looked_type) {
+    sec = DUPLICATE_FUNC;
+    sprintf(sem, "%d# duplicate function `%s`", sec, S_name(this->name));
+  } else {
+    sem[0] = '\0'; // mark no error
 
-  auto params = this->params;
-  auto list = (ActualTypeList *) nullptr;
-  auto val_table = env->val_table;
-  auto new_var = (VarIdentify *) nullptr;
-  for (; params; params = params->tail) { // walk arguments
-    auto arg = params->head->type;
-    auto arg_name = params->head->name;
-    auto arg_type = (ActualType *) env->typ_table->lookup(arg);
+    auto params = this->params;
+    auto list = (ActualTypeList *) nullptr;
+    auto val_table = env->val_table;
+    auto new_var = (VarIdentify *) nullptr;
+    for (; params; params = params->tail) { // walk arguments
+      auto arg = params->head->type;
+      auto arg_name = params->head->name;
+      auto arg_type = (ActualType *) env->typ_table->lookup(arg);
 
-    if (!arg_type) {
-      sprintf(sem, "type %s is not defined", S_name(arg));
+      if (!arg_type) {
+        sprintf(sem, "type %s is not defined", S_name(arg));
+      }
+
+      new_var = new VarIdentify(arg_type);
+      list = new ActualTypeList(arg_type, list);
+      val_table = val_table->updateImmutable(arg_name, new_var);
+    };
+
+    auto result_type = (ActualType *)(this->result
+        ? env->typ_table->lookup(this->result)
+        : new ActualNone()); // not declare return type
+
+    if (!result_type) {
+      sprintf(sem, "type %s is not defined", S_name(this->result));
     }
 
-    new_var = new VarIdentify(arg_type);
-    list = new ActualTypeList(arg_type, list);
-    val_table = val_table->updateImmutable(arg_name, new_var);
-  };
+    if (sem[0]=='\0') {
+      auto func = new FunctionIdentify(reverse(list), result_type);
+      auto body_val_table = val_table->updateImmutable(this->name, func);
+      auto func_scope = new SemanticResult(body_val_table, env->typ_table, nullptr);
 
-  auto result_type = (ActualType*)(this->result
-    ? env->typ_table->lookup(this->result)
-    : new ActualNone()); // not declare return type
+      this->body->semantic(func_scope);
 
-  if (!result_type) {
-    sprintf(sem, "type %s is not defined", S_name(this->result));
-  }
-
-  if (sem[0]=='\0') {
-    auto func = new FunctionIdentify(reverse(list), result_type);
-    auto body_val_table = val_table->updateImmutable(this->name, func);
-    auto func_scope = new SemanticResult(body_val_table, env->typ_table, nullptr);
-
-    this->body->semantic(func_scope);
-
-    return new SemanticResult(
-        env->val_table->updateImmutable(this->name, func),
-        env->typ_table,
-        new ActualVoid()
-    );
+      return new SemanticResult(
+          env->val_table->updateImmutable(this->name, func),
+          env->typ_table,
+          new ActualVoid()
+      );
+    }
   }
 
   handleError(this->lo);
@@ -719,7 +725,7 @@ SemanticResult *TypeDeclare::preprocess(SemanticResult *env) {
 
   if (looked_type) {
     sec = DUPLICATE_TYPE;
-    sprintf(sem, "%d# duplicate identifier type `%s`", sec, S_name(this->name));
+    sprintf(sem, "%d# duplicate type `%s`", sec, S_name(this->name));
   } else {
     return new SemanticResult(
         env->val_table,

@@ -79,10 +79,11 @@ int ERR_CODES[] = {
     NO_ERROR, // test36.tig
     SURPLUS_ARG,
     DUPLICATE_TYPE,
+    DUPLICATE_FUNC,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  return ast::debug("../mocks/test38.tig");
+//  return ast::debug("../mocks/test39.tig");
   slientError();
 
   it("should parse ast correct", [] {

@@ -19,5 +19,6 @@
 #define SHORT_ARG 1010
 #define SURPLUS_ARG 1011
 #define DUPLICATE_TYPE 1012
+#define DUPLICATE_FUNC 1013
 
 #endif
