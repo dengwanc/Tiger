@@ -1,16 +1,3 @@
-/* locals hide globals */
-/*
-let
-	var a:=0
+/* error : integer required */
 
-	function g(a:int):int = a 
-in
- g(2)
-end
-*/
-let
-	var a = 0
-	function g(a: int) { a }
-in
-	g(2)
-end
+3 + "var"

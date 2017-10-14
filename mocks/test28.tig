@@ -14,7 +14,7 @@ let
 	type R1 = {name: string, id: int}
 	type R2 = {name: string, id: int}
 	var r1 = {name: "Name", id: 0}R2
-	var r2: R2
+	var r2: R1
 in
 	r2 = r1
 end

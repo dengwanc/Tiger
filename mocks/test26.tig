@@ -1,3 +1,16 @@
-/* error : integer required */
+/* locals hide globals */
+/*
+let
+	var a:=0
 
-3 + "var"
+	function g(a:int):int = a
+in
+ g(2)
+end
+*/
+let
+	var a = 0
+	function g(a: int) { a }
+in
+	g(2)
+end
