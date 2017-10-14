@@ -18,17 +18,6 @@
 * Add make scripts for dev
 * Chap 1 practice __symbol table/ast__
 
-# Lexical Scanner 2017.6.11
-
-# AST 2017.7.2
-
-* huge break but __with tough debugging__
-* make sure add source dir to cmake
-
-# AST Refactor 2017.7.27
-
-* Class type style construct ast tree
-
 # Tiger Language Issues 2017.6.6
 
 * Hoisting
@@ -36,8 +25,23 @@
 * Function as first class
 * Module System
 * Const keyword
-* For Sugar
-* JavaScript Like Syntax
+
+# Lexical Scanner 2017.6.11
+
+# AST 2017.7.2
+
+* Huge break but __with tough debugging__
+* Make sure add source dir to cmake
+
+# AST Refactor 2017.7.27
+
+* Class type style construct ast tree
+
+# Semantic Check 2017.10.15
+
+* Take Almost 2 months
+* Typical Corner Problem(No-need cost
+* Huge Break(Finally, REAL CS COMING 
 
 # Goals 2017.9.15
 
@@ -52,11 +56,11 @@
 * goal -> design -> coding -> test
 
 # TODO
-* p0 implements semantic check module
 * p1 depart ast::parse
 * p1 refactor RecordExpr match (module depend mess
 * p2 check lexical.spec.cc token map table (after done semantic do this
 * p2 implements stringify (not core module
+* ~~p0 implements semantic check module~~
 * ~~p2 SemanticResult*& => SemanticResult*~~ 
 * ~~P0 remove all ugly-const&-readonly~~
 * ~~p0 nullptr check confused me~~
