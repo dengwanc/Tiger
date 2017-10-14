@@ -275,23 +275,33 @@ end:
   return env->copy(nullptr);
 }
 
+static bool referenceOperValid(Oper oper) {
+  return oper == Eq || oper == Neq;
+}
+
 SemanticResult *OpExpr::semantic(SemanticResult *env) {
   auto left = this->left->semantic(env);
   auto right = this->right->semantic(env);
 
   if (left->type && right->type && left->type->equal(right->type)) {
     auto type = left->type;
+    auto oper_type = this->getOperatedType(type);
     switch (type->kind) {
     case NilATK:sprintf(sem, "nil cannot operated");
       break;
     case VoidATK:sprintf(sem, "void cannot operated");
       break;
-    case RecordATK:sprintf(sem, "record cannot operated");
-    case ArrayATK:sprintf(sem, "array cannot operated");
+    case RecordATK:
+    case ArrayATK:
+      if (referenceOperValid(this->oper)) {
+        return env->copy(oper_type);
+      } else {
+        sprintf(sem, "reference cannot operated");
+      }
       break;
     case StringATK:sprintf(sem, "string cannot operated");
       break;
-    default:return env->copy(this->getOperatedType(type));
+    default: return env->copy(oper_type);
     }
   } else {
     sprintf(sem, "%d# different type cannot operated", sec = OPERATOR_DIFF_TYPE);

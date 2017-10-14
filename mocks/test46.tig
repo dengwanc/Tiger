@@ -11,7 +11,7 @@ end
 
 let
 	type R = {name: string, id: int}
-	var b = nil
+	var b: R
 in
 	b == nil;
 	b <> nil
