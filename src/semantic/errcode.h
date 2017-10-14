@@ -10,5 +10,6 @@
 #define IF_EXPR_ERROR1 1000
 #define OPERATOR_DIFF_TYPE 1001
 #define VAR_NOT_DEFINED 1002
+#define FILED_ERR1 1003
 
 #endif

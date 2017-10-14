@@ -27,7 +27,7 @@
 
 # AST Refactor 2017.7.27
 
-* Class type style construct ast tree  
+* Class type style construct ast tree
 
 # Tiger Language Issues 2017.6.6
 
@@ -57,7 +57,7 @@
 * p1 refactor RecordExpr match (module depend mess
 * p2 check lexical.spec.cc token map table (after done semantic do this
 * p2 implements stringify (not core module
-* ~~p2 `SemanticResult*&` => `SemanticResult*`~~ 
+* ~~p2 SemanticResult*& => SemanticResult*~~ 
 * ~~P0 remove all ugly-const&-readonly~~
 * ~~p0 nullptr check confused me~~
 * ~~p0 binary tree update/lookup unit test~~

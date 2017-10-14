@@ -181,7 +181,8 @@ SemanticResult *FieldLvalue::semantic(SemanticResult *env) {
       }
 
     } else {
-      sprintf(sem, "%s has no field %s", this->lv->stringify(), S_name(this->x));
+      sec = FILED_ERR1;
+      sprintf(sem, "%d# %s has no field %s", sec, this->lv->stringify(), S_name(this->x));
     }
 
   } else {

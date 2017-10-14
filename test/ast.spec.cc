@@ -62,10 +62,11 @@ int CODES[] = {
     VAR_NOT_DEFINED,
     VAR_NOT_DEFINED,
     NO_ERROR, // test21.tig
+    FILED_ERR1,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  return ast::debug("../mocks/test21.tig");
+//  return ast::debug("../mocks/test22.tig");
   slientError();
 
   it("should parse ast correct", [] {
