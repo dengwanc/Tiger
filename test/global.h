@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <assert.h>
 
 /**
  * This module for common
@@ -14,6 +15,19 @@
 
 using namespace std;
 
+/** functions */
+static void it(const char *s, std::function<void()> f) {
+  f();
+  std::cout << "         ✓  " << s << std::endl;
+}
+
+static int describe(const char *s, std::function<void()> f) {
+  std::cout << s << std::endl;
+  f();
+  return 1;
+}
+
+/** datas */
 static const char *TIGER_DEFAULT_INPUT = "../mocks/editable.tig";
 static vector<string> TIGS;
 

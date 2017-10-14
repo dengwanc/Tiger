@@ -54,11 +54,12 @@
 * depart module is very important(< 300 lines)
 * private data-member not so necessary
 * goal -> design -> coding -> test
+* all declares in ./test should be static
 
 # TODO
-* p1 describe/it should move to global.h
 * p2 check lexical.spec.cc token map table (after done semantic do this
-* ~~p2 implements stringify (by give a default string ~~
+* ~~p1 describe/it should move to global.h~~
+* ~~p2 implements stringify (by give a default string~~
 * ~~p1 refactor RecordExpr match (module depend mess~~
 * ~~p1 depart ast::parse~~
 * ~~p0 implements semantic check module~~

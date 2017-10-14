@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <iostream>
 #include "index.h"
 
 void *checkedMalloc(size_t len) {
@@ -23,17 +24,6 @@ char *String(const char *s) {
 
 bool streq(const char *s1, const char *s2) {
   return strcmp(s1, s2)==0;
-}
-
-void it(const char *s, std::function<void()> f) {
-  f();
-  std::cout << "         ✓  " << s << std::endl;
-}
-
-int describe(const char *s, std::function<void()> f) {
-  std::cout << s << std::endl;
-  f();
-  return 1;
 }
 
 int crash(const char *s) {

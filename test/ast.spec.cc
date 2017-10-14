@@ -1,7 +1,5 @@
-#include <assert.h>
-#include "../src/utils/index.h"
-#include "../src/ast/index.h"
 #include "global.h"
+#include "../src/ast/index.h"
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
   it("should parse ast correct", [] {

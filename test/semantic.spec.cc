@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include <assert.h>
 #include "global.h"
-#include "../src/utils/index.h"
 #include "../src/ast/index.h"
 #include "../src/semantic/errcode.h"
 
@@ -25,7 +23,7 @@ static void debug() {
   debug(TIGER_DEFAULT_INPUT);
 }
 
-int ERR_CODES[] = {
+static int ERR_CODES[] = {
     NO_ERROR, // test1.tig
     NO_ERROR,
     NO_ERROR,

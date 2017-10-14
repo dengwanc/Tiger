@@ -1,9 +1,6 @@
-#include <iostream>
-#include <assert.h>
+#include "global.h"
 #include "../src/utils/index.h"
 #include "../src/utils/binary-tree.h"
-
-using namespace std;
 
 static int __TIGER_UNIT_TEST = describe("utils", [] {
 

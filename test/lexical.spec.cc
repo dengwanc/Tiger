@@ -1,10 +1,7 @@
 #include <stdio.h>
-#include <assert.h>
-#include <iostream>
-#include "../src/utils/index.h"
+#include "global.h"
 #include "../src/lexical/index.h"
 #include "../src/ast/y.tab.hh"
-#include "global.h"
 
 /**
  * lex native interface
@@ -29,18 +26,14 @@ static const char *getName(int tok) {
   return tok < 258 || tok > 302 ? "BAD_TOKEN" : tokens[tok - 258];
 }
 
-void debug(const char *path) {
+static void debug(const char *path) {
   int token;
   path = path ? path : TIGER_DEFAULT_INPUT;
 
   lexical::reset(path);
 
   while ((token = yylex(), token)) {
-    /*cout << token << endl;*/
-
-    if (streq("BAD_TOKEN", getName(token))) {
-      /* do something with BDA_TOKEN */
-    }
+    // cout << token << endl;
 
     switch (token) {
     case ID:
@@ -58,13 +51,12 @@ void debug(const char *path) {
 }
 
 static int __TIGER_UNIT_TEST = describe("lexical", [] {
+  // return debug(nullptr); /* if want observe */
+
   it("should parse token correct", [] {
     for (auto i: TIGS) {
       lexical::parse(i.c_str());
       assert(!hasErrors());
     }
-
-    // debug(nullptr); /* if want observe */
   });
-
 });
