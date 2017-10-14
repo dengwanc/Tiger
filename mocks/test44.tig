@@ -1,21 +1,9 @@
 /* valid nil initialization and assignment */
-/*
-let 
-
-	type rectype = {name:string, id:int}
-	var b:rectype := nil
-
-in
-
-	b := nil
-
-end
-*/
 
 let
 	type R = {name: string, id: int}
 	var b = nil
 in
-	b = nil
+	0
 end
 

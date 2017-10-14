@@ -543,6 +543,12 @@ SemanticResult *VarDeclare::semantic(SemanticResult *env, struct DeclareList *de
     : (this->init->semantic(env))->type;
 
   if (var_type) {
+    if (var_type->kind == NilATK) {
+      sec = VAR_DECLARE_ERR1;
+      sprintf(sem, "%d# canot assign nil to a non-type", sec);
+      goto end;
+    }
+
     auto new_var = new VarIdentify(var_type);
     auto ret = new SemanticResult(
         env->val_table->updateImmutable(this->id, new_var),
@@ -564,6 +570,7 @@ SemanticResult *VarDeclare::semantic(SemanticResult *env, struct DeclareList *de
     if (this->type) sprintf(sem, "type %s is not defined", S_name(this->type));
   }
 
+end:
   handleError(this->lo);
 
   return env->copy(nullptr);
