@@ -1,14 +1,7 @@
 /* error : unknown type */
-/*
-let
-	var a:= rectype {}
-in
-	0
-end
-*/
 
 let
 	var a = {a: 5}R
 in
-	a
+	1
 end

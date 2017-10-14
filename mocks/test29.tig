@@ -14,5 +14,5 @@ let
 	var a1 = [10]int
 	var a2 = [10]string
 in
-	a1 = a1
+	a1 = a2
 end

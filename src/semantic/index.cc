@@ -310,7 +310,8 @@ SemanticResult *RecordExpr::semantic(SemanticResult *env) {
       sprintf(sem, "%d# type %s is not record type", sec, record_name);
     }
   } else {
-    sprintf(sem, "type %s is not defined", record_name);
+    sec = RECORD_EXPR_ERR1;
+    sprintf(sem, "%d# type %s is not defined", sec, record_name);
   }
 
   handleError(this->lo);

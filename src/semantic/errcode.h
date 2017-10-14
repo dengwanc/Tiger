@@ -5,7 +5,6 @@
  * define semantic error codes
  * simple increment number
  */
-
 #define NO_ERROR 0
 #define IF_EXPR_ERROR1 1000
 #define OPERATOR_DIFF_TYPE 1001
@@ -15,6 +14,6 @@
 #define NOT_ARRAY 1005
 #define NOT_RECORD 1006
 #define FILED_ERR2 1007
-
+#define RECORD_EXPR_ERR1 1008
 
 #endif

@@ -69,10 +69,15 @@ int CODES[] = {
     NO_ERROR, // test26.tig
     OPERATOR_DIFF_TYPE,
     NOT_ASSIGNABLE,
+    NOT_ASSIGNABLE,
+    NO_ERROR,
+    NO_ERROR, // test31.tig
+    NOT_ASSIGNABLE,
+    RECORD_EXPR_ERR1,
 };
 
 static int __TIGER_UNIT_TEST = describe("ast tree", [] {
-//  return ast::debug("../mocks/test28.tig");
+//  return ast::debug("../mocks/test33.tig");
   slientError();
 
   it("should parse ast correct", [] {
