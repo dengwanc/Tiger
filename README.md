@@ -1,34 +1,18 @@
-## For Learning Compiler Tech
+> For Learning Compiler Technology
 
 ## Code Conventions
 
-* `#define` must upper & join by `_`
 * Method name must beginning of verb & CamelCase
 * Type define must capital letter begins
-* Before you actually figure out what happened DO NOT USE:
-	* disable STL
-	* disable std::string
-	* like __why it is OK return vector from function__?
-	* void* (definitely bad idea
-
+* DO NOT USE: `void*`
 * Recommendatory Features
-	* Lambda
+	* Lambda Expressions
 	* `auto`, `decltype`
 	* `nullptr`
 	* `virtual` as interface
 	* Function Overloading
-
-## Contribution Guide
-
-> This list is ordered by importance
-
-- Issue template
-- Pull request template
-- Assume architecture is basing on black-box
-- A Interface at least own one unit test
-- All *.tig files must test passed in every module
-
-
+* A Interface at least own one unit test
+* All *.tig files must test passed in every module
 
 ## Develop Guide
 
@@ -40,28 +24,26 @@
 
 - Commit prefix usage
 ```
-* ${description} // means modified/fixed
-+ ${description} // means new feature/refactor/optimization
-- ${description} // means remove feature/unsupport sth
-# ${description} // means polish meta info(ReadME/History)
+* ${description} # means modified/fixed
++ ${description} # means new feature/refactor/optimization
+- ${description} # means remove feature/unsupport sth
+# ${description} # means polish meta info(ReadME/History)
  
-// Examples
- 
-$ git co '+ support template String complie to AST'
-$ git co '# add dev scripts to readMe'
+$ git co '+ support template string complie to AST'
+$ git co '# add dev scripts to ReadMe'
 ```
 
-- Run unit test
+- Running unit test
 ```
 make test
 ```
 
-- Run examples
+- Running examples
 ```
 make examples
 ```
 
-## Refrence
+## Reference
 
 - [Modern Compiler Implementation in C](https://www.cs.princeton.edu/~appel/modern/c/)
 - [Old C Version Source Code](https://github.com/dengwanc/Tiger/tree/c-version)
